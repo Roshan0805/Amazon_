@@ -69,29 +69,29 @@ public class AmazonUserController {
     }
 
     /**
-     * Returns the getUserDetails method from the amazon service for getting the user details
+     * Gets the user details from the user list using user email
      *
      * @param email User's email
-     * @return User Object from the amazon service
+     * @return {@link User} from the amazon service
      */
     public User getUserDetail(final String email) {
         return AMAZON_USER_SERVICE.getUserDetails(email);
     }
 
     /**
-     * Returns the getAdminDetails method from the amazon service for getting the user details
+     * Gets the user details from the user list using user email
      *
      * @param email User's email
-     * @return User Object from the amazon service
+     * @return {@link User} from the amazon service
      */
     public User getAdminDetail(final String email) {
         return AMAZON_USER_SERVICE.getAdminDetails(email);
     }
 
     /**
-     * Returns the deleteUser method from the amazon service for delete user from the user's list
+     * Deletes the user from the user list
      *
-     * @param user user object
+     * @param user Represents {@link User}
      * @return boolean value from the deleteUser method
      */
     public boolean deleteUser(final User user) {
@@ -99,7 +99,8 @@ public class AmazonUserController {
     }
 
     /**
-     * Returns the adminKeyVerification method for validating key from service
+     * Provides admin
+     * key verification for admin user
      *
      * @param key user key for validate
      * @return boolean value returned from adminKeyVerification method
