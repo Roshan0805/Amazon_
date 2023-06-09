@@ -1,9 +1,8 @@
-package com.amazon.service.serviceimpl;
+package com.amazon.service.impl;
 
 import com.amazon.model.User;
 import com.amazon.service.AmazonUserService;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -69,30 +68,18 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param email User's email
      * @return Boolean true if email is already registered
      */
-    public boolean isUserEmailAlreadyExists(final String email) {
+    public boolean isUserEmailExists(final String email) {
         return getUsersEmailIds().contains(email);
     }
 
-    public boolean isAdminEmailAlreadyExists(final String email) {
+    /**
+     * {@inheritDoc}
+     *
+     * @param email User's email
+     * @return Boolean true if email is already registered
+     */
+    public boolean isAdminEmailExists(final String email) {
         return getAdminsEmailIds().contains(email);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return User's list values
-     */
-    public Collection<User> getUsersList() {
-        return USERS_LIST.values();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return User's list values
-     */
-    public Collection<User> getAdminList() {
-        return ADMIN_LIST.values();
     }
 
     /**
@@ -103,7 +90,6 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @return Boolean true if email and password matches from user list
      */
     public boolean userSignIn(final String email, final String password) {
-
         for (final User existingUser : USERS_LIST.values()) {
 
             if ((existingUser.getEmailId().equals(email)) && (existingUser.getPassword().equals(password))) {
@@ -114,9 +100,15 @@ public class AmazonUserServiceImpl implements AmazonUserService {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param email    User's email
+     * @param password User's password
+     * @return Boolean true if email and password matches from user list
+     */
     public boolean adminSignIn(final String email, final String password) {
-
-        for (final User user : getUsersList()) {
+        for (final User user : ADMIN_LIST.values()) {
 
             if ((user.getEmailId().equals(email)) && (user.getPassword().equals(password))) {
 
@@ -166,7 +158,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param email User email to update
      * @return Boolean true if the user email is  updated is successfully
      */
-    public boolean updateUserEmail(final User user, final String email) {
+    public boolean updateEmail(final User user, final String email) {
         if (user == null || email == null) {
             return false;
         }
@@ -181,7 +173,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param name Username for update
      * @return Boolean true if the username is updated successfully
      */
-    public boolean updateUserName(final User user, final String name) {
+    public boolean updateName(final User user, final String name) {
         if (user == null || name == null) {
             return false;
         }
@@ -196,7 +188,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param password Username for update
      * @return Boolean true if the username is updated successfully
      */
-    public boolean updateUserPassword(final User user, final String password) {
+    public boolean updatePassword(final User user, final String password) {
         if (user == null || password == null) {
             return false;
         }
@@ -211,7 +203,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param address User address for update
      * @return Boolean true if address is updated successfully
      */
-    public boolean updateUserAddress(final User user, final String address) {
+    public boolean updateAddress(final User user, final String address) {
         if (user == null || address == null) {
             return false;
         }
@@ -226,7 +218,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param phoneNo User's phone number for update
      * @return Boolean true if the phone number is updated successfully
      */
-    public boolean updateUserPhoneNumber(final User user, final String phoneNo) {
+    public boolean updatePhoneNumber(final User user, final String phoneNo) {
         if (user == null || phoneNo == null) {
             return false;
         }
@@ -255,9 +247,6 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @return boolean true if user key is equal to the verification key
      */
     public boolean adminKeyVerification(String key) {
-        if (ADMIN_KEY.equals(key)) {
-            return true;
-        }
-        return false;
+        return ADMIN_KEY.equals(key);
     }
 }

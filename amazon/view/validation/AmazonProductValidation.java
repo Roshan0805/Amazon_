@@ -2,6 +2,10 @@ package com.amazon.view.validation;
 
 public class AmazonProductValidation {
 
+    public boolean validateCategory(final String category) {
+        return category.matches("^[a-zA-Z_]+$");
+    }
+
     /**
      * Validates the value is number
      *
@@ -19,7 +23,7 @@ public class AmazonProductValidation {
      * @return boolean true if the value is matches the pattern otherwise return false
      */
     public boolean returnToMenu(final String valueForCheck) {
-        if (valueForCheck.contains("#")) {
+        if ('#' == valueForCheck.charAt(0)) {
             return true;
         }
         return false;
@@ -32,7 +36,7 @@ public class AmazonProductValidation {
      * @return boolean true if the value is matches the pattern otherwise return false
      */
     public boolean updateChoiceValidation(final String userChoice) {
-        if ('y' == userChoice.charAt(0)) {
+        if ('y' == userChoice.charAt(0) || 'Y' == userChoice.charAt(0)) {
             return true;
         }
         return false;

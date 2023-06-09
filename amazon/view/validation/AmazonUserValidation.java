@@ -87,7 +87,7 @@ public class AmazonUserValidation {
      * @param userChoice value for validate
      * @return boolean true if the value is matches the pattern otherwise return false
      */
-    public boolean exitChoiceValidation(final String userChoice) {
+    public boolean toContinueValidation(final String userChoice) {
         if ('y' == userChoice.charAt(0) || 'Y' == userChoice.charAt(0)) {
             return true;
         }

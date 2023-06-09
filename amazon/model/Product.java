@@ -2,21 +2,21 @@ package com.amazon.model;
 
 public class Product {
 
-    private int id;
+    private long id;
     private String name;
     private String description;
     private double price;
-    private String category;
+    private ProductCategories category;
 
     public enum ProductCategories {
-        ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
+        MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
     }
 
-    public void setCategory(final String category) {
+    public void setCategory(final ProductCategories category) {
         this.category = category;
     }
 
-    public void setId(final int id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -32,12 +32,12 @@ public class Product {
         this.price = price;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     public String toString() {
         return String.format("product id : %d\nproduct category:%s\nproduct name : %s\ndescription : %s\nprice : %f\n",
-                id, name, description, price);
+                id, category, name, description, price);
     }
 }

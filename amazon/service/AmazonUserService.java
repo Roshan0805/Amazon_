@@ -36,13 +36,6 @@ public interface AmazonUserService {
     Set<String> getUsersEmailIds();
 
     /**
-     * Gets user's list from the user list
-     *
-     * @return Set of user's list
-     */
-    Collection<User> getUsersList();
-
-    /**
      * Provides User sign in
      *
      * @param email    User's email id
@@ -66,15 +59,15 @@ public interface AmazonUserService {
      * @param emailId User's email
      * @return Boolean true if the email id is already present on the user list
      */
-    boolean isUserEmailAlreadyExists(final String emailId);
+    boolean isUserEmailExists(final String emailId);
 
     /**
      * Check whether the admin email is already exist in user list
      *
-     * @param emailId User's email
+     * @param email User's email
      * @return Boolean true if the email id is already present on the user list
      */
-    boolean isAdminEmailAlreadyExists(final String emailId);
+    boolean isAdminEmailExists(final String email);
 
     /**
      * Gets the user details from the user list
@@ -99,7 +92,7 @@ public interface AmazonUserService {
      * @param email User email to update
      * @return Boolean true if the user email is  updated is successfully
      */
-    boolean updateUserEmail(final User user, final String email);
+    boolean updateEmail(final User user, final String email);
 
     /**
      * Updates the username
@@ -108,7 +101,7 @@ public interface AmazonUserService {
      * @param userName Username for update
      * @return Boolean true if the username is updated successfully
      */
-    boolean updateUserName(final User user, final String userName);
+    boolean updateName(final User user, final String userName);
 
     /**
      * Updates the username
@@ -117,7 +110,7 @@ public interface AmazonUserService {
      * @param password User's password for update
      * @return Boolean true if the username is updated successfully
      */
-    boolean updateUserPassword(final User user, final String password);
+    boolean updatePassword(final User user, final String password);
 
     /**
      * Updates the user address
@@ -126,7 +119,7 @@ public interface AmazonUserService {
      * @param address User address for update
      * @return Boolean true if address is updated successfully
      */
-    boolean updateUserAddress(final User user, final String address);
+    boolean updateAddress(final User user, final String address);
 
     /**
      * Updates the user phone number
@@ -135,7 +128,7 @@ public interface AmazonUserService {
      * @param phoneNo User's phone number for update
      * @return Boolean true if the phone number is updated successfully
      */
-    boolean updateUserPhoneNumber(final User user, final String phoneNo);
+    boolean updatePhoneNumber(final User user, final String phoneNo);
 
     /**
      * Delete the user from the user list
