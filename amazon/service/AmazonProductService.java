@@ -15,7 +15,7 @@ import java.util.Collection;
 public interface AmazonProductService {
     /**
      * <p>
-     *     Add product to the product list
+     * Add product to the product list
      * </p>
      *
      * @param product Product object
@@ -25,7 +25,7 @@ public interface AmazonProductService {
 
     /**
      * <p>
-     *     Provide the collection view of the products value
+     * Provide the collection view of the products value
      * </p>
      *
      * @return Collection view of {@link Product}
@@ -34,7 +34,7 @@ public interface AmazonProductService {
 
     /**
      * <p>
-     *     Gets the product from product list using productId
+     * Gets the product from product list using productId
      * </p>
      *
      * @param productId product id of the product object
@@ -44,7 +44,7 @@ public interface AmazonProductService {
 
     /**
      * <p>
-     *     Updates product object in product list
+     * Updates product object in product list
      * </p>
      *
      * @param id      Product id of the product
@@ -55,7 +55,7 @@ public interface AmazonProductService {
 
     /**
      * <p>
-     *     Deletes the product object from the product list
+     * Deletes the product object from the product list
      * </p>
      *
      * @param id id of the product object

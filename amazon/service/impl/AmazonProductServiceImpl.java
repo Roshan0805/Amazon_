@@ -27,6 +27,7 @@ public class AmazonProductServiceImpl implements AmazonProductService {
 
     /**
      * Represents the object of AmazonProductServiceImpl class can be created for only one time
+     *
      * @return Represents {@link AmazonProductServiceImpl}
      */
     public static AmazonProductServiceImpl getAmazonProductService() {

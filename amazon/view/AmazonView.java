@@ -30,15 +30,17 @@ public class AmazonView {
     private static final AmazonUserValidation AMAZON_USER_VALIDATION = AmazonUserValidation.getAmazonUserValidation();
     private static final AmazonProductValidation AMAZON_PRODUCT_VALIDATION = AmazonProductValidation.getAmazonProductValidation();
 
-    private AmazonView() {}
+    private AmazonView() {
+    }
 
     /**
      * Represents the object of amazonView class be created for only one time
+     *
      * @return Represents {@link AmazonView}
      */
     public static AmazonView getAmazonView() {
         if (amazonView == null) {
-                return new AmazonView();
+            return new AmazonView();
         } else {
             return amazonView;
         }
@@ -99,7 +101,7 @@ public class AmazonView {
      * </p>
      */
     private void signIn(final String email, final String password) {
-        if (AMAZON_USER_CONTROLLER.signIn(email ,password)) {
+        if (AMAZON_USER_CONTROLLER.signIn(email, password)) {
             System.out.println("User sign in successful");
             getUserOptions();
         } else {
@@ -731,7 +733,7 @@ public class AmazonView {
             if (AMAZON_USER_VALIDATION.isReturnToMenu(String.valueOf(productPrice))) {
                 accessProduct();
             }
-            if(AMAZON_PRODUCT_VALIDATION.validatePrice(String.valueOf(productPrice))) {
+            if (AMAZON_PRODUCT_VALIDATION.validatePrice(String.valueOf(productPrice))) {
                 return productPrice;
             }
         } catch (final InputMismatchException Exception) {
@@ -804,7 +806,7 @@ public class AmazonView {
      * @return Represents {@link Product}  in product list
      */
     private void getProducts() {
-        if( AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
             System.out.println("The product list is empty");
             accessProduct();
         }
@@ -820,7 +822,7 @@ public class AmazonView {
      * @return Represents {@link Product}  in product list
      */
     private void viewProducts() {
-        if( AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
             System.out.println("The product list is empty");
             getUserOptions();
         }
@@ -847,7 +849,7 @@ public class AmazonView {
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-       return getProductName();
+        return getProductName();
     }
 
     /**

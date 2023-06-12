@@ -10,18 +10,20 @@ package com.amazon.view.validation;
  */
 public class AmazonUserValidation extends AmazonValidation {
 
-    private static AmazonUserValidation amazonUserValidation  = null;
+    private static AmazonUserValidation amazonUserValidation = null;
 
-    private AmazonUserValidation() {}
+    private AmazonUserValidation() {
+    }
 
     /**
      * <p>
-     *     Represents the object of AmazonUserValidation class can be created for only one time
+     * Represents the object of AmazonUserValidation class can be created for only one time
      * </p>
+     *
      * @return Represents {@link AmazonUserValidation}
      */
     public static AmazonUserValidation getAmazonUserValidation() {
-        if(amazonUserValidation == null) {
+        if (amazonUserValidation == null) {
             return new AmazonUserValidation();
         } else {
             return amazonUserValidation;

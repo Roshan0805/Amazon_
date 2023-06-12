@@ -17,7 +17,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Provides {@link User} sign up
+     * Provides {@link User} sign up
      * </p>
      *
      * @param user User object is passed as a parameter
@@ -26,7 +26,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Provides {@link User} sign up
+     * Provides {@link User} sign up
      * </p>
      *
      * @param user User object is passed as a parameter
@@ -37,7 +37,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Gets email id's from the user list
+     * Gets email id's from the user list
      * </p>
      *
      * @return Set of email id's
@@ -46,7 +46,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Provides {@link User} sign in
+     * Provides {@link User} sign in
      * </p>
      *
      * @param email    User's email id
@@ -57,7 +57,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Provides {@link User} sign in
+     * Provides {@link User} sign in
      * </p>
      *
      * @param email    User's email id
@@ -69,7 +69,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Check whether the  user email is already exist in user list
+     * Check whether the  user email is already exist in user list
      * </p>
      *
      * @param emailId User's email
@@ -79,7 +79,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Gets the user details from the user list
+     * Gets the user details from the user list
      * </p>
      *
      * @param email User email
@@ -89,7 +89,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Gets the user details from the user list
+     * Gets the user details from the user list
      * </p>
      *
      * @param email User email
@@ -99,7 +99,7 @@ public interface AmazonUserService {
 
     /**
      * <p>
-     *     Delete the user from the user list
+     * Delete the user from the user list
      * </p>
      *
      * @param user {@link User} wants to delete

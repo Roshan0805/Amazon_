@@ -12,23 +12,26 @@ import com.amazon.view.AmazonView;
  */
 public class AmazonValidation {
 
-    private static AmazonValidation amazonValidation  = null;
+    private static AmazonValidation amazonValidation = null;
 
-    AmazonValidation() {}
+    AmazonValidation() {
+    }
 
     /**
      * <p>
-     *     Represents the object of AmazonValidation class can be created for only one time
+     * Represents the object of AmazonValidation class can be created for only one time
      * </p>
+     *
      * @return Represents {@link AmazonValidation}
      */
     public static AmazonValidation getAmazonValidation() {
-        if(amazonValidation == null) {
+        if (amazonValidation == null) {
             return new AmazonValidation();
         } else {
             return amazonValidation;
         }
     }
+
     /**
      * <p>
      * Check's whether the user value to determine the user wants to return back to menu

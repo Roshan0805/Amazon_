@@ -52,6 +52,7 @@ public class User {
     public boolean getAdminStatus() {
         return adminStatus;
     }
+
     public String toString() {
         return String.format("user id -%d\tusername - %s\temail -%s\taddress - %s\tphone no - %s\n", id, name, email, address, phoneNumber);
     }
