@@ -1,18 +1,21 @@
 package com.amazon.model;
 
+/**
+ * Represents the product provides services like set and get the product details
+ */
 public class Product {
 
     private long id;
     private String name;
     private String description;
     private double price;
-    private ProductCategories category;
+    private Category category;
 
-    public enum ProductCategories {
+    public enum Category {
         MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
     }
 
-    public void setCategory(final ProductCategories category) {
+    public void setCategory(final Category category) {
         this.category = category;
     }
 

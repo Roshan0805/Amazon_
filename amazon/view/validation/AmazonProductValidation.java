@@ -1,44 +1,49 @@
 package com.amazon.view.validation;
 
-public class AmazonProductValidation {
+import com.amazon.model.Product.Category;
+/**
+ * <p>
+ * Validates the product Category name enter by the user
+ * </p>
+ *
+ * @author Roshan
+ * @version 1.0
+ */
+public class AmazonProductValidation extends AmazonValidation {
 
-    public boolean validateCategory(final String category) {
-        return category.matches("^[a-zA-Z_]+$");
-    }
+    private static AmazonProductValidation amazonProductValidation  = null;
+
+    private AmazonProductValidation() {}
 
     /**
-     * Validates the value is number
-     *
-     * @param value value for validate
-     * @return boolean true if the value is matches the pattern otherwise return false
+     * Represents the object of AmazonProductValidation class can be created for only one time
+     * @return Represents {@link AmazonProductValidation}
      */
-    public boolean validateAsNumber(final String value) {
-        return value.matches("^\\d+$");
-    }
-
-    /**
-     * Check's whether the user value to determine the user wants to return back to menu
-     *
-     * @param valueForCheck value for validate
-     * @return boolean true if the value is matches the pattern otherwise return false
-     */
-    public boolean returnToMenu(final String valueForCheck) {
-        if ('#' == valueForCheck.charAt(0)) {
-            return true;
+    public static AmazonProductValidation getAmazonProductValidation() {
+        if(amazonProductValidation== null) {
+            return new AmazonProductValidation();
+        } else {
+            return amazonProductValidation;
         }
-        return false;
     }
 
     /**
-     * Check's whether the user value to determine the user wants to update or not
+     * Validates the category name of the product enter by the admin user
      *
-     * @param userChoice value for validate
-     * @return boolean true if the value is matches the pattern otherwise return false
+     * @param category Category name entered by the user
+     * @return True if the pattern matches the pattern otherwise return false
      */
-    public boolean updateChoiceValidation(final String userChoice) {
-        if ('y' == userChoice.charAt(0) || 'Y' == userChoice.charAt(0)) {
-            return true;
-        }
-        return false;
+    public Category validateCategory(final String category) {
+        return Category.valueOf(category);
     }
+
+    /**
+     *
+     * @param price
+     * @return
+     */
+    public boolean validatePrice(final String price) {
+        return price.matches("^[\\d\\S]+$");
+    }
+
 }

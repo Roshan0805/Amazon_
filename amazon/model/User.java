@@ -1,5 +1,8 @@
 package com.amazon.model;
 
+/**
+ * Represents the user provides services like set and get the user details
+ */
 public class User {
 
     private int id;
@@ -7,7 +10,8 @@ public class User {
     private String email;
     private String password;
     private String address;
-    private String phoneNo;
+    private String phoneNumber;
+    private Boolean adminStatus = false;
 
     public void setId(final int id) {
         this.id = id;
@@ -25,14 +29,13 @@ public class User {
         this.name = name;
     }
 
-    public void setPhoneNo(final String phoneNo) {
-        this.phoneNo = phoneNo;
+    public void setPhoneNumber(final String phoneNo) {
+        this.phoneNumber = phoneNo;
     }
 
     public void setAddress(final String address) {
         this.address = address;
     }
-
 
     public String getEmailId() {
         return this.email;
@@ -42,7 +45,14 @@ public class User {
         return this.password;
     }
 
+    public void setAsAdmin() {
+        this.adminStatus = true;
+    }
+
+    public boolean getAdminStatus() {
+        return adminStatus;
+    }
     public String toString() {
-        return String.format("user id -%d\tusername - %s\temail -%s\taddress - %s\tphone no - %s\n", id, name, email, address, phoneNo);
+        return String.format("user id -%d\tusername - %s\temail -%s\taddress - %s\tphone no - %s\n", id, name, email, address, phoneNumber);
     }
 }

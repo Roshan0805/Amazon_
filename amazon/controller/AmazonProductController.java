@@ -14,7 +14,17 @@ import java.util.Collection;
  */
 public class AmazonProductController {
 
-    private static final AmazonProductService AMAZON_PRODUCT_SERVICE = new AmazonProductServiceImpl();
+    private static final AmazonProductService AMAZON_PRODUCT_SERVICE = AmazonProductServiceImpl .getAmazonProductService();
+    private static AmazonProductController amazonProductController = null;
+
+    private AmazonProductController() {}
+
+    public static AmazonProductController getAmazonProductController() {
+        if (amazonProductController ==  null) {
+            amazonProductController = new AmazonProductController();
+        }
+        return amazonProductController;
+    }
 
     /**
      * adds the product object to product list
@@ -22,7 +32,7 @@ public class AmazonProductController {
      * @param product Product object
      * @return boolean value from addProduct method
      */
-    public boolean addProduct(final Product product) {
+    public boolean add(final Product product) {
         return AMAZON_PRODUCT_SERVICE.add(product);
     }
 
@@ -41,7 +51,7 @@ public class AmazonProductController {
      * @param productId id of the product
      * @return Represents {@link Product}
      */
-    public Product getProduct(final int productId) {
+    public Product get(final long productId) {
         return AMAZON_PRODUCT_SERVICE.get(productId);
     }
 
@@ -52,7 +62,7 @@ public class AmazonProductController {
      * @param product Represents {@link Product}
      * @return boolean Value from updateProduct method
      */
-    public boolean updateProduct(final int id, final Product product) {
+    public boolean update(final long id, final Product product) {
         return AMAZON_PRODUCT_SERVICE.update(id, product);
     }
 
@@ -62,16 +72,7 @@ public class AmazonProductController {
      * @param id id of the product
      * @return Boolean value from the deleteProduct method
      */
-    public boolean deleteProduct(final int id) {
+    public boolean delete(final int id) {
         return AMAZON_PRODUCT_SERVICE.delete(id);
-    }
-
-    /**
-     * Retrieves the collection of product id's from the product list
-     *
-     * @return Collection of product id's
-     */
-    public Collection<Long> getProductsId() {
-        return AMAZON_PRODUCT_SERVICE.getIds();
     }
 }
