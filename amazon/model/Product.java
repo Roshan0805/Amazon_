@@ -10,7 +10,7 @@ public class Product {
     private String description;
     private double price;
     private Category category;
-    private int adminId;
+    private long adminId;
 
     public enum Category {
         MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
@@ -40,11 +40,11 @@ public class Product {
         return id;
     }
 
-    public void setAdminId(final int adminId) {
+    public void setAdminId(final long adminId) {
         this.adminId = adminId;
     }
 
-    public int getAdminId() {
+    public long getAdminId() {
         return adminId;
     }
 

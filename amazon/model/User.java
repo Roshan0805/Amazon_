@@ -5,19 +5,19 @@ package com.amazon.model;
  */
 public class User {
 
-    private int id;
+    private long id;
     private String name;
     private String email;
     private String password;
     private String address;
     private String phoneNumber;
-    private Boolean adminStatus = false;
+
 
     public void setId(final int id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -47,14 +47,6 @@ public class User {
 
     public String getPassword() {
         return this.password;
-    }
-
-    public void setAsAdmin() {
-        this.adminStatus = true;
-    }
-
-    public boolean getAdminStatus() {
-        return adminStatus;
     }
 
     public String toString() {

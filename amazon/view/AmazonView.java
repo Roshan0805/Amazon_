@@ -8,6 +8,7 @@ import com.amazon.view.validation.AmazonProductValidation;
 import com.amazon.view.validation.AmazonUserValidation;
 import com.amazon.view.validation.AmazonValidation;
 
+import java.awt.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -270,7 +271,7 @@ public class AmazonView {
      * </p>
      * @param id Represents the user id
      */
-    private void accessProduct(final int id) {
+    private void accessProduct(final long id) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t2.add product",
                 "\t3.update product\t4.delete product\t5.Back to admin option"));
         final int userOption = getUserChoice();
@@ -338,12 +339,7 @@ public class AmazonView {
         if (AMAZON_USER_VALIDATION.toContinueValidation(SCANNER.nextLine())) {
             accessUser(user);
         } else {
-
-            if (user.getAdminStatus()) {
-                getAdminOptions();
-            } else {
-                getUserOptions();
-            }
+            displayMenu();
         }
     }
 
@@ -354,7 +350,7 @@ public class AmazonView {
      *
      * @param id Represents the user id
      */
-    private void updateProduct(final int id) {
+    private void updateProduct(final long id) {
         getProducts(id);
         System.out.println("Enter the product id for update product information");
 
@@ -443,7 +439,7 @@ public class AmazonView {
      *
      * @param id Represents the admin id
      */
-    private void deleteProduct(final int id) {
+    private void deleteProduct(final long id) {
         getProducts(id);
         System.out.println("Enter the product id to delete the product details ");
         final int productId = getUserChoice();
@@ -746,7 +742,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Represents price value entered by user
      */
-    private double getProductPrice(final int id) {
+    private double getProductPrice(final long id) {
         System.out.println("Enter the Product price\t(press # for back to product menu)");
 
         try {
@@ -782,7 +778,7 @@ public class AmazonView {
      *
      * @param id Represents user id
      */
-    private void addProduct(final int id) {
+    private void addProduct(final long id) {
         final Product product = new Product();
 
         product.setCategory(getProductCategory(id));
@@ -817,7 +813,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Category type
      */
-    private Product.Category getProductCategory(final int id) {
+    private Product.Category getProductCategory(final long id) {
         System.out.println(String.join("", "Enter the product category in words\n1.mobile_phones\n",
                 "2.footwear\n3.electronics\n4.clothing\n5.kitchen_appliances\n6.sports\n6.books\n8.toys\t",
                 "(press # to return to product menu)"));
@@ -843,7 +839,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Represents {@link Product}  in product list
      */
-    private void getProducts(final int id) {
+    private void getProducts(final long id) {
         if (AMAZON_PRODUCT_CONTROLLER.getProducts(id).isEmpty()) {
             System.out.println("The product list is empty");
             accessProduct(id);
@@ -874,7 +870,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Represents {@link Product}  in product list
      */
-    private void viewProducts(final int id) {
+    private void viewProducts(final long id) {
         if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
             System.out.println("The product list is empty");
             accessProduct(id);
@@ -890,7 +886,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Represents {@link Product}  name
      */
-    private String getProductName(final int id) {
+    private String getProductName(final long id) {
         try {
             System.out.println("Enter the product name\t(press # for back to menu)");
             final String productName = SCANNER.nextLine();
@@ -914,7 +910,7 @@ public class AmazonView {
      * @param id Represents user id
      * @return Represents {@link Product} description
      */
-    private String getProductDescription(final int id) {
+    private String getProductDescription(final long id) {
         try {
             System.out.println("Enter the product description\t(press # for back to menu)");
             final String description = SCANNER.nextLine();
