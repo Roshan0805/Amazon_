@@ -44,13 +44,14 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * {@inheritDoc}
      *
      * @param user Represents {@link User}
+     * @return True if signup is successful otherwise return false
      */
     public boolean signUp(final User user) {
         try {
             user.setId(userId);
             USERS_LIST.put(userId++, user);
             return true;
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
         return false;
@@ -60,6 +61,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * {@inheritDoc}
      *
      * @param user Represents {@link User}
+     * @return True if signup is successful otherwise return false
      */
     public boolean signUp(final User user, final String key) {
         if (SECRET_KEY.equals(key)) {
@@ -103,7 +105,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      *
      * @param email    User's email
      * @param password User's password
-     * @return True if email and password matches from user list
+     * @return True if email and password match user from the users list
      */
     public boolean signIn(final String email, final String password) {
         for (final User existingUser : USERS_LIST.values()) {
@@ -123,7 +125,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param email    User's email
      * @param password User's password
      * @param key
-     * @return True if email and password matches from user list
+     * @return True if email, password and key match the admin user from the users list
      */
     public boolean signIn(final String email, final String password, final String key) {
         for (final User user : USERS_LIST.values()) {
