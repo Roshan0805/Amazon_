@@ -67,7 +67,6 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     public boolean signUp(final User user, final String key) {
         if (SECRET_KEY.equals(key)) {
             user.setId(adminId);
-            user.setAsAdmin();
             USERS_LIST.put(adminId++, user);
 
             return true;
