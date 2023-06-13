@@ -17,6 +17,10 @@ public class User {
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setEmail(final String email) {
         this.email = email;
     }

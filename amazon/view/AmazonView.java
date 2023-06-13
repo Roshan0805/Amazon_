@@ -78,7 +78,7 @@ public class AmazonView {
      * </p>
      */
     private void signIn() {
-        System.out.println("Enter the user type\n1.admin user\n2.customer(press # for back to menu)");
+        System.out.println("Enter the user type\n1.admin user\n2.customer");
         final int userChoice = getUserChoice();
 
         if (AMAZON_USER_VALIDATION.isReturnToMenu(String.valueOf(userChoice))) {
@@ -98,7 +98,10 @@ public class AmazonView {
     /**
      * <p>
      * Gets the email and password from the user and provides customer sign in
-     * </p>
+     *
+     * @param email    Represents user email
+     * @param password Represents user password
+     *                 </p>
      */
     private void signIn(final String email, final String password) {
         if (AMAZON_USER_CONTROLLER.signIn(email, password)) {
@@ -114,6 +117,10 @@ public class AmazonView {
      * <p>
      * Gets the email and password from the user and provides admin sign in
      * </p>
+     *
+     * @param email    Represents user email
+     * @param password Represents user password
+     * @param key      Represents user key
      */
     private void signIn(final String email, final String password, final String key) {
         if (AMAZON_USER_CONTROLLER.signIn(email, password, key)) {
@@ -146,7 +153,7 @@ public class AmazonView {
             user.setAddress(getUserAddress());
             user.setPhoneNumber(getUserPhoneNumber());
             System.out.println("Are you an admin user press yes(y) or no(n)");
-            final String userChoice = SCANNER.nextLine();
+            final String userChoice = SCANNER.nextLine().trim();
 
             if ("y".equalsIgnoreCase(userChoice)) {
                 verifyAdmin(user);
@@ -213,16 +220,17 @@ public class AmazonView {
         System.out.println("Choose from the options\n1.admin details\t2.product details\t3.logout");
         final int adminOption = getUserChoice();
 
+        if (3 == adminOption) {
+            displayMenu();
+        }
+        final User user = getsUserDetails();
+
         switch (adminOption) {
             case 1:
-                final User user = getsUserDetails();
                 accessUser(user);
                 break;
             case 2:
-                accessProduct();
-                break;
-            case 3:
-                displayMenu();
+                accessProduct(user.getId());
                 break;
             default:
                 System.out.println("Enter the correct option");
@@ -259,38 +267,40 @@ public class AmazonView {
     /**
      * <p>
      * Provides methods for product add, view ,update, delete details
+     *
+     * @param id Represents the user id
      * </p>
      */
-    private void accessProduct() {
-        System.out.println(String.join("", "Choose from the options\n1.view product\t2.add product",
-                "\t3.update product\t4.delete product\t5.Back to dashboard"));
+    private void accessProduct(final int id) {
+        System.out.println(String.join("", "Choose from the options\n1.get all product\t2.add product",
+                "\t3.update product\t4.delete product\t5.Back to admin option"));
         final int userOption = getUserChoice();
 
         switch (userOption) {
             case 1:
-                getProducts();
+                viewProducts(id);
                 break;
             case 2:
-                addProduct();
+                addProduct(id);
                 break;
             case 3:
-                updateProduct();
+                updateProduct(id);
                 break;
             case 4:
-                deleteProduct();
+                deleteProduct(id);
                 break;
             case 5:
                 getAdminOptions();
                 break;
             default:
                 System.out.println("Enter the correct option");
-                accessProduct();
+                accessProduct(id);
                 break;
         }
         System.out.println("Do you want to continue press yes(y) else press any letter key");
 
         if (AMAZON_USER_VALIDATION.toContinueValidation(SCANNER.nextLine())) {
-            accessProduct();
+            accessProduct(id);
         } else {
             getAdminOptions();
         }
@@ -300,11 +310,12 @@ public class AmazonView {
      * <p>
      * Retrieves the admin details using email ,update the admin details and delete admin details
      * </p>
+     *
+     * @param user Represents {@link User}
      */
     private void accessUser(final User user) {
         System.out.println("Choose from the options\n1.get user\n2.update user\n3.delete user\n4.back to user menu");
         final int userOption = getUserChoice();
-
 
         switch (userOption) {
             case 1:
@@ -341,20 +352,28 @@ public class AmazonView {
      * <p>
      * Updates the product details by getting product id from the user
      * </p>
+     *
+     * @param id Represents the user id
      */
-    private void updateProduct() {
-        getProducts();
+    private void updateProduct(final int id) {
+        getProducts(id);
         System.out.println("Enter the product id for update product information");
 
         final long productId = getUserChoice();
 
-        final Product product = AMAZON_PRODUCT_CONTROLLER.get(productId);
+        if (AMAZON_PRODUCT_VALIDATION.validateIds(productId - 1)) {
 
-        updateProductName(product);
-        updateProductDescription(product);
-        updateProductPrice(product);
-        AMAZON_PRODUCT_CONTROLLER.update(productId, product);
-        accessProduct();
+            final Product product = AMAZON_PRODUCT_CONTROLLER.get(productId - 1);
+
+            updateProductName(product);
+            updateProductDescription(product);
+            updateProductPrice(product);
+            AMAZON_PRODUCT_CONTROLLER.update(productId, product);
+            accessProduct(id);
+        } else {
+            System.out.println("Enter a valid id for update");
+            updateProduct(id);
+        }
     }
 
     /**
@@ -384,7 +403,7 @@ public class AmazonView {
      * @param product Represents {@link Product}
      */
     private void updateProductDescription(final Product product) {
-        System.out.println("Do you want to update product description");
+        System.out.println("Do you want to update product description press yes(y) else enter any other letter key");
         final String userChoice = SCANNER.nextLine();
 
         if (AMAZON_PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
@@ -403,18 +422,23 @@ public class AmazonView {
      * @param product Represents {@link Product}
      */
     private void updateProductPrice(final Product product) {
-        System.out.println("Do you want to update product price");
-        final String userChoice = SCANNER.nextLine();
+        System.out.println("Do you want to update product price press yes(y) else enter any other letter key");
+        final String userChoice = SCANNER.nextLine().trim();
 
         if (AMAZON_PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
             System.out.println("Enter the product price for update");
+
             try {
-                final double productPrice = SCANNER.nextDouble();
+                final double productPrice = Double.parseDouble(SCANNER.nextLine().trim());
                 product.setPrice(productPrice);
-            } catch (final InputMismatchException exception) {
+            } catch (final NumberFormatException exception) {
                 System.out.println(exception.getMessage());
             }
-            updateProductPrice(product);
+            /* System.out.println("Do you want to enter again press yes(y) else press any other key");
+
+            if('y' == SCANNER.nextLine().trim().charAt(0)) {
+                updateProductPrice(product);
+            }*/
         }
     }
 
@@ -422,10 +446,12 @@ public class AmazonView {
      * <p>
      * Deletes the product from the products list
      * </p>
+     *
+     * @param id Represents the admin id
      */
-    private void deleteProduct() {
-        getProducts();
-        System.out.println("Enter the product id to delete the product details");
+    private void deleteProduct(final int id) {
+        getProducts(id);
+        System.out.println("Enter the product id to delete the product details ");
         final int productId = getUserChoice();
 
         if (AMAZON_PRODUCT_CONTROLLER.delete(productId)) {
@@ -573,7 +599,7 @@ public class AmazonView {
      */
     private String getUserEmail() {
         try {
-            System.out.println("Enter the email id\t(press # for back to menu)");
+            System.out.println("Enter the email id\t(press # for logout to menu)");
             final String emailId = SCANNER.nextLine().trim();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(emailId)) {
@@ -601,7 +627,7 @@ public class AmazonView {
     private String getUserPassword() {
         try {
             System.out.println(String.join(" ", "Enter the password\t(password must contain",
-                    "one capital letter small letter, number and a symbol)\t(press # for back to menu)"));
+                    "one capital letter small letter, number and a symbol)\t(press # for logout to menu)"));
             final String password = SCANNER.nextLine().trim();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(password)) {
@@ -629,8 +655,8 @@ public class AmazonView {
         try {
             System.out.println(String.join("", "Enter the address with pin code\n",
                     "(first enter the door number and enter the address ",
-                    "eg: 2/34 new bus stand, tirunelveli tamil nadu 627007)\t(press # for back to menu)"));
-            final String address = SCANNER.nextLine();
+                    "eg: 2/34 new bus stand, tirunelveli tamil nadu 627007)\t(press # for logout to menu)"));
+            final String address = SCANNER.nextLine().trim();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(address)) {
                 displayMenu();
@@ -656,7 +682,7 @@ public class AmazonView {
      */
     private String getUserName() {
         try {
-            System.out.println("Enter the user name\t(press # for back to menu)");
+            System.out.println("Enter the user name\t(press # for logout to menu)");
             final String userName = SCANNER.nextLine().trim();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(userName)) {
@@ -708,9 +734,10 @@ public class AmazonView {
      */
     private int getUserChoice() {
         System.out.println("Enter the choice");
+        final String userChoice = SCANNER.nextLine().trim();
 
         try {
-            return Integer.parseInt(SCANNER.nextLine());
+            return Integer.parseInt(userChoice);
         } catch (final NumberFormatException exception) {
             System.out.println("Invalid input enter the number input");
         }
@@ -722,52 +749,67 @@ public class AmazonView {
      * Gets and validate price that is entered by the user
      * </p>
      *
+     * @param id Represents user id
      * @return Represents price value entered by user
      */
-    private double getProductPrice() {
+    private double getProductPrice(final int id) {
         System.out.println("Enter the Product price\t(press # for back to product menu)");
 
         try {
             final double productPrice = SCANNER.nextDouble();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(String.valueOf(productPrice))) {
-                accessProduct();
+                accessProduct(id);
             }
+
             if (AMAZON_PRODUCT_VALIDATION.validatePrice(String.valueOf(productPrice))) {
                 return productPrice;
             }
         } catch (final InputMismatchException Exception) {
             System.out.println("Enter the value is number");
         }
+        System.out.println("Do you want to enter again press yes(y) else press any letter key");
 
-        return getProductPrice();
+        try {
+            if ('y' == SCANNER.nextLine().charAt(0)) {
+                return getProductPrice(id);
+            }
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println(exception.getMessage());
+        }
+        return 0;
     }
+
 
     /**
      * <p>
      * Create a product object and add the product object to the product list
      * </p>
+     *
+     * @param id Represents user id
      */
-    private void addProduct() {
+    private void addProduct(final int id) {
         final Product product = new Product();
 
-        product.setCategory(getProductCategory());
-        product.setName(getProductName());
-        product.setDescription(getProductDescription());
-        product.setPrice(getProductPrice());
+        product.setCategory(getProductCategory(id));
+        product.setName(getProductName(id));
+        product.setDescription(getProductDescription(id));
+        product.setPrice(getProductPrice(id));
+        product.setAdminId(id);
 
         if (AMAZON_PRODUCT_CONTROLLER.add(product)) {
             System.out.println("Product added successfully");
         } else {
-            System.out.println("product adding is unsuccessful");
+            System.out.println("Product adding is unsuccessful");
         }
-        System.out.println("Do you want to add more products yes(y) otherwise press n for back to menu");
-        final String userChoice = SCANNER.next().trim();
-
         SCANNER.nextLine();
 
+        System.out.println("Do you want to add more products yes(y) otherwise press n for back to menu");
+
+        final String userChoice = SCANNER.nextLine().trim();
+
         if (AMAZON_PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
-            getProductCategory();
+            addProduct(id);
         } else {
             getAdminOptions();
         }
@@ -778,16 +820,17 @@ public class AmazonView {
      * Gets the product category from the user
      * </p>
      *
+     * @param id Represents user id
      * @return Category type
      */
-    private Product.Category getProductCategory() {
+    private Product.Category getProductCategory(final int id) {
         System.out.println(String.join("", "Enter the product category in words\n1.mobile_phones\n",
                 "2.footwear\n3.electronics\n4.clothing\n5.kitchen_appliances\n6.sports\n6.books\n8.toys\t",
                 "(press # to return to product menu)"));
-        final String productChoice = SCANNER.nextLine();
+        final String productChoice = SCANNER.nextLine().trim();
 
         if (AMAZON_USER_VALIDATION.isReturnToMenu(productChoice)) {
-            accessProduct();
+            accessProduct(id);
         }
 
         try {
@@ -795,7 +838,7 @@ public class AmazonView {
         } catch (IllegalArgumentException exception) {
             System.out.println("Enter a valid category");
         }
-        return getProductCategory();
+        return getProductCategory(id);
     }
 
     /**
@@ -803,16 +846,16 @@ public class AmazonView {
      * Gets the products from the product list
      * </p>
      *
+     * @param id Represents user id
      * @return Represents {@link Product}  in product list
      */
-    private void getProducts() {
-        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+    private void getProducts(final int id) {
+        if (AMAZON_PRODUCT_CONTROLLER.getProducts(id).isEmpty()) {
             System.out.println("The product list is empty");
-            accessProduct();
+            accessProduct(id);
         }
-        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts());
+        System.out.println(AMAZON_PRODUCT_CONTROLLER.getProducts(id).values());
     }
-
 
     /**
      * <p>
@@ -831,25 +874,42 @@ public class AmazonView {
 
     /**
      * <p>
+     * Gets the products from the product list
+     * </p>
+     *
+     * @param id Represents user id
+     * @return Represents {@link Product}  in product list
+     */
+    private void viewProducts(final int id) {
+        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+            System.out.println("The product list is empty");
+            accessProduct(id);
+        }
+        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts());
+    }
+
+    /**
+     * <p>
      * Gets the product name from user
      * </p>
      *
+     * @param id Represents user id
      * @return Represents {@link Product}  name
      */
-    private String getProductName() {
+    private String getProductName(final int id) {
         try {
             System.out.println("Enter the product name\t(press # for back to menu)");
             final String productName = SCANNER.nextLine();
 
             if (AMAZON_PRODUCT_VALIDATION.isReturnToMenu(productName)) {
-                accessProduct();
+                accessProduct(id);
             }
 
             return productName;
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getProductName();
+        return getProductName(id);
     }
 
     /**
@@ -857,21 +917,22 @@ public class AmazonView {
      * Get the product description from the user
      * </p>
      *
+     * @param id Represents user id
      * @return Represents {@link Product} description
      */
-    private String getProductDescription() {
+    private String getProductDescription(final int id) {
         try {
             System.out.println("Enter the product description\t(press # for back to menu)");
             final String description = SCANNER.nextLine();
 
             if (AMAZON_PRODUCT_VALIDATION.isReturnToMenu(description)) {
-                accessProduct();
+                accessProduct(id);
             }
             return description;
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getProductDescription();
+        return getProductDescription(id);
     }
 
     public static void main(final String[] args) {

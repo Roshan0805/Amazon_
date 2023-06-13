@@ -45,9 +45,15 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      *
      * @param user Represents {@link User}
      */
-    public void signUp(final User user) {
-        user.setId(userId);
-        USERS_LIST.put(userId++, user);
+    public boolean signUp(final User user) {
+        try {
+            user.setId(userId);
+            USERS_LIST.put(userId++, user);
+            return true;
+        } catch(Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+        return false;
     }
 
     /**

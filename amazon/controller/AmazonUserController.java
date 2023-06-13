@@ -76,6 +76,7 @@ public class AmazonUserController {
      * </p>
      *
      * @param user Represents {@link User} object
+     * @return True if the signup is successful
      */
     public boolean signUp(final User user, final String key) {
         return AMAZON_USER_SERVICE.signUp(user, key);

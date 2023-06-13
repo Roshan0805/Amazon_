@@ -1,6 +1,7 @@
 package com.amazon.view.validation;
 
 import com.amazon.model.Product.Category;
+import com.amazon.controller.AmazonProductController;
 
 /**
  * <p>
@@ -13,6 +14,8 @@ import com.amazon.model.Product.Category;
 public class AmazonProductValidation extends AmazonValidation {
 
     private static AmazonProductValidation amazonProductValidation = null;
+
+    private final AmazonProductController amazonProductController = AmazonProductController.getAmazonProductController();
 
     private AmazonProductValidation() {
     }
@@ -54,6 +57,18 @@ public class AmazonProductValidation extends AmazonValidation {
      */
     public boolean validatePrice(final String price) {
         return price.matches("^[\\d\\S]+$");
+    }
+
+    /**
+     * <p>
+     * Validates the admin enter id with the product id of the product that is added by the user
+     * </p>
+     *
+     * @param id Represents the id entered by the user
+     * @return True if the user entered id matches the get products id
+     */
+    public boolean validateIds(final long id) {
+        return amazonProductController.getProducts(id).containsKey(id);
     }
 
 }

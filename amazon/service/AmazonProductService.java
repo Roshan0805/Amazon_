@@ -3,6 +3,7 @@ package com.amazon.service;
 import com.amazon.model.Product;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,6 +33,7 @@ public interface AmazonProductService {
      */
     Collection<Product> getAllProducts();
 
+    Map<Long, Product> getProduct(final long id);
     /**
      * <p>
      * Gets the product from product list using productId

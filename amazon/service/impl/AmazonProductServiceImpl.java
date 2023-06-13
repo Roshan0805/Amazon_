@@ -3,10 +3,7 @@ package com.amazon.service.impl;
 import com.amazon.model.Product;
 import com.amazon.service.AmazonProductService;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -61,6 +58,23 @@ public class AmazonProductServiceImpl implements AmazonProductService {
      */
     public Collection<Product> getAllProducts() {
         return PRODUCT_LIST.values();
+    }
+
+    /**
+     * Represents the product details that the user create
+     * @param id Represents admin id
+     * @return Represents {@link Product} list created by the user
+     */
+    public Map<Long, Product> getProduct(final long id) {
+        final Map<Long, Product> products = new HashMap<>();
+
+        for(Product product : PRODUCT_LIST.values()) {
+
+            if(id == product.getAdminId()) {
+                products.put(product.getId(),product);
+            }
+        }
+        return products;
     }
 
     /**

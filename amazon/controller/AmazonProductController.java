@@ -3,9 +3,9 @@ package com.amazon.controller;
 import com.amazon.model.Product;
 import com.amazon.service.AmazonProductService;
 import com.amazon.service.impl.AmazonProductServiceImpl;
-import com.amazon.service.impl.AmazonUserServiceImpl;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * <p>
@@ -58,6 +58,10 @@ public class AmazonProductController {
      */
     public Collection<Product> getAllProducts() {
         return AMAZON_PRODUCT_SERVICE.getAllProducts();
+    }
+
+    public Map<Long, Product> getProducts(final long id) {
+        return AMAZON_PRODUCT_SERVICE.getProduct(id);
     }
 
     /**

@@ -22,7 +22,7 @@ public interface AmazonUserService {
      *
      * @param user User object is passed as a parameter
      */
-    void signUp(final User user);
+    boolean signUp(final User user);
 
     /**
      * <p>

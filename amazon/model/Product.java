@@ -10,6 +10,7 @@ public class Product {
     private String description;
     private double price;
     private Category category;
+    private int adminId;
 
     public enum Category {
         MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
@@ -39,6 +40,13 @@ public class Product {
         return id;
     }
 
+    public void setAdminId(final int adminId) {
+        this.adminId = adminId;
+    }
+
+    public int getAdminId() {
+        return adminId;
+    }
     public String toString() {
         return String.format("product id : %d\nproduct category:%s\nproduct name : %s\ndescription : %s\nprice : %f\n",
                 id, category, name, description, price);
