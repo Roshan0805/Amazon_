@@ -267,9 +267,8 @@ public class AmazonView {
     /**
      * <p>
      * Provides methods for product add, view ,update, delete details
-     *
-     * @param id Represents the user id
      * </p>
+     * @param id Represents the user id
      */
     private void accessProduct(final int id) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t2.add product",
@@ -434,11 +433,6 @@ public class AmazonView {
             } catch (final NumberFormatException exception) {
                 System.out.println(exception.getMessage());
             }
-            /* System.out.println("Do you want to enter again press yes(y) else press any other key");
-
-            if('y' == SCANNER.nextLine().trim().charAt(0)) {
-                updateProductPrice(product);
-            }*/
         }
     }
 

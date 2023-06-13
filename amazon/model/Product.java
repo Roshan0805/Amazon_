@@ -47,6 +47,7 @@ public class Product {
     public int getAdminId() {
         return adminId;
     }
+
     public String toString() {
         return String.format("product id : %d\nproduct category:%s\nproduct name : %s\ndescription : %s\nprice : %f\n",
                 id, category, name, description, price);
