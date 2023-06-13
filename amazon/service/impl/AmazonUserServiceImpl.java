@@ -105,7 +105,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      *
      * @param email    User's email
      * @param password User's password
-     * @return True if email and password match user from the users list
+     * @return True if email and password match the user from the users list
      */
     public boolean signIn(final String email, final String password) {
         for (final User existingUser : USERS_LIST.values()) {
@@ -124,7 +124,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      *
      * @param email    User's email
      * @param password User's password
-     * @param key
+     * @param key      user's key
      * @return True if email, password and key match the admin user from the users list
      */
     public boolean signIn(final String email, final String password, final String key) {

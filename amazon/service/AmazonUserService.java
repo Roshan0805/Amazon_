@@ -31,7 +31,7 @@ public interface AmazonUserService {
      *
      * @param user User object is passed as a parameter
      * @param key  user entered ket for admin key verification
-     * @return
+     * @return True if signUp successful otherwise return false
      */
     boolean signUp(final User user, final String key);
 
