@@ -50,6 +50,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
         try {
             user.setId(userId);
             USERS_LIST.put(userId++, user);
+
             return true;
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
