@@ -34,6 +34,7 @@ public interface AmazonProductService {
     Collection<Product> getAllProducts();
 
     Map<Long, Product> getProduct(final long id);
+
     /**
      * <p>
      * Gets the product from product list using productId
