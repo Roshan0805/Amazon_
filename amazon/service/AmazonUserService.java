@@ -51,7 +51,7 @@ public interface AmazonUserService {
      *
      * @param email    User's email id
      * @param password User's password
-     * @return true if the sign in successful otherwise return false
+     * @return True if email and password match the user from the users list
      */
     boolean signIn(final String email, final String password);
 
@@ -63,7 +63,7 @@ public interface AmazonUserService {
      * @param email    User's email id
      * @param password User's password
      * @param key      User's admin key
-     * @return True if the sign in successful otherwise return false
+     * @return True if email, password and key match the user from the users list
      */
     boolean signIn(final String email, final String password, final String key);
 
