@@ -366,6 +366,7 @@ public class AmazonView {
             updateProductName(product);
             updateProductDescription(product);
             updateProductPrice(product);
+
             if (AMAZON_PRODUCT_CONTROLLER.update(productId, product)) {
                 System.out.println("Updated successfully");
                 accessProduct(userId);
