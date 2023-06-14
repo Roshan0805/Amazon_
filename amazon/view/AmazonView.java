@@ -762,7 +762,6 @@ public class AmazonView {
             if (AMAZON_USER_VALIDATION.isReturnToMenu(String.valueOf(productPrice))) {
                 accessProduct(userId);
             }
-
             return productPrice;
         } catch (final NumberFormatException Exception) {
             System.out.println("Enter the value is number");
@@ -776,7 +775,6 @@ public class AmazonView {
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-
         return 0;
     }
 
@@ -836,6 +834,7 @@ public class AmazonView {
         } catch (IllegalArgumentException exception) {
             System.out.println("Enter a valid category");
         }
+
         return getProductCategory(userId);
     }
 
@@ -843,8 +842,6 @@ public class AmazonView {
      * <p>
      * Gets the products from the product list
      * </p>
-     *
-     * @return Represents {@link Product} in product list
      */
     private void viewProducts() {
         if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
@@ -860,7 +857,6 @@ public class AmazonView {
      * </p>
      *
      * @param userId Represents user userId
-     * @return Represents {@link Product} in product list
      */
     private void viewProducts(final Long userId) {
         if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
@@ -891,6 +887,7 @@ public class AmazonView {
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getProductName(userId);
     }
 
@@ -910,10 +907,12 @@ public class AmazonView {
             if (AMAZON_PRODUCT_VALIDATION.isReturnToMenu(description)) {
                 accessProduct(userId);
             }
+
             return description;
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getProductDescription(userId);
     }
 

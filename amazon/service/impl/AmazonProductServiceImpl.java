@@ -63,15 +63,15 @@ public class AmazonProductServiceImpl implements AmazonProductService {
     /**
      * Represents the product details that the user create
      *
-     * @param id Represents admin id
+     * @param adminId Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    public Map<Long, Product> getAllProduct(final long id) {
+    public Map<Long, Product> getAllProduct(final long adminId) {
         final Map<Long, Product> products = new HashMap<>();
 
-        for (Product product : PRODUCT_LIST.values()) {
+        for (final Product product : PRODUCT_LIST.values()) {
 
-            if (id == product.getAdminId()) {
+            if (product.getAdminId() == adminId) {
                 products.put(product.getId(), product);
             }
         }

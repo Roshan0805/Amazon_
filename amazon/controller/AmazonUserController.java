@@ -103,7 +103,7 @@ public class AmazonUserController {
      * @return {@link User} from the amazon service
      */
     public User getDetail(final String email) {
-        return AMAZON_USER_SERVICE.getUserDetails(email);
+        return AMAZON_USER_SERVICE.getDetails(email);
     }
 
     /**

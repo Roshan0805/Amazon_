@@ -84,7 +84,7 @@ public interface AmazonUserService {
      * @param email User email
      * @return User object from the user list
      */
-    User getUserDetails(final String email);
+    User getDetails(final String email);
 
     /**
      * <p>

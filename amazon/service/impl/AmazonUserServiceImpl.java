@@ -140,8 +140,8 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @param email Represents user email
      * @return Represents {@link User}
      */
-    public User getUserDetails(final String email) {
-        User user = new User();
+    public User getDetails(final String email) {
+        final User user = new User();
 
         for (final User existingUser : USERS_LIST.values()) {
 
@@ -160,7 +160,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @return True is the user is deleted successfully
      */
     public boolean deleteUser(final User user) {
-        if (user == null) {
+        if (null == user) {
             return false;
         }
         USERS_LIST.remove(user.getId());
