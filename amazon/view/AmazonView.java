@@ -494,7 +494,12 @@ public class AmazonView {
         updateUserPassword(user);
         updateUserAddress(user);
         updateUserPhoneNo(user);
-        getAdminOptions();
+
+        if (user.getIsAdmin()) {
+            getAdminOptions();
+        } else {
+            getUserOptions();
+        }
     }
 
     /**
