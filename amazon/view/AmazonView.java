@@ -354,7 +354,7 @@ public class AmazonView {
      * @param userId Represents the user id
      */
     private void updateProduct(final long userId) {
-        getProducts(userId);
+        viewProducts(userId);
         System.out.println("Enter the product id for update product information");
 
         final long productId = getUserChoice();
@@ -449,7 +449,7 @@ public class AmazonView {
      * @param id Represents the admin id
      */
     private void deleteProduct(final long id) {
-        getProducts(id);
+        viewProducts(id);
         System.out.println("Enter the product id to delete the product details ");
         final int productId = getUserChoice();
 
@@ -844,22 +844,6 @@ public class AmazonView {
      * Gets the products from the product list
      * </p>
      *
-     * @param userId Represents {@link User} id
-     * @return Represents {@link Product} in product list
-     */
-    private void getProducts(final Long userId) {
-        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts(userId).isEmpty()) {
-            System.out.println("The product list is empty");
-            accessProduct(userId);
-        }
-        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts(userId).values());
-    }
-
-    /**
-     * <p>
-     * Gets the products from the product list
-     * </p>
-     *
      * @return Represents {@link Product} in product list
      */
     private void viewProducts() {
@@ -883,7 +867,7 @@ public class AmazonView {
             System.out.println("The product list is empty");
             accessProduct(userId);
         }
-        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts());
+        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts(userId));
     }
 
     /**
