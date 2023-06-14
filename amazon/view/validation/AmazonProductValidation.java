@@ -5,7 +5,7 @@ import com.amazon.controller.AmazonProductController;
 
 /**
  * <p>
- * Validates the product Category name enter by the user
+ * Validates the product {@link Category} and product id enter by the user
  * </p>
  *
  * @author Roshan
@@ -13,9 +13,10 @@ import com.amazon.controller.AmazonProductController;
  */
 public class AmazonProductValidation extends AmazonValidation {
 
-    private static AmazonProductValidation amazonProductValidation = null;
+    private static final AmazonProductValidation AMAZON_PRODUCT_VALIDATION = new AmazonProductValidation();
 
-    private final AmazonProductController amazonProductController = AmazonProductController.getAmazonProductController();
+    private static final AmazonProductController AMAZON_PRODUCT_CONTROLLER =
+            AmazonProductController.getAmazonProductController();
 
     private AmazonProductValidation() {
     }
@@ -28,11 +29,7 @@ public class AmazonProductValidation extends AmazonValidation {
      * @return Represents {@link AmazonProductValidation}
      */
     public static AmazonProductValidation getAmazonProductValidation() {
-        if (amazonProductValidation == null) {
-            return new AmazonProductValidation();
-        } else {
-            return amazonProductValidation;
-        }
+        return AMAZON_PRODUCT_VALIDATION;
     }
 
     /**
@@ -40,23 +37,11 @@ public class AmazonProductValidation extends AmazonValidation {
      * Validates the category name of the product enter by the admin user
      * </p>
      *
-     * @param category Category name entered by the user
+     * @param category Represents {@link Category} entered by the user
      * @return True if the pattern matches the pattern otherwise return false
      */
     public Category validateCategory(final String category) {
         return Category.valueOf(category);
-    }
-
-    /**
-     * <p>
-     * Validates the product price
-     * </p>
-     *
-     * @param price Product price for validation
-     * @return True is the price match the pattern
-     */
-    public boolean validatePrice(final String price) {
-        return price.matches("^[\\d\\S]+$");
     }
 
     /**
@@ -67,8 +52,7 @@ public class AmazonProductValidation extends AmazonValidation {
      * @param id Represents the id entered by the user
      * @return True if the user entered id matches the get products id
      */
-    public boolean validateIds(final long id) {
-        return amazonProductController.getProducts(id).containsKey(id);
+    public boolean validateIds(final Long id) {
+        return AMAZON_PRODUCT_CONTROLLER.getAllProducts(id).containsKey(id);
     }
-
 }

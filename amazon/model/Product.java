@@ -1,16 +1,16 @@
 package com.amazon.model;
 
 /**
- * Represents the product provides services like set and get the product details
+ * Represents the products, provides the methods for get and set the product details
  */
 public class Product {
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
     private Category category;
-    private long adminId;
+    private Long adminId;
 
     public enum Category {
         MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
@@ -20,7 +20,7 @@ public class Product {
         this.category = category;
     }
 
-    public void setId(final long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -32,19 +32,19 @@ public class Product {
         this.description = description;
     }
 
-    public void setPrice(final double price) {
+    public void setPrice(final Double price) {
         this.price = price;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setAdminId(final long adminId) {
+    public void setAdminId(final Long adminId) {
         this.adminId = adminId;
     }
 
-    public long getAdminId() {
+    public Long getAdminId() {
         return adminId;
     }
 

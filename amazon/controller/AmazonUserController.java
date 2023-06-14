@@ -5,7 +5,9 @@ import com.amazon.service.AmazonUserService;
 import com.amazon.service.impl.AmazonUserServiceImpl;
 
 /**
- * Provides Control between service and the view to provide user sign in, sign up and update
+ * <p>
+ * Provides Control between service and the view to provide {@link User} sign in, sign up, update and delete
+ * </p>
  *
  * @author Roshan
  * @version 1.0
@@ -13,7 +15,7 @@ import com.amazon.service.impl.AmazonUserServiceImpl;
 public class AmazonUserController {
 
     private static final AmazonUserService AMAZON_USER_SERVICE = AmazonUserServiceImpl.getAmazonUserService();
-    private static AmazonUserController amazonUserController = null;
+    private static final AmazonUserController amazonUserController = new AmazonUserController();
 
     private AmazonUserController() {
     }
@@ -26,9 +28,6 @@ public class AmazonUserController {
      * @return Represents {@link AmazonUserController}
      */
     public static AmazonUserController getAmazonUserController() {
-        if (amazonUserController == null) {
-            amazonUserController = new AmazonUserController();
-        }
         return amazonUserController;
     }
 
@@ -47,13 +46,13 @@ public class AmazonUserController {
 
     /**
      * <p>
-     * Provides user sign in for user
+     * Provides user sign in
      * </p>
      *
      * @param email    Represents user email for verification
      * @param password Represents user password for verification
      * @param key      Represent admin key for verification
-     * @return
+     * @return True if sign in successful
      */
     public boolean signIn(final String email, final String password, final String key) {
         return AMAZON_USER_SERVICE.signIn(email, password, key);
@@ -61,13 +60,13 @@ public class AmazonUserController {
 
     /**
      * <p>
-     * Provides user sign up for user
+     * Provides user sign up
      * </p>
      *
      * @param user Represents {@link User} object
      */
-    public void signUp(final User user) {
-        AMAZON_USER_SERVICE.signUp(user);
+    public boolean signUp(final User user) {
+        return AMAZON_USER_SERVICE.signUp(user);
     }
 
     /**
@@ -76,7 +75,7 @@ public class AmazonUserController {
      * </p>
      *
      * @param user Represents {@link User} object
-     * @return True if the signup is successful
+     * @return True if signup is successful
      */
     public boolean signUp(final User user, final String key) {
         return AMAZON_USER_SERVICE.signUp(user, key);
@@ -87,8 +86,8 @@ public class AmazonUserController {
      * Check whether the email is exists or not
      * </p>
      *
-     * @param email The User's email id
-     * @return The boolean value from the isEmailAlreadyExists method from service
+     * @param email Represents user's email id
+     * @return True if the email is exits otherwise return false
      */
     public boolean isUserEmailExists(final String email) {
         return AMAZON_USER_SERVICE.isUserEmailExists(email);
@@ -100,11 +99,11 @@ public class AmazonUserController {
      * Gets the user details from the user list using user email
      * </p>
      *
-     * @param email User's email
+     * @param email Represents user's email
      * @return {@link User} from the amazon service
      */
     public User getDetail(final String email) {
-        return AMAZON_USER_SERVICE.getAdminDetails(email);
+        return AMAZON_USER_SERVICE.getUserDetails(email);
     }
 
     /**
@@ -113,7 +112,7 @@ public class AmazonUserController {
      * </p>
      *
      * @param user Represents {@link User}
-     * @return boolean value from the deleteUser method
+     * @return True if the user is deleted successfully otherwise return false
      */
     public boolean delete(final User user) {
         return AMAZON_USER_SERVICE.deleteUser(user);

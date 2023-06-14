@@ -4,10 +4,9 @@ import com.amazon.model.User;
 
 import java.util.Set;
 
-
 /**
  * <p>
- * Provides Services for {@link User} like signIn , signUp, get user, delete user
+ * Provides Services for {@link User} signIn, signUp, get and delete user
  * </p>
  *
  * @author Roshan
@@ -86,16 +85,6 @@ public interface AmazonUserService {
      * @return User object from the user list
      */
     User getUserDetails(final String email);
-
-    /**
-     * <p>
-     * Gets the user details from the user list
-     * </p>
-     *
-     * @param email User email
-     * @return Represents {@link User} from the user list
-     */
-    User getAdminDetails(final String email);
 
     /**
      * <p>

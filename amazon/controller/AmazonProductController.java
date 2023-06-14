@@ -18,7 +18,7 @@ import java.util.Map;
 public class AmazonProductController {
 
     private static final AmazonProductService AMAZON_PRODUCT_SERVICE = AmazonProductServiceImpl.getAmazonProductService();
-    private static AmazonProductController amazonProductController = null;
+    private static final AmazonProductController amazonProductController = new AmazonProductController();
 
     private AmazonProductController() {
     }
@@ -31,9 +31,6 @@ public class AmazonProductController {
      * @return Represents {@link AmazonProductController}
      */
     public static AmazonProductController getAmazonProductController() {
-        if (amazonProductController == null) {
-            amazonProductController = new AmazonProductController();
-        }
         return amazonProductController;
     }
 
@@ -42,8 +39,8 @@ public class AmazonProductController {
      * adds the product object to product list
      * </p>
      *
-     * @param product Product object
-     * @return boolean value from addProduct method
+     * @param product Represents {@link Product}
+     * @return True if the {@link Product} is added successfully in the product list otherwise return false
      */
     public boolean add(final Product product) {
         return AMAZON_PRODUCT_SERVICE.add(product);
@@ -60,8 +57,14 @@ public class AmazonProductController {
         return AMAZON_PRODUCT_SERVICE.getAllProducts();
     }
 
-    public Map<Long, Product> getProducts(final long id) {
-        return AMAZON_PRODUCT_SERVICE.getProduct(id);
+    /**
+     * Represents the product details that the user create
+     *
+     * @param id Represents admin id
+     * @return Represents {@link Product} list created by the user
+     */
+    public Map<Long, Product> getAllProducts(final long id) {
+        return AMAZON_PRODUCT_SERVICE.getAllProduct(id);
     }
 
     /**
@@ -83,7 +86,7 @@ public class AmazonProductController {
      *
      * @param id      id of the product
      * @param product Represents {@link Product}
-     * @return boolean Value from updateProduct method
+     * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
     public boolean update(final long id, final Product product) {
         return AMAZON_PRODUCT_SERVICE.update(id, product);
@@ -95,7 +98,7 @@ public class AmazonProductController {
      * </p>
      *
      * @param id id of the product
-     * @return Boolean value from the deleteProduct method
+     * @return True if the {@link Product} is deleted successfully in the product list otherwise return false
      */
     public boolean delete(final int id) {
         return AMAZON_PRODUCT_SERVICE.delete(id);

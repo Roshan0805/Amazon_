@@ -20,7 +20,7 @@ public interface AmazonProductService {
      * </p>
      *
      * @param product Product object
-     * @return Boolean true is the {@link Product} added successfully
+     * @return Boolean true is the {@link Product} added successfully in the product list otherwise return false
      */
     boolean add(final Product product);
 
@@ -33,7 +33,13 @@ public interface AmazonProductService {
      */
     Collection<Product> getAllProducts();
 
-    Map<Long, Product> getProduct(final long id);
+    /**
+     * Represents the product details that the user create
+     *
+     * @param id Represents admin id
+     * @return Represents {@link Product} list created by the user
+     */
+    Map<Long, Product> getAllProduct(final long id);
 
     /**
      * <p>
@@ -52,7 +58,7 @@ public interface AmazonProductService {
      *
      * @param id      Product id of the product
      * @param product Represent {@link Product}
-     * @return True if the {@link Product} is updated successfully
+     * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
     boolean update(final long id, final Product product);
 
@@ -62,9 +68,8 @@ public interface AmazonProductService {
      * </p>
      *
      * @param id id of the product object
-     * @return True if the {@link Product} deleted successfully
+     * @return True if the {@link Product} deleted successfully in the product list otherwise retuirn false
      */
     boolean delete(final long id);
-
 }
 

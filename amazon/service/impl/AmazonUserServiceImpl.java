@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * <p>
- * Implements the AmazonUserService to provide services for {@link  User} for signIn, signUp, getUser, delete User
+ * Implements the {@link AmazonUserService} to provide services for {@link  User} signIn, signUp, getUser, delete User
  * </p>
  *
  * @author Roshan
@@ -18,11 +18,11 @@ import java.util.Set;
  */
 public class AmazonUserServiceImpl implements AmazonUserService {
 
-    private static final Map<Integer, User> USERS_LIST = new HashMap<>();
+    private static final Map<Long, User> USERS_LIST = new HashMap<>();
     private static final String SECRET_KEY = "Amazon@1994";
-    private static int adminId = 1;
-    private static int userId = 1;
-    private static AmazonUserServiceImpl amazonUserService = null;
+    private static Long adminId = 1L;
+    private static Long userId = 1L;
+    private static final AmazonUserServiceImpl amazonUserService = new AmazonUserServiceImpl();
 
     private AmazonUserServiceImpl() {
     }
@@ -33,11 +33,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
      * @return Represents {@link AmazonUserServiceImpl}
      */
     public static AmazonUserServiceImpl getAmazonUserService() {
-        if (amazonUserService == null) {
-            return new AmazonUserServiceImpl();
-        } else {
-            return amazonUserService;
-        }
+        return amazonUserService;
     }
 
     /**
@@ -67,6 +63,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     public boolean signUp(final User user, final String key) {
         if (SECRET_KEY.equals(key)) {
             user.setId(adminId);
+            user.setIsAdmin();
             USERS_LIST.put(adminId++, user);
 
             return true;
@@ -84,7 +81,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
         final Set<String> emailIds = new HashSet<>();
 
         for (final User user : USERS_LIST.values()) {
-            emailIds.add(user.getEmailId());
+            emailIds.add(user.getEmail());
         }
 
         return emailIds;
@@ -93,7 +90,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     /**
      * {@inheritDoc}
      *
-     * @param email User's email
+     * @param email Represents user's email
      * @return True if email is already registered
      */
     public boolean isUserEmailExists(final String email) {
@@ -103,15 +100,14 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     /**
      * {@inheritDoc}
      *
-     * @param email    User's email
-     * @param password User's password
+     * @param email    Represents user's email
+     * @param password Represents user's password
      * @return True if email and password match the user from the users list
      */
     public boolean signIn(final String email, final String password) {
         for (final User existingUser : USERS_LIST.values()) {
 
-            if ((existingUser.getEmailId().equals(email)) && (existingUser.getPassword().equals(password))) {
-
+            if ((existingUser.getEmail().equals(email)) && (existingUser.getPassword().equals(password))) {
                 return true;
             }
         }
@@ -122,16 +118,15 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     /**
      * {@inheritDoc}
      *
-     * @param email    User's email
-     * @param password User's password
-     * @param key      user's key
+     * @param email    Represents user's email
+     * @param password Represents user's password
+     * @param key      Represents user's key
      * @return True if email, password and key match the admin user from the users list
      */
     public boolean signIn(final String email, final String password, final String key) {
         for (final User user : USERS_LIST.values()) {
 
-            if ((user.getEmailId().equals(email)) && (user.getPassword().equals(password) && (SECRET_KEY.equals(key)))) {
-
+            if ((user.getEmail().equals(email)) && (user.getPassword().equals(password) && (SECRET_KEY.equals(key)))) {
                 return true;
             }
         }
@@ -142,7 +137,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
     /**
      * {@inheritDoc}
      *
-     * @param email User email
+     * @param email Represents user email
      * @return Represents {@link User}
      */
     public User getUserDetails(final String email) {
@@ -150,32 +145,12 @@ public class AmazonUserServiceImpl implements AmazonUserService {
 
         for (final User existingUser : USERS_LIST.values()) {
 
-            if (existingUser.getEmailId().equals(email)) {
-
+            if (existingUser.getEmail().equals(email)) {
                 return existingUser;
             }
         }
 
         return user;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param email User email
-     * @return Represents {@link User}
-     */
-    public User getAdminDetails(final String email) {
-
-        for (final User existingUser : USERS_LIST.values()) {
-
-            if (existingUser.getEmailId().equals(email)) {
-
-                return existingUser;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -188,7 +163,7 @@ public class AmazonUserServiceImpl implements AmazonUserService {
         if (user == null) {
             return false;
         }
-        USERS_LIST.remove(user);
+        USERS_LIST.remove(user.getId());
 
         return true;
     }

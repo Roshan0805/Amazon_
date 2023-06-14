@@ -5,19 +5,19 @@ package com.amazon.model;
  */
 public class User {
 
-    private long id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private String address;
     private String phoneNumber;
+    private Boolean isAdmin = false;
 
-
-    public void setId(final int id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class User {
         this.address = address;
     }
 
-    public String getEmailId() {
+    public String getEmail() {
         return this.email;
     }
 
@@ -49,6 +49,13 @@ public class User {
         return this.password;
     }
 
+    public void setIsAdmin() {
+        this.isAdmin = true;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
     public String toString() {
         return String.format("user id -%d\tusername - %s\temail -%s\taddress - %s\tphone no - %s\n", id, name, email, address, phoneNumber);
     }
