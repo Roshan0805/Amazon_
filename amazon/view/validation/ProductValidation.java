@@ -1,7 +1,7 @@
 package com.amazon.view.validation;
 
 import com.amazon.model.Product.Category;
-import com.amazon.controller.AmazonProductController;
+import com.amazon.controller.ProductController;
 
 /**
  * <p>
@@ -11,14 +11,14 @@ import com.amazon.controller.AmazonProductController;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonProductValidation extends AmazonValidation {
+public class ProductValidation extends Validation {
 
-    private static final AmazonProductValidation AMAZON_PRODUCT_VALIDATION = new AmazonProductValidation();
+    private static final ProductValidation AMAZON_PRODUCT_VALIDATION = new ProductValidation();
 
-    private static final AmazonProductController AMAZON_PRODUCT_CONTROLLER =
-            AmazonProductController.getAmazonProductController();
+    private static final ProductController AMAZON_PRODUCT_CONTROLLER =
+            ProductController.getAmazonProductController();
 
-    private AmazonProductValidation() {
+    private ProductValidation() {
     }
 
     /**
@@ -26,9 +26,9 @@ public class AmazonProductValidation extends AmazonValidation {
      * Represents the object of AmazonProductValidation class can be created for only one time
      * </p>
      *
-     * @return Represents {@link AmazonProductValidation}
+     * @return Represents {@link ProductValidation}
      */
-    public static AmazonProductValidation getAmazonProductValidation() {
+    public static ProductValidation getAmazonProductValidation() {
         return AMAZON_PRODUCT_VALIDATION;
     }
 
@@ -52,7 +52,7 @@ public class AmazonProductValidation extends AmazonValidation {
      * @param id Represents the id entered by the user
      * @return True if the user entered id matches the get products id
      */
-    public boolean validateIds(final Long id) {
-        return AMAZON_PRODUCT_CONTROLLER.getAllProducts(id).containsKey(id);
+    public boolean validateProductIds(final Long id) {
+        return AMAZON_PRODUCT_CONTROLLER.getUserProduct(id).containsKey(id);
     }
 }

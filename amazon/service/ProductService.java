@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Roshan
  * @version 1.0
  */
-public interface AmazonProductService {
+public interface ProductService {
     /**
      * <p>
      * Add product to the product list
@@ -39,7 +39,7 @@ public interface AmazonProductService {
      * @param id Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    Map<Long, Product> getAllProduct(final long id);
+    Map<Long, Product> getUserProduct(final Long id);
 
     /**
      * <p>
@@ -72,4 +72,3 @@ public interface AmazonProductService {
      */
     boolean delete(final long id);
 }
-

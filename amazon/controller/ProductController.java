@@ -1,8 +1,8 @@
 package com.amazon.controller;
 
 import com.amazon.model.Product;
-import com.amazon.service.AmazonProductService;
-import com.amazon.service.impl.AmazonProductServiceImpl;
+import com.amazon.service.ProductService;
+import com.amazon.service.impl.ProductServiceImpl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,12 +15,12 @@ import java.util.Map;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonProductController {
+public class ProductController {
 
-    private static final AmazonProductService AMAZON_PRODUCT_SERVICE = AmazonProductServiceImpl.getAmazonProductService();
-    private static final AmazonProductController amazonProductController = new AmazonProductController();
+    private static final ProductService AMAZON_PRODUCT_SERVICE = ProductServiceImpl.getAmazonProductService();
+    private static final ProductController amazonProductController = new ProductController();
 
-    private AmazonProductController() {
+    private ProductController() {
     }
 
     /**
@@ -28,9 +28,9 @@ public class AmazonProductController {
      * Represents the object of AmazonProductController class can be created for only one time
      * </p>
      *
-     * @return Represents {@link AmazonProductController}
+     * @return Represents {@link ProductController}
      */
-    public static AmazonProductController getAmazonProductController() {
+    public static ProductController getAmazonProductController() {
         return amazonProductController;
     }
 
@@ -53,7 +53,7 @@ public class AmazonProductController {
      *
      * @return Collection view of products from the viewProduct method
      */
-    public Collection<Product> getAllProducts() {
+    public Collection<Product> getUserProduct() {
         return AMAZON_PRODUCT_SERVICE.getAllProducts();
     }
 
@@ -63,8 +63,8 @@ public class AmazonProductController {
      * @param id Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    public Map<Long, Product> getAllProducts(final long id) {
-        return AMAZON_PRODUCT_SERVICE.getAllProduct(id);
+    public Map<Long, Product> getUserProduct(final Long id) {
+        return AMAZON_PRODUCT_SERVICE.getUserProduct(id);
     }
 
     /**

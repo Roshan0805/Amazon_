@@ -8,11 +8,11 @@ package com.amazon.view.validation;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonValidation {
+public class Validation {
 
-    private static final AmazonValidation amazonValidation = new AmazonValidation();
+    private static final Validation amazonValidation = new Validation();
 
-    AmazonValidation() {
+    Validation() {
     }
 
     /**
@@ -20,9 +20,9 @@ public class AmazonValidation {
      * Represents the object of AmazonValidation class can be created for only one time
      * </p>
      *
-     * @return Represents {@link AmazonValidation}
+     * @return Represents {@link Validation}
      */
-    public static AmazonValidation getAmazonValidation() {
+    public static Validation getAmazonValidation() {
         return amazonValidation;
     }
 

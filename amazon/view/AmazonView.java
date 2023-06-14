@@ -1,13 +1,13 @@
 package com.amazon.view;
 
-import com.amazon.controller.AmazonProductController;
-import com.amazon.controller.AmazonUserController;
+import com.amazon.controller.ProductController;
+import com.amazon.controller.UserController;
 import com.amazon.model.Product;
-import com.amazon.model.User;
-import com.amazon.view.validation.AmazonProductValidation;
-import com.amazon.view.validation.AmazonUserValidation;
-import com.amazon.view.validation.AmazonValidation;
 import com.amazon.model.Product.Category;
+import com.amazon.model.User;
+import com.amazon.view.validation.ProductValidation;
+import com.amazon.view.validation.UserValidation;
+import com.amazon.view.validation.Validation;
 
 import java.util.Scanner;
 
@@ -24,11 +24,11 @@ public class AmazonView {
     private static final AmazonView amazonView = new AmazonView();
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final AmazonView AMAZON_VIEW = getAmazonView();
-    private static final AmazonUserController AMAZON_USER_CONTROLLER = AmazonUserController.getAmazonUserController();
-    private static final AmazonProductController AMAZON_PRODUCT_CONTROLLER = AmazonProductController.getAmazonProductController();
-    private static final AmazonValidation AMAZON_VALIDATION = AmazonValidation.getAmazonValidation();
-    private static final AmazonUserValidation AMAZON_USER_VALIDATION = AmazonUserValidation.getAmazonUserValidation();
-    private static final AmazonProductValidation AMAZON_PRODUCT_VALIDATION = AmazonProductValidation.getAmazonProductValidation();
+    private static final UserController AMAZON_USER_CONTROLLER = UserController.getAmazonUserController();
+    private static final ProductController AMAZON_PRODUCT_CONTROLLER = ProductController.getAmazonProductController();
+    private static final Validation AMAZON_VALIDATION = Validation.getAmazonValidation();
+    private static final UserValidation AMAZON_USER_VALIDATION = UserValidation.getAmazonUserValidation();
+    private static final ProductValidation AMAZON_PRODUCT_VALIDATION = ProductValidation.getAmazonProductValidation();
 
     private AmazonView() {
     }
@@ -138,7 +138,7 @@ public class AmazonView {
             final String userEmail = getUserEmail();
 
             if (AMAZON_USER_CONTROLLER.isUserEmailExists(userEmail)) {
-                System.out.println("The email id is already exists");
+                System.out.println("The email is already exists");
                 getUserEmail();
             }
             final User user = new User();
@@ -272,7 +272,8 @@ public class AmazonView {
      * @param userId Represents the user's id
      */
     private void accessProduct(final Long userId) {
-        System.out.println(String.join("", "Choose from the options\n1.get all product\t2.add product", "\t3.update product\t4.delete product\t5.Back to admin option"));
+        System.out.println(String.join("", "Choose from the options\n1.get all product\t",
+                "2.add product", "\t3.update product\t4.delete product\t5.Back to admin option"));
         final int userOption = getUserChoice();
 
         switch (userOption) {
@@ -359,7 +360,7 @@ public class AmazonView {
 
         final long productId = getUserChoice();
 
-        if (AMAZON_PRODUCT_VALIDATION.validateIds(productId - 1)) {
+        if (AMAZON_PRODUCT_VALIDATION.validateProductIds(productId - 1)) {
 
             final Product product = AMAZON_PRODUCT_CONTROLLER.get(productId - 1);
 
@@ -630,7 +631,8 @@ public class AmazonView {
      */
     private String getUserPassword() {
         try {
-            System.out.println(String.join(" ", "Enter the password\t(password must contain", "one capital letter small letter, number and a symbol)\t(press # for logout to menu)"));
+            System.out.println(String.join(" ", "Enter the password\t(password must contain",
+                    "one capital letter small letter, number and a symbol)\t(press # for logout to menu)"));
             final String password = SCANNER.nextLine().trim();
 
             if (AMAZON_USER_VALIDATION.isReturnToMenu(password)) {
@@ -799,8 +801,6 @@ public class AmazonView {
         } else {
             System.out.println("Product adding is unsuccessful");
         }
-        SCANNER.nextLine();
-
         System.out.println("Do you want to add more products yes(y) otherwise press n for back to menu");
         final String userChoice = SCANNER.nextLine().trim();
 
@@ -817,11 +817,11 @@ public class AmazonView {
      * </p>
      *
      * @param userId Represents {@link User} id
-     * @return Represent {@link com.amazon.model.Product.Category}
+     * @return Represent {@link Category}
      */
-    private Product.Category getProductCategory(final Long userId) {
-        System.out.println(String.join("", "Enter the product category in words\n1.mobile_phones\n",
-                "2.footwear\n3.electronics\n4.clothing\n5.kitchen_appliances\n6.sports\n6.books\n8.toys\t",
+    private Category getProductCategory(final Long userId) {
+        System.out.println(String.join("", "Enter the product category in words\nmobile_phones\n",
+                "footwear\nelectronics\nclothing\nkitchen_appliances\nsports\nbooks\ntoys\t",
                 "(press # to return to product menu)"));
         final String productChoice = SCANNER.nextLine().trim();
 
@@ -844,11 +844,11 @@ public class AmazonView {
      * </p>
      */
     private void viewProducts() {
-        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+        if (AMAZON_PRODUCT_CONTROLLER.getUserProduct().isEmpty()) {
             System.out.println("The product list is empty");
             getUserOptions();
         }
-        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts());
+        System.out.println(AMAZON_PRODUCT_CONTROLLER.getUserProduct());
     }
 
     /**
@@ -859,11 +859,11 @@ public class AmazonView {
      * @param userId Represents user userId
      */
     private void viewProducts(final Long userId) {
-        if (AMAZON_PRODUCT_CONTROLLER.getAllProducts().isEmpty()) {
+        if (AMAZON_PRODUCT_CONTROLLER.getUserProduct().isEmpty()) {
             System.out.println("The product list is empty");
             accessProduct(userId);
         }
-        System.out.println(AMAZON_PRODUCT_CONTROLLER.getAllProducts(userId));
+        System.out.println(AMAZON_PRODUCT_CONTROLLER.getUserProduct(userId));
     }
 
     /**

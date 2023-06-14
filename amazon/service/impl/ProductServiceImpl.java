@@ -1,7 +1,7 @@
 package com.amazon.service.impl;
 
 import com.amazon.model.Product;
-import com.amazon.service.AmazonProductService;
+import com.amazon.service.ProductService;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,21 +17,21 @@ import java.util.Map;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonProductServiceImpl implements AmazonProductService {
+public class ProductServiceImpl implements ProductService {
 
     private static final Map<Long, Product> PRODUCT_LIST = new LinkedHashMap<>();
     private static long productId = 1;
-    private static final AmazonProductServiceImpl amazonProductService = new AmazonProductServiceImpl();
+    private static final ProductServiceImpl amazonProductService = new ProductServiceImpl();
 
-    private AmazonProductServiceImpl() {
+    private ProductServiceImpl() {
     }
 
     /**
      * Represents the object of AmazonProductServiceImpl class can be created for only one time
      *
-     * @return Represents {@link AmazonProductServiceImpl}
+     * @return Represents {@link ProductServiceImpl}
      */
-    public static AmazonProductServiceImpl getAmazonProductService() {
+    public static ProductServiceImpl getAmazonProductService() {
         return amazonProductService;
     }
 
@@ -66,12 +66,12 @@ public class AmazonProductServiceImpl implements AmazonProductService {
      * @param adminId Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    public Map<Long, Product> getAllProduct(final long adminId) {
+    public Map<Long, Product> getUserProduct(final Long adminId) {
         final Map<Long, Product> products = new HashMap<>();
 
         for (final Product product : PRODUCT_LIST.values()) {
 
-            if (product.getAdminId() == adminId) {
+            if (product.getAdminId().equals(adminId)) {
                 products.put(product.getId(), product);
             }
         }

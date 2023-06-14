@@ -1,7 +1,7 @@
 package com.amazon.service.impl;
 
 import com.amazon.model.User;
-import com.amazon.service.AmazonUserService;
+import com.amazon.service.UserService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,29 +10,29 @@ import java.util.Set;
 
 /**
  * <p>
- * Implements the {@link AmazonUserService} to provide services for {@link  User} signIn, signUp, getUser, delete User
+ * Implements the {@link UserService} to provide services for {@link  User} signIn, signUp, getUser, delete User
  * </p>
  *
  * @author Roshan
  * @version 1.0
  */
-public class AmazonUserServiceImpl implements AmazonUserService {
+public class UserServiceImpl implements UserService {
 
     private static final Map<Long, User> USERS_LIST = new HashMap<>();
     private static final String SECRET_KEY = "Amazon@1994";
     private static Long adminId = 1L;
     private static Long userId = 1L;
-    private static final AmazonUserServiceImpl amazonUserService = new AmazonUserServiceImpl();
+    private static final UserServiceImpl amazonUserService = new UserServiceImpl();
 
-    private AmazonUserServiceImpl() {
+    private UserServiceImpl() {
     }
 
     /**
      * Represents the object of AmazonUserServiceImpl class can be created for only one time
      *
-     * @return Represents {@link AmazonUserServiceImpl}
+     * @return Represents {@link UserServiceImpl}
      */
-    public static AmazonUserServiceImpl getAmazonUserService() {
+    public static UserServiceImpl getAmazonUserService() {
         return amazonUserService;
     }
 

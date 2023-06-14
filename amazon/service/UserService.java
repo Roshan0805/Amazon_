@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Roshan
  * @version 1.0
  */
-public interface AmazonUserService {
+public interface UserService {
 
     /**
      * <p>
@@ -96,5 +96,3 @@ public interface AmazonUserService {
      */
     boolean deleteUser(final User user);
 }
-
-

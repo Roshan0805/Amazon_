@@ -1,8 +1,8 @@
 package com.amazon.controller;
 
 import com.amazon.model.User;
-import com.amazon.service.AmazonUserService;
-import com.amazon.service.impl.AmazonUserServiceImpl;
+import com.amazon.service.UserService;
+import com.amazon.service.impl.UserServiceImpl;
 
 /**
  * <p>
@@ -12,12 +12,12 @@ import com.amazon.service.impl.AmazonUserServiceImpl;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonUserController {
+public class UserController {
 
-    private static final AmazonUserService AMAZON_USER_SERVICE = AmazonUserServiceImpl.getAmazonUserService();
-    private static final AmazonUserController amazonUserController = new AmazonUserController();
+    private static final UserService AMAZON_USER_SERVICE = UserServiceImpl.getAmazonUserService();
+    private static final UserController amazonUserController = new UserController();
 
-    private AmazonUserController() {
+    private UserController() {
     }
 
     /**
@@ -25,9 +25,9 @@ public class AmazonUserController {
      * Represents the object of AmazonUserController class can be created for only one time
      * </p>
      *
-     * @return Represents {@link AmazonUserController}
+     * @return Represents {@link UserController}
      */
-    public static AmazonUserController getAmazonUserController() {
+    public static UserController getAmazonUserController() {
         return amazonUserController;
     }
 

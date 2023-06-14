@@ -8,11 +8,11 @@ package com.amazon.view.validation;
  * @author Roshan
  * @version 1.0
  */
-public class AmazonUserValidation extends AmazonValidation {
+public class UserValidation extends Validation {
 
-    private static final AmazonUserValidation amazonUserValidation = new AmazonUserValidation();
+    private static final UserValidation amazonUserValidation = new UserValidation();
 
-    private AmazonUserValidation() {
+    private UserValidation() {
     }
 
     /**
@@ -20,9 +20,9 @@ public class AmazonUserValidation extends AmazonValidation {
      * Represents the object of AmazonUserValidation class can be created for only one time
      * </p>
      *
-     * @return Represents {@link AmazonUserValidation}
+     * @return Represents {@link UserValidation}
      */
-    public static AmazonUserValidation getAmazonUserValidation() {
+    public static UserValidation getAmazonUserValidation() {
         return amazonUserValidation;
     }
 
