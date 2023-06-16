@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     private static final Map<Long, Product> PRODUCT_LIST = new LinkedHashMap<>();
     private static long productId = 1;
-    private static final ProductServiceImpl amazonProductService = new ProductServiceImpl();
+    private static final ProductServiceImpl AMAZON_PRODUCT_SERVICE = new ProductServiceImpl();
 
     private ProductServiceImpl() {
     }
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
      * @return Represents {@link ProductServiceImpl}
      */
     public static ProductServiceImpl getAmazonProductService() {
-        return amazonProductService;
+        return AMAZON_PRODUCT_SERVICE;
     }
 
     /**

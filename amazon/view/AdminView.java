@@ -58,6 +58,11 @@ public class AdminView {
         }
     }
 
+    /**
+     * <p>
+     *     Get all the Admin details from the user list
+     * </p>
+     */
     public void getAllAdmin() {
         Collection<User> admins = USER_CONTROLLER.getAllAdmin();
 
