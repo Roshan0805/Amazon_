@@ -1,12 +1,13 @@
 package com.amazon.service;
 
 import com.amazon.model.User;
+import com.amazon.service.impl.UserServiceImpl;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * <p>
- * Provides Services for {@link User} signIn, signUp, get and delete user
+ * Provides Services for {@link User} get and delete
  * </p>
  *
  * @author Roshan
@@ -14,57 +15,9 @@ import java.util.Set;
  */
 public interface UserService {
 
-    /**
-     * <p>
-     * Provides {@link User} sign up
-     * </p>
-     *
-     * @param user User object is passed as a parameter
-     */
-    boolean signUp(final User user);
-
-    /**
-     * <p>
-     * Provides {@link User} sign up
-     * </p>
-     *
-     * @param user User object is passed as a parameter
-     * @param key  user entered ket for admin key verification
-     * @return True if signUp successful otherwise return false
-     */
-    boolean signUp(final User user, final String key);
-
-    /**
-     * <p>
-     * Gets email id's from the user list
-     * </p>
-     *
-     * @return Set of email id's
-     */
-    Set<String> getUsersEmailIds();
-
-    /**
-     * <p>
-     * Provides {@link User} sign in
-     * </p>
-     *
-     * @param email    User's email id
-     * @param password User's password
-     * @return True if email and password match the user from the users list
-     */
-    boolean signIn(final String email, final String password);
-
-    /**
-     * <p>
-     * Provides {@link User} sign in
-     * </p>
-     *
-     * @param email    User's email id
-     * @param password User's password
-     * @param key      User's admin key
-     * @return True if email, password and key match the user from the users list
-     */
-    boolean signIn(final String email, final String password, final String key);
+    static UserService getInstance() {
+        return UserServiceImpl.getInstance();
+    }
 
     /**
      * <p>
@@ -84,7 +37,7 @@ public interface UserService {
      * @param email User email
      * @return User object from the user list
      */
-    User getDetails(final String email);
+    User getDetails(final Long id);
 
     /**
      * <p>
@@ -95,4 +48,10 @@ public interface UserService {
      * @return Boolean true is the user is deleted successfully
      */
     boolean deleteUser(final User user);
+
+    /**
+     * Represents all the admin details in user list
+     * @return Represents Collection of Admin{@link User}
+     */
+    Collection<User> getAllAdmin();
 }

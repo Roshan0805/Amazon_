@@ -49,14 +49,14 @@ public class User {
         return this.password;
     }
 
-    public void setIsAdmin() {
-        this.isAdmin = true;
+    public void setIsAdmin(final boolean value) {
+        this.isAdmin = value;
     }
 
     public boolean getIsAdmin() {
         return isAdmin;
     }
     public String toString() {
-        return String.format("user id -%d\tusername - %s\temail -%s\taddress - %s\tphone no - %s\n", id, name, email, address, phoneNumber);
+        return String.format("user id -%d\nusername - %s\nemail -%s\naddress - %s\nphone no - %s\n", id, name, email, address, phoneNumber);
     }
 }

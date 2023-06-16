@@ -16,7 +16,7 @@ public class ProductValidation extends Validation {
     private static final ProductValidation AMAZON_PRODUCT_VALIDATION = new ProductValidation();
 
     private static final ProductController AMAZON_PRODUCT_CONTROLLER =
-            ProductController.getAmazonProductController();
+            ProductController.getInstance();
 
     private ProductValidation() {
     }
@@ -28,7 +28,7 @@ public class ProductValidation extends Validation {
      *
      * @return Represents {@link ProductValidation}
      */
-    public static ProductValidation getAmazonProductValidation() {
+    public static ProductValidation getInstance() {
         return AMAZON_PRODUCT_VALIDATION;
     }
 

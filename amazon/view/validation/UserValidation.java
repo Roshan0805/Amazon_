@@ -22,7 +22,7 @@ public class UserValidation extends Validation {
      *
      * @return Represents {@link UserValidation}
      */
-    public static UserValidation getAmazonUserValidation() {
+    public static UserValidation getInstance() {
         return amazonUserValidation;
     }
 
@@ -36,6 +36,18 @@ public class UserValidation extends Validation {
      */
     public boolean validateEmail(final String email) {
         return email.matches("^[a-zA-z]+[a-zA-Z0-9_.\\S]+@[a-z]{3,}\\.[a-z\\S]{2,3}$");
+    }
+
+    /**
+     * <p>
+     * Validates the email format enter by the user
+     * </p>
+     *
+     * @param email Represents email that is entered by the user
+     * @return True if the email is matches pattern otherwise return false
+     */
+    public boolean validateId(final String email) {
+        return email.matches("^[0-9]+$");
     }
 
     /**
@@ -98,15 +110,4 @@ public class UserValidation extends Validation {
         return ('#' == value.charAt(0));
     }
 
-    /**
-     * <p>
-     * Check's whether the user wants to exit or not
-     * </p>
-     *
-     * @param userChoice Represents value for validate
-     * @return True if the value is matches the pattern otherwise return false
-     */
-    public boolean toContinueValidation(final String userChoice) {
-        return ('y' == userChoice.charAt(0) || 'Y' == userChoice.charAt(0));
-    }
 }

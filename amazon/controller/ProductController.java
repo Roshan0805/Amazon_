@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class ProductController {
 
-    private static final ProductService AMAZON_PRODUCT_SERVICE = ProductServiceImpl.getAmazonProductService();
-    private static final ProductController amazonProductController = new ProductController();
+    private static final ProductService PRODUCT_SERVICE = ProductServiceImpl.getAmazonProductService();
+    private static final ProductController AMAZON_PRODUCT_CONTROLLER = new ProductController();
 
     private ProductController() {
     }
@@ -30,8 +30,8 @@ public class ProductController {
      *
      * @return Represents {@link ProductController}
      */
-    public static ProductController getAmazonProductController() {
-        return amazonProductController;
+    public static ProductController getInstance() {
+        return AMAZON_PRODUCT_CONTROLLER;
     }
 
     /**
@@ -43,7 +43,7 @@ public class ProductController {
      * @return True if the {@link Product} is added successfully in the product list otherwise return false
      */
     public boolean add(final Product product) {
-        return AMAZON_PRODUCT_SERVICE.add(product);
+        return PRODUCT_SERVICE.add(product);
     }
 
     /**
@@ -53,8 +53,8 @@ public class ProductController {
      *
      * @return Collection view of products from the viewProduct method
      */
-    public Collection<Product> getUserProduct() {
-        return AMAZON_PRODUCT_SERVICE.getAllProducts();
+    public Collection<Product> getAllProduct() {
+        return PRODUCT_SERVICE.getAllProducts();
     }
 
     /**
@@ -64,7 +64,7 @@ public class ProductController {
      * @return Represents {@link Product} list created by the user
      */
     public Map<Long, Product> getUserProduct(final Long id) {
-        return AMAZON_PRODUCT_SERVICE.getUserProduct(id);
+        return PRODUCT_SERVICE.getUserProduct(id);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ProductController {
      * @return Represents {@link Product}
      */
     public Product get(final long productId) {
-        return AMAZON_PRODUCT_SERVICE.get(productId);
+        return PRODUCT_SERVICE.get(productId);
     }
 
     /**
@@ -89,7 +89,7 @@ public class ProductController {
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
     public boolean update(final long id, final Product product) {
-        return AMAZON_PRODUCT_SERVICE.update(id, product);
+        return PRODUCT_SERVICE.update(id, product);
     }
 
     /**
@@ -101,6 +101,6 @@ public class ProductController {
      * @return True if the {@link Product} is deleted successfully in the product list otherwise return false
      */
     public boolean delete(final int id) {
-        return AMAZON_PRODUCT_SERVICE.delete(id);
+        return PRODUCT_SERVICE.delete(id);
     }
 }

@@ -1,16 +1,13 @@
 package com.amazon.service.impl;
 
-import com.amazon.model.User;
 import com.amazon.service.UserService;
+import com.amazon.model.User;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
- * Implements the {@link UserService} to provide services for {@link  User} signIn, signUp, getUser, delete User
+ * Implements the {@link UserService} to provide services for {@link  User} get and delete
  * </p>
  *
  * @author Roshan
@@ -18,11 +15,11 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
 
-    private static final Map<Long, User> USERS_LIST = new HashMap<>();
-    private static final String SECRET_KEY = "Amazon@1994";
-    private static Long adminId = 1L;
-    private static Long userId = 1L;
-    private static final UserServiceImpl amazonUserService = new UserServiceImpl();
+    public static final Map<Long, User> USERS_LIST = new HashMap<>();
+    public static final String SECRET_KEY = "Amazon@1994";
+    public static Long adminId = 1L;
+    public static Long userId = 1L;
+    private static final UserServiceImpl AMAZON_USER_SERVICE = new UserServiceImpl();
 
     private UserServiceImpl() {
     }
@@ -32,106 +29,8 @@ public class UserServiceImpl implements UserService {
      *
      * @return Represents {@link UserServiceImpl}
      */
-    public static UserServiceImpl getAmazonUserService() {
-        return amazonUserService;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param user Represents {@link User}
-     * @return True if signup is successful otherwise return false
-     */
-    public boolean signUp(final User user) {
-        try {
-            user.setId(userId);
-            USERS_LIST.put(userId++, user);
-
-            return true;
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param user Represents {@link User}
-     * @return True if signup is successful otherwise return false
-     */
-    public boolean signUp(final User user, final String key) {
-        if (SECRET_KEY.equals(key)) {
-            user.setId(adminId);
-            user.setIsAdmin();
-            USERS_LIST.put(adminId++, user);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return email id's from the user list
-     */
-    public Set<String> getUsersEmailIds() {
-        final Set<String> emailIds = new HashSet<>();
-
-        for (final User user : USERS_LIST.values()) {
-            emailIds.add(user.getEmail());
-        }
-
-        return emailIds;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param email Represents user's email
-     * @return True if email is already registered
-     */
-    public boolean isUserEmailExists(final String email) {
-        return getUsersEmailIds().contains(email);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param email    Represents user's email
-     * @param password Represents user's password
-     * @return True if email and password match the user from the users list
-     */
-    public boolean signIn(final String email, final String password) {
-        for (final User existingUser : USERS_LIST.values()) {
-
-            if ((existingUser.getEmail().equals(email)) && (existingUser.getPassword().equals(password))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param email    Represents user's email
-     * @param password Represents user's password
-     * @param key      Represents user's key
-     * @return True if email, password and key match the admin user from the users list
-     */
-    public boolean signIn(final String email, final String password, final String key) {
-        for (final User user : USERS_LIST.values()) {
-
-            if ((user.getEmail().equals(email)) && (user.getPassword().equals(password) && (SECRET_KEY.equals(key)))) {
-                return true;
-            }
-        }
-
-        return false;
+    public static UserServiceImpl getInstance() {
+        return AMAZON_USER_SERVICE;
     }
 
     /**
@@ -140,17 +39,8 @@ public class UserServiceImpl implements UserService {
      * @param email Represents user email
      * @return Represents {@link User}
      */
-    public User getDetails(final String email) {
-        final User user = new User();
-
-        for (final User existingUser : USERS_LIST.values()) {
-
-            if (existingUser.getEmail().equals(email)) {
-                return existingUser;
-            }
-        }
-
-        return user;
+    public User getDetails(final Long id) {
+        return USERS_LIST.get(id);
     }
 
     /**
@@ -166,5 +56,37 @@ public class UserServiceImpl implements UserService {
         USERS_LIST.remove(user.getId());
 
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return Represents Collection of Admin{@link User}
+     */
+    public Collection<User> getAllAdmin() {
+        Collection<User> adminList = new HashSet<>();
+        for (User user : USERS_LIST.values()) {
+            if (user.getIsAdmin()) {
+                adminList.add(user);
+            }
+        }
+        return adminList;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param email {@link User} email
+     * @return True If the email is already exists
+     */
+    public boolean isUserEmailExists(String email) {
+        for (final User user : USERS_LIST.values()) {
+
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

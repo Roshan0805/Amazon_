@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Implements the AmazonProductService to provide services for {@link  Product} for get products, update products and delete products
+ * Implements the {@link ProductService} to provide services for {@link  Product} for get, update and delete
  * </p>
  *
  * @author Roshan

@@ -22,7 +22,7 @@ public class Validation {
      *
      * @return Represents {@link Validation}
      */
-    public static Validation getAmazonValidation() {
+    public static Validation getInstance() {
         return amazonValidation;
     }
 
@@ -47,6 +47,18 @@ public class Validation {
      * @return True if the value is matches the pattern otherwise return false
      */
     public boolean updateChoiceValidation(final String value) {
-        return ('y' == value.charAt(0) || 'Y' == value.charAt(0));
+        return (value.equalsIgnoreCase("y") || value.equalsIgnoreCase("yes"));
+    }
+
+    /**
+     * <p>
+     * Check's whether the user wants to exit or not
+     * </p>
+     *
+     * @param userChoice Represents value for validate
+     * @return True if the value is matches the pattern otherwise return false
+     */
+    public boolean toContinueValidation(final String userChoice) {
+        return ('y' == userChoice.charAt(0) || 'Y' == userChoice.charAt(0));
     }
 }

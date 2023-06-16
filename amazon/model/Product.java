@@ -13,6 +13,7 @@ public class Product {
     private Long adminId;
 
     public enum Category {
+
         MOBILE_PHONES, FOOTWEAR, ELECTRONICS, CLOTHING, KITCHEN_APPLIANCES, SPORTS, BOOKS, TOYS
     }
 
