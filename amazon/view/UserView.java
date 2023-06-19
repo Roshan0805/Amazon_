@@ -3,6 +3,7 @@ package com.amazon.view;
 import com.amazon.controller.UserController;
 import com.amazon.model.User;
 import com.amazon.view.validation.UserValidation;
+import com.amazon.view.validation.Validation;
 
 import java.util.Collection;
 import java.util.Scanner;
@@ -20,9 +21,10 @@ public class UserView {
     private static final UserView USER_VIEW = new UserView();
     private static final LoginView LOGIN_VIEW = LoginView.getInstance();
     private static final UserValidation USER_VALIDATION = UserValidation.getInstance();
+    private static final Validation VALIDATION = Validation.getInstance();
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final UserController USER_CONTROLLER = UserController.getInstance();
-
+    private static final AdminView ADMIN_VIEW = AdminView.getInstance();
     private UserView() {
     }
 
@@ -50,6 +52,7 @@ public class UserView {
                 break;
             case 3:
                 deleteUser(user);
+                LOGIN_VIEW.displayMenu();
                 break;
             case 4:
                 checkAdmin(user);
@@ -214,6 +217,7 @@ public class UserView {
         } catch (final StringIndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getAdminKey();
     }
 
@@ -241,6 +245,7 @@ public class UserView {
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getUserEmail();
     }
 
@@ -265,7 +270,7 @@ public class UserView {
             } else {
                 System.out.println("Invalid id enter the correct id");
             }
-        } catch (IndexOutOfBoundsException exception) {
+        } catch (NumberFormatException | IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
         return getUserId();
@@ -295,6 +300,7 @@ public class UserView {
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getUserPassword();
     }
 
@@ -317,11 +323,12 @@ public class UserView {
             if (USER_VALIDATION.validateAddress(address)) {
                 return address;
             } else {
-                System.out.println("invalid address");
+                System.out.println("Invalid address");
             }
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
+
         return getUserAddress();
     }
 
@@ -379,10 +386,10 @@ public class UserView {
 
     private void checkAdmin(final User user) {
         if (user.getIsAdmin()) {
-            final AdminView adminView = AdminView.getInstance();
-            adminView.getAdminOptions();
+            ADMIN_VIEW.getAdminOptions();
         } else {
             final CustomerView customerView = CustomerView.getInstance();
+
             customerView.getUserOptions();
         }
     }
@@ -395,14 +402,18 @@ public class UserView {
      * @return Represents value that the user entered
      */
     public int getUserChoice() {
-        System.out.println("Enter the choice");
-        final String userChoice = SCANNER.nextLine().trim();
-
+        System.out.println("Enter the choice\t(press # for return to menu)");
         try {
-            return Integer.parseInt(userChoice);
+            final int userChoice = Integer.parseInt(SCANNER.nextLine().trim());
+
+            if(VALIDATION.isReturnToMenu(String.valueOf(userChoice))) {
+                ADMIN_VIEW.getAdminOptions();
+            }
+            return userChoice;
         } catch (final NumberFormatException exception) {
             System.out.println("Invalid input enter the number input");
         }
+
         return getUserChoice();
     }
 }

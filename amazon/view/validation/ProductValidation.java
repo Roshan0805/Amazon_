@@ -2,6 +2,7 @@ package com.amazon.view.validation;
 
 import com.amazon.model.Product.Category;
 import com.amazon.controller.ProductController;
+import com.amazon.service.ProductService;
 
 /**
  * <p>
@@ -13,9 +14,9 @@ import com.amazon.controller.ProductController;
  */
 public class ProductValidation extends Validation {
 
-    private static final ProductValidation AMAZON_PRODUCT_VALIDATION = new ProductValidation();
+    private static final ProductValidation PRODUCT_VALIDATION = new ProductValidation();
 
-    private static final ProductController AMAZON_PRODUCT_CONTROLLER =
+    private static final ProductController PRODUCT_CONTROLLER =
             ProductController.getInstance();
 
     private ProductValidation() {
@@ -29,19 +30,7 @@ public class ProductValidation extends Validation {
      * @return Represents {@link ProductValidation}
      */
     public static ProductValidation getInstance() {
-        return AMAZON_PRODUCT_VALIDATION;
-    }
-
-    /**
-     * <p>
-     * Validates the category name of the product enter by the admin user
-     * </p>
-     *
-     * @param category Represents {@link Category} entered by the user
-     * @return True if the pattern matches the pattern otherwise return false
-     */
-    public Category validateCategory(final String category) {
-        return Category.valueOf(category);
+        return PRODUCT_VALIDATION;
     }
 
     /**
@@ -52,7 +41,7 @@ public class ProductValidation extends Validation {
      * @param id Represents the id entered by the user
      * @return True if the user entered id matches the get products id
      */
-    public boolean validateProductIds(final Long id) {
-        return AMAZON_PRODUCT_CONTROLLER.getUserProduct(id).containsKey(id);
+    public boolean validateProductIds(final Long id, final Long userId) {
+        return PRODUCT_CONTROLLER.getUserProduct(userId).containsKey(id);
     }
 }

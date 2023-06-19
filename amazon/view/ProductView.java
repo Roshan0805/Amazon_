@@ -4,6 +4,7 @@ import com.amazon.controller.ProductController;
 import com.amazon.model.Product;
 import com.amazon.model.User;
 import com.amazon.view.validation.ProductValidation;
+import com.amazon.model.Product.Category;
 
 import java.util.Collection;
 import java.util.Map;
@@ -43,12 +44,13 @@ public class ProductView {
      */
     public void accessProduct(final Long userId) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t",
-                "2.add product", "\t3.update product\t4.delete product\t5.user created product\n6.Back to admin option"));
+                "2.add product", "\t3.update product\t4.delete product\t5.user created product",
+                        "\n6.Back to admin option"));
         final int userOption = USER_VIEW.getUserChoice();
 
         switch (userOption) {
             case 1:
-                viewProduct();
+                viewProduct(userId);
                 break;
             case 2:
                 addProduct(userId);
@@ -70,7 +72,8 @@ public class ProductView {
                 accessProduct(userId);
                 break;
         }
-        System.out.println("Do you want to continue press yes(y) else press any letter key");
+        System.out.println(String.join("","Do you want to continue on product press yes(y) else ",
+                "press any letter key for back to admin options"));
 
         if (PRODUCT_VALIDATION.toContinueValidation(SCANNER.nextLine())) {
             accessProduct(userId);
@@ -87,14 +90,12 @@ public class ProductView {
      * @param userId Represents the user id
      */
     private void updateProduct(final long userId) {
-        viewUserProduct(userId);
         System.out.println("Enter the product id for update product information");
-
         final long productId = USER_VIEW.getUserChoice();
 
-        if (PRODUCT_VALIDATION.validateProductIds(productId - 1)) {
+        if (PRODUCT_VALIDATION.validateProductIds(productId, userId)) {
 
-            final Product product = PRODUCT_CONTROLLER.get(productId - 1);
+            final Product product = PRODUCT_CONTROLLER.get(productId);
 
             updateProductName(product);
             updateProductDescription(product);
@@ -253,7 +254,7 @@ public class ProductView {
         if (PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
             addProduct(userId);
         } else {
-            ADMIN_VIEW.getAdminOptions();
+            PRODUCT_VIEW.accessProduct(userId);
         }
     }
 
@@ -265,23 +266,44 @@ public class ProductView {
      * @param userId Represents {@link User} id
      * @return Represent {@link Product.Category}
      */
-    private Product.Category getProductCategory(final Long userId) {
+    private Category getProductCategory(final Long userId) {
         System.out.println(String.join("", "Enter the product category\n1.mobile_phones\n",
                 "2.footwear\n3.electronics\n4.clothing\n5.kitchen_appliances\n6.sports\n7.books\n8.toys\t",
                 "(press # to return to product menu)"));
-        final String productChoice = SCANNER.nextLine().trim();
-
-        if (PRODUCT_VALIDATION.isReturnToMenu(productChoice)) {
-            accessProduct(userId);
-        }
 
         try {
-            return PRODUCT_VALIDATION.validateCategory(productChoice.toUpperCase());
+            final int productChoice = Integer.parseInt(SCANNER.nextLine().trim());
+
+            if (PRODUCT_VALIDATION.isReturnToMenu(String.valueOf(productChoice))) {
+                accessProduct(userId);
+            }
+            final Category category = Product.Category.getCategory(productChoice);
+
+            if (category == null) {
+                System.out.println("Enter a valid category");
+            } else {
+                return category;
+            }
+
         } catch (IllegalArgumentException exception) {
             System.out.println("Enter a valid category");
         }
 
         return getProductCategory(userId);
+    }
+
+    /**
+     * <p>
+     * Gets the products from the product list
+     * </p>
+     */
+    public void viewProduct(final long id) {
+        final Collection<Product> products = PRODUCT_CONTROLLER.getAllProduct();
+        if (products.isEmpty()) {
+            System.out.println("The product list is empty");
+            PRODUCT_VIEW.accessProduct(id);
+        }
+        System.out.println(products);
     }
 
     /**
@@ -306,7 +328,7 @@ public class ProductView {
      * @param userId Represents user userId
      */
     private void viewUserProduct(final Long userId) {
-        final Map<Long,Product> products = PRODUCT_CONTROLLER.getUserProduct(userId);
+        final Map<Long, Product> products = PRODUCT_CONTROLLER.getUserProduct(userId);
         if (products.isEmpty()) {
             System.out.println("The product list is empty");
             accessProduct(userId);

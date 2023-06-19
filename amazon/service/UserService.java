@@ -54,4 +54,10 @@ public interface UserService {
      * @return Represents Collection of Admin{@link User}
      */
     Collection<User> getAllAdmin();
+
+    /**
+     * Represents all the {@link User} details in the usersList
+     * @return Represents collection of {@link User}
+     */
+    Collection<User> getAllUser();
 }

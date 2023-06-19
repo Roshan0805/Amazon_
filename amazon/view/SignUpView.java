@@ -53,7 +53,7 @@ public class SignUpView {
             System.out.println("Are you an admin user press yes(y) or no(n)");
             final String userChoice = SCANNER.nextLine().trim();
 
-            if ("y".equalsIgnoreCase(userChoice) || "yes".equalsIgnoreCase("yes")) {
+            if ("y".equalsIgnoreCase(userChoice)) {
                 verifyAdmin(user);
             }
             if (SIGN_UP_CONTROLLER.signUp(user)) {

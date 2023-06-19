@@ -53,6 +53,7 @@ public class SignInServiceImpl implements SignInService {
 
             if ((user.getEmail().equals(email)) && (user.getPassword().equals(password) &&
                     (UserServiceImpl.SECRET_KEY.equals(key)))) {
+
                 return true;
             }
         }

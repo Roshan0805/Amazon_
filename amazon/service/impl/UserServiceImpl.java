@@ -3,7 +3,10 @@ package com.amazon.service.impl;
 import com.amazon.service.UserService;
 import com.amazon.model.User;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     public static final Map<Long, User> USERS_LIST = new HashMap<>();
     public static final String SECRET_KEY = "Amazon@1994";
-    public static Long adminId = 1L;
     public static Long userId = 1L;
     private static final UserServiceImpl AMAZON_USER_SERVICE = new UserServiceImpl();
 
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     /**
      * {@inheritDoc}
      *
-     * @param email Represents user email
+     * @param id Represents user id
      * @return Represents {@link User}
      */
     public User getDetails(final Long id) {
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
     /**
      * {@inheritDoc}
      *
-     * @return Represents Collection of Admin{@link User}
+     * @return Represents Collection of Admin{@link User} in the usersList
      */
     public Collection<User> getAllAdmin() {
         Collection<User> adminList = new HashSet<>();
@@ -71,6 +73,15 @@ public class UserServiceImpl implements UserService {
             }
         }
         return adminList;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return Represents Collection of {@link User} in the usersList
+     */
+    public Collection<User> getAllUser() {
+        return USERS_LIST.values();
     }
 
     /**

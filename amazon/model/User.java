@@ -1,7 +1,7 @@
 package com.amazon.model;
 
 /**
- * Represents the user provides services like set and get the user details
+ * Represents the user
  */
 public class User {
 
@@ -24,7 +24,6 @@ public class User {
     public void setEmail(final String email) {
         this.email = email;
     }
-
     public void setPassword(final String password) {
         this.password = password;
     }

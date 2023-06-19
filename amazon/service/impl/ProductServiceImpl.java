@@ -3,7 +3,9 @@ package com.amazon.service.impl;
 import com.amazon.model.Product;
 import com.amazon.service.ProductService;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -31,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
      *
      * @return Represents {@link ProductServiceImpl}
      */
-    public static ProductServiceImpl getAmazonProductService() {
+    public static ProductService getInstance() {
         return AMAZON_PRODUCT_SERVICE;
     }
 
@@ -46,6 +48,11 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
         product.setId(productId);
+        final Date time = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss E dd MM yyyy zz");
+        String updatedTime = dateFormat.format(time);
+
+        product.setUpdatedTime(updatedTime);
         PRODUCT_LIST.put(productId++, product);
 
         return true;
@@ -98,6 +105,12 @@ public class ProductServiceImpl implements ProductService {
         if (product == null || id > PRODUCT_LIST.size()) {
             return false;
         }
+        final Date time = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss E dd MM yyyy zz");
+        String updatedTime = dateFormat.format(time);
+
+        product.setUpdatedTime(updatedTime);
+        product.setUpdatedTime(updatedTime);
         PRODUCT_LIST.put(id, product);
 
         return true;
@@ -112,6 +125,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean delete(final long id) {
         if (getIds().contains(id)) {
             PRODUCT_LIST.remove(id);
+
             return true;
         }
 
@@ -128,6 +142,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (final Product product : PRODUCT_LIST.values()) {
             final long productId = product.getId();
+
             productsId.add(productId);
         }
 

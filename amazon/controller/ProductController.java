@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class ProductController {
 
-    private static final ProductService PRODUCT_SERVICE = ProductServiceImpl.getAmazonProductService();
+    private static final ProductService PRODUCT_SERVICE = ProductServiceImpl.getInstance();
     private static final ProductController AMAZON_PRODUCT_CONTROLLER = new ProductController();
 
     private ProductController() {

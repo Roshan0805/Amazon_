@@ -34,10 +34,11 @@ public class AdminView {
      * </p>
      */
     public void getAdminOptions() {
-        System.out.println("Choose from the options\n1.admin details\t2.product details\t3.get all admin details");
+        System.out.println(String.join("","Choose from the options\n1.admin details\n",
+                "2.product details\n3.get all admin details\n4.get all user\n5.logout"));
         final int adminOption = USER_VIEW.getUserChoice();
 
-        if (4 == adminOption) {
+        if (5 == adminOption) {
             LOGIN_VIEW.displayMenu();
         }
         final User user = USER_VIEW.getsUserDetails();
@@ -51,6 +52,9 @@ public class AdminView {
                 break;
             case 3:
                 getAllAdmin();
+                break;
+            case 4:
+                getAllUsers();
                 break;
             default:
                 System.out.println("Enter the correct option");
@@ -73,4 +77,20 @@ public class AdminView {
         }
         getAdminOptions();
     }
+
+    /**
+     * Represents all the {@link User} details in the usersList
+     * @return Represents collection of {@link User}
+     */
+    public void getAllUsers() {
+        Collection<User> users =  USER_CONTROLLER.getAllUser();
+
+        if(users.isEmpty()) {
+            System.out.println("The user list is empty");
+        } else {
+            System.out.println(users);
+        }
+        getAdminOptions();
+    }
+
 }

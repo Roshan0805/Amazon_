@@ -38,7 +38,7 @@ public class UserController {
      * Gets the user details from the user list using user email
      * </p>
      *
-     * @param email Represents user's email
+     * @param id Represents user's id
      * @return {@link User} from the amazon service
      */
     public User getDetail(final Long id) {
@@ -58,11 +58,16 @@ public class UserController {
     }
 
     /**
-     * Represents all the admin details in user list
-     * @return Represents Collection of Admin{@link User}
+     * Represents all the admin {@link User} details in user list
+     * @return Represents collection of Admin {@link User}
      */
     public Collection<User> getAllAdmin() {return USER_SERVICE.getAllAdmin();
     }
 
+    /**
+     * Represents all the {@link User} details in the usersList
+     * @return Represents collection of {@link User}
+     */
+    public Collection<User> getAllUser() {return USER_SERVICE.getAllUser();}
 }
 

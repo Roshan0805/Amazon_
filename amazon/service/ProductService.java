@@ -1,6 +1,7 @@
 package com.amazon.service;
 
 import com.amazon.model.Product;
+import com.amazon.service.impl.ProductServiceImpl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,6 +15,11 @@ import java.util.Map;
  * @version 1.0
  */
 public interface ProductService {
+
+    static ProductService getInstance() {
+        return ProductServiceImpl.getInstance();
+    }
+
     /**
      * <p>
      * Add product to the product list
