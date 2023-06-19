@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Implements the {@link ProductService} to provide services for {@link  Product} for get, update and delete
+ * Implements the {@link ProductService} to provide services for {@link  Product}
  * </p>
  *
  * @author Roshan
@@ -29,7 +29,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Represents the object of AmazonProductServiceImpl class can be created for only one time
+     * <p>
+     * Represents the object of {@link ProductServiceImpl} class can be created for only one time
+     * </p>
      *
      * @return Represents {@link ProductServiceImpl}
      */
@@ -102,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
      * @return True if the product name is updated successfully
      */
     public boolean update(long id, Product product) {
-        if (product == null || id > PRODUCT_LIST.size()) {
+        if (null == product) {
             return false;
         }
         final Date time = new Date();

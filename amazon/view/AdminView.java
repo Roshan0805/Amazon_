@@ -24,6 +24,13 @@ public class AdminView {
     private AdminView() {
     }
 
+    /**
+     * <p>
+     * Represents the object for {@link AdminView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link AdminView}
+     */
     public static AdminView getInstance() {
         return ADMIN_VIEW;
     }
@@ -34,7 +41,7 @@ public class AdminView {
      * </p>
      */
     public void getAdminOptions() {
-        System.out.println(String.join("","Choose from the options\n1.admin details\n",
+        System.out.println(String.join("", "Choose from the options\n1.admin details\n",
                 "2.product details\n3.get all admin details\n4.get all user\n5.logout"));
         final int adminOption = USER_VIEW.getUserChoice();
 
@@ -64,13 +71,13 @@ public class AdminView {
 
     /**
      * <p>
-     *     Get all the Admin details from the user list
+     * Get all the Admin details from the user list
      * </p>
      */
     public void getAllAdmin() {
         Collection<User> admins = USER_CONTROLLER.getAllAdmin();
 
-        if(admins.isEmpty()) {
+        if (admins.isEmpty()) {
             System.out.println("The admin list is empty");
         } else {
             System.out.println(admins);
@@ -80,12 +87,13 @@ public class AdminView {
 
     /**
      * Represents all the {@link User} details in the usersList
+     *
      * @return Represents collection of {@link User}
      */
     public void getAllUsers() {
-        Collection<User> users =  USER_CONTROLLER.getAllUser();
+        Collection<User> users = USER_CONTROLLER.getAllUser();
 
-        if(users.isEmpty()) {
+        if (users.isEmpty()) {
             System.out.println("The user list is empty");
         } else {
             System.out.println(users);

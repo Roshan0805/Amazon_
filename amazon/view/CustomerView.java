@@ -20,10 +20,16 @@ public class CustomerView {
     private CustomerView() {
     }
 
+    /**
+     * <p>
+     * Represents the object for {@link CustomerView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link CustomerView}
+     */
     public static CustomerView getInstance() {
         return CUSTOMER_VIEW;
     }
-
 
     /**
      * <p>

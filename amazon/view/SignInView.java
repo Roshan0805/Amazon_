@@ -23,6 +23,13 @@ public class SignInView {
     private SignInView() {
     }
 
+    /**
+     * <p>
+     *     Represents the object for {@link SignInView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link SignInView}
+     */
     public static SignInView getInstance() {
         return SIGN_IN_VIEW;
     }
@@ -88,5 +95,4 @@ public class SignInView {
             signIn();
         }
     }
-
 }

@@ -1,7 +1,7 @@
 package com.amazon.model;
 
 /**
- * Represents the products
+ * Represents the product
  */
 public class Product {
 

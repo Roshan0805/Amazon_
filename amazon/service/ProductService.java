@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Provides services for {@link Product} like add product, get product, update product and delete product
+ * Provides services for {@link Product}
  * </p>
  *
  * @author Roshan
@@ -16,6 +16,13 @@ import java.util.Map;
  */
 public interface ProductService {
 
+    /**
+     * <p>
+     * Represents the {@link ProductService} interface implemented class object can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link ProductServiceImpl}
+     */
     static ProductService getInstance() {
         return ProductServiceImpl.getInstance();
     }

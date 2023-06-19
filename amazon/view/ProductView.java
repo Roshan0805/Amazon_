@@ -31,6 +31,13 @@ public class ProductView {
     private ProductView() {
     }
 
+    /**
+     * <p>
+     * Represents the object for {@link ProductView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link ProductView}
+     */
     public static ProductView getInstance() {
         return PRODUCT_VIEW;
     }
@@ -45,7 +52,7 @@ public class ProductView {
     public void accessProduct(final Long userId) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t",
                 "2.add product", "\t3.update product\t4.delete product\t5.user created product",
-                        "\n6.Back to admin option"));
+                "\n6.Back to admin option"));
         final int userOption = USER_VIEW.getUserChoice();
 
         switch (userOption) {
@@ -72,10 +79,10 @@ public class ProductView {
                 accessProduct(userId);
                 break;
         }
-        System.out.println(String.join("","Do you want to continue on product press yes(y) else ",
+        System.out.println(String.join("", "Do you want to continue on product press yes(y) else ",
                 "press any letter key for back to admin options"));
 
-        if (PRODUCT_VALIDATION.toContinueValidation(SCANNER.nextLine())) {
+        if (PRODUCT_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
             accessProduct(userId);
         } else {
             ADMIN_VIEW.getAdminOptions();
@@ -123,11 +130,11 @@ public class ProductView {
      */
     private void updateProductName(final Product product) {
         System.out.println("Do you want to update product name press yes(y) else press any letter key");
-        final String userChoice = SCANNER.nextLine();
+        final String userChoice = SCANNER.nextLine().trim();
 
         if (PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
             System.out.println("Enter the product name for update");
-            final String productName = SCANNER.nextLine();
+            final String productName = SCANNER.nextLine().trim();
 
             product.setName(productName);
         }
@@ -142,11 +149,11 @@ public class ProductView {
      */
     private void updateProductDescription(final Product product) {
         System.out.println("Do you want to update product description press yes(y) else enter any other letter key");
-        final String userChoice = SCANNER.nextLine();
+        final String userChoice = SCANNER.nextLine().trim();
 
         if (PRODUCT_VALIDATION.updateChoiceValidation(userChoice)) {
             System.out.println("Enter the product description for update");
-            final String description = SCANNER.nextLine();
+            final String description = SCANNER.nextLine().trim();
 
             product.setDescription(description);
         }
@@ -218,7 +225,7 @@ public class ProductView {
         System.out.println("Do you want to enter price again press yes(y) else press any letter key");
 
         try {
-            if ('y' == SCANNER.nextLine().charAt(0)) {
+            if ("y".equalsIgnoreCase(SCANNER.nextLine().trim())) {
                 return getProductPrice(userId);
             }
         } catch (IndexOutOfBoundsException exception) {
@@ -279,7 +286,7 @@ public class ProductView {
             }
             final Category category = Product.Category.getCategory(productChoice);
 
-            if (category == null) {
+            if (null == category) {
                 System.out.println("Enter a valid category");
             } else {
                 return category;

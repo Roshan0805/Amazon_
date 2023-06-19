@@ -5,7 +5,6 @@ import com.amazon.model.User;
 import com.amazon.view.validation.UserValidation;
 import com.amazon.view.validation.Validation;
 
-import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -25,9 +24,17 @@ public class UserView {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final UserController USER_CONTROLLER = UserController.getInstance();
     private static final AdminView ADMIN_VIEW = AdminView.getInstance();
+
     private UserView() {
     }
 
+    /**
+     * <p>
+     *     Represents the object for {@link UserView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link UserView}
+     */
     public static UserView getInstance() {
         return USER_VIEW;
     }
@@ -63,7 +70,7 @@ public class UserView {
         }
         System.out.println("Do you want to continue press yes(y) or return back to menu press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
             accessUser(user);
         } else {
             checkAdmin(user);
@@ -117,7 +124,7 @@ public class UserView {
     private void updateUserName(final User user) {
         System.out.println("Do you want to update user name press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine().trim())) {
             user.setName(getUserName());
         }
     }
@@ -132,7 +139,7 @@ public class UserView {
     private void updateUserEmail(final User user) {
         System.out.println("Do you want to update user email press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine().trim())) {
             user.setEmail(getUserEmail());
         }
     }
@@ -147,7 +154,7 @@ public class UserView {
     private void updateUserPassword(final User user) {
         System.out.println("Do you want to update user password press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine().trim())) {
             user.setPassword(getUserPassword());
         }
     }
@@ -162,7 +169,7 @@ public class UserView {
     private void updateUserAddress(final User user) {
         System.out.println("Do you want to update user address press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine().trim())) {
             user.setAddress(getUserAddress());
         }
     }
@@ -177,7 +184,7 @@ public class UserView {
     private void updateUserPhoneNo(final User user) {
         System.out.println("Do you want to update user phone number press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine())) {
+        if (USER_VALIDATION.updateChoiceValidation(SCANNER.nextLine().trim())) {
             user.setPhoneNumber(getUserPhoneNumber());
         }
     }
@@ -207,14 +214,14 @@ public class UserView {
     public String getAdminKey() {
         try {
             System.out.println("Enter the admin key for verification\t(press # for back to menu)");
-            final String adminKey = SCANNER.nextLine();
+            final String adminKey = SCANNER.nextLine().trim();
 
             if (USER_VALIDATION.isReturnToMenu(adminKey)) {
                 LOGIN_VIEW.displayMenu();
             }
 
             return adminKey;
-        } catch (final StringIndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
 
@@ -406,7 +413,7 @@ public class UserView {
         try {
             final int userChoice = Integer.parseInt(SCANNER.nextLine().trim());
 
-            if(VALIDATION.isReturnToMenu(String.valueOf(userChoice))) {
+            if (VALIDATION.isReturnToMenu(String.valueOf(userChoice))) {
                 ADMIN_VIEW.getAdminOptions();
             }
             return userChoice;

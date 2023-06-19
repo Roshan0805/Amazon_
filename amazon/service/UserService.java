@@ -2,12 +2,13 @@ package com.amazon.service;
 
 import com.amazon.model.User;
 import com.amazon.service.impl.UserServiceImpl;
+import com.amazon.view.AdminView;
 
 import java.util.Collection;
 
 /**
  * <p>
- * Provides Services for {@link User} get and delete
+ * Provides Services for {@link User}
  * </p>
  *
  * @author Roshan
@@ -15,6 +16,13 @@ import java.util.Collection;
  */
 public interface UserService {
 
+    /**
+     * <p>
+     * Represents the {@link UserService} interface implemented class object can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link UserServiceImpl}
+     */
     static UserService getInstance() {
         return UserServiceImpl.getInstance();
     }
@@ -24,17 +32,17 @@ public interface UserService {
      * Check whether the  user email is already exist in user list
      * </p>
      *
-     * @param emailId User's email
+     * @param email User's email
      * @return True if the email id is already present on the user list
      */
-    boolean isUserEmailExists(final String emailId);
+    boolean isUserEmailExists(final String email);
 
     /**
      * <p>
      * Gets the user details from the user list
      * </p>
      *
-     * @param email User email
+     * @param id User email
      * @return User object from the user list
      */
     User getDetails(final Long id);

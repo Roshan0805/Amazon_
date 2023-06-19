@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Implements the {@link UserService} to provide services for {@link  User} get and delete
+ * Implements the {@link UserService} to provide services for {@link  User}
  * </p>
  *
  * @author Roshan
@@ -27,7 +27,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Represents the object of AmazonUserServiceImpl class can be created for only one time
+     * <p>
+     * Represents the object of {@link UserServiceImpl} class can be created for only one time
+     * </p>
      *
      * @return Represents {@link UserServiceImpl}
      */

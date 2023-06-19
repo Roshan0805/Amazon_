@@ -17,7 +17,7 @@ public class UserValidation extends Validation {
 
     /**
      * <p>
-     * Represents the object of AmazonUserValidation class can be created for only one time
+     * Represents the object of {@link UserValidation} class can be created for only one time
      * </p>
      *
      * @return Represents {@link UserValidation}

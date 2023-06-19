@@ -26,6 +26,13 @@ public class SignUpView {
     private SignUpView() {
     }
 
+    /**
+     * <p>
+     *     Represents the object for {@link SignUpView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link SignUpView}
+     */
     public static SignUpView getInstance() {
         return SIGN_UP_VIEW;
     }

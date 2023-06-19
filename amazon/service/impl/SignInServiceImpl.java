@@ -5,7 +5,7 @@ import com.amazon.service.SignInService;
 
 /**
  * <p>
- * Implements the {@link SignInService} to provide services for {@link  User} sign in
+ * Implements the {@link SignInService} to provide services for {@link User} sign in
  * </p>
  *
  * @author Roshan
@@ -18,6 +18,13 @@ public class SignInServiceImpl implements SignInService {
     private SignInServiceImpl() {
     }
 
+    /**
+     * <p>
+     * Represents the object of {@link SignInServiceImpl} class can be created for only one time
+     * </p>
+     *
+     * @return Represents {@link SignInServiceImpl}
+     */
     public static SignInService getInstance() {
         return SIGN_IN_SERVICE;
     }

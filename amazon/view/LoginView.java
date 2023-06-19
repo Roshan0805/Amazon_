@@ -22,12 +22,13 @@ public class LoginView {
     private static final UserView USER_VIEW = UserView.getInstance();
     private static final UserValidation AMAZON_USER_VALIDATION = UserValidation.getInstance();
 
-
     private LoginView() {
     }
 
     /**
-     * Represents the object of amazonView class be created for only one time
+     * <p>
+     * Represents the object of {@link LoginView} class be created for only one time
+     * </p>
      *
      * @return Represents {@link LoginView}
      */

@@ -17,7 +17,7 @@ public class Validation {
 
     /**
      * <p>
-     * Represents the object of AmazonValidation class can be created for only one time
+     * Represents the object of {@link Validation} class can be created for only one time
      * </p>
      *
      * @return Represents {@link Validation}
