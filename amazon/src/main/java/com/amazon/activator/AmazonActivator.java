@@ -13,6 +13,10 @@ import com.amazon.view.ScannerInstance;
  */
 public class AmazonActivator {
 
+    /**
+     * <p> Represents the entry point of the application </p>
+     * @param args Represents commandline arguments
+     */
     public static void main(final String[] args) {
         System.out.println("Welcome to amazon");
         AuthenticationView.getInstance().displayMenu();

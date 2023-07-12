@@ -5,6 +5,13 @@ import com.amazon.service.AuthenticationService;
 import com.amazon.service.Impl2.AuthenticationServiceImpl2;
 import com.amazon.service.impl.AuthenticationServiceImpl;
 
+/**
+ * <p>
+ *     Represents the authentication controller
+ * </p>
+ * @author Roshan
+ * @version 1.0
+ */
 public class AuthenticationController {
 
     private static final AuthenticationController AUTHENTICATION_CONTROLLER = new AuthenticationController();
@@ -15,6 +22,12 @@ public class AuthenticationController {
         AUTHENTICATION_SERVICE = AuthenticationServiceImpl.getInstance();
     }
 
+    /**
+     * <p>
+     *     Represents the instance of {@link AuthenticationController} created only ones
+     * </p>
+     * @return
+     */
     public static AuthenticationController getInstance() {
         return AUTHENTICATION_CONTROLLER;
     }
