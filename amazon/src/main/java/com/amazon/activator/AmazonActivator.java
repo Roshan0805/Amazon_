@@ -4,7 +4,7 @@ import com.amazon.view.AuthenticationView;
 
 /**
  * <p>
- * Represents the starting view
+ * Represents the starting point of the application
  * </p>
  *
  * @author Roshan
