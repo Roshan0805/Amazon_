@@ -1,7 +1,6 @@
 package com.amazon.activator;
 
 import com.amazon.view.AuthenticationView;
-import com.amazon.view.ScannerInstance;
 
 /**
  * <p>
