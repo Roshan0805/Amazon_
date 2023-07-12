@@ -17,10 +17,12 @@ import java.util.Map;
  */
 public class UserServiceImpl implements UserService {
 
-    public static final Map<Long, User> USERS_LIST = new HashMap<>();
-    private static final UserService USER_SERVICE = new UserServiceImpl();
+    private static final UserServiceImpl USER_SERVICE = new UserServiceImpl();
+
+    public static final Map<Long, User> USERS_LIST  = new HashMap<>();
 
     private UserServiceImpl() {
+        ;
     }
 
     /**

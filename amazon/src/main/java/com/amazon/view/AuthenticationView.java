@@ -13,16 +13,25 @@ import com.amazon.model.User;
  */
 public class AuthenticationView extends ScannerInstance {
 
-    private static AuthenticationView AUTHENTICATION_VIEW = null;
-    private final AuthenticationController AUTHENTICATION_CONTROLLER = AuthenticationController.getInstance();
-    private final UserView USER_VIEW = UserView.getInstance();
+    private static final AuthenticationView AUTHENTICATION_VIEW = new AuthenticationView();
+    private final static UserView USER_VIEW = UserView.getInstance();
+    private final AuthenticationController authenticationController ;
     protected static Long userId = 1L;
 
     private AuthenticationView() {
+        authenticationController = AuthenticationController.getInstance();
     }
 
+
+    /**
+     * <p>
+     * Represents the object of {@link AuthenticationView} class can be created for only one time
+     * </p>
+     *
+     * @return Represents {@link AuthenticationView}
+     */
     public static AuthenticationView getInstance() {
-        return AUTHENTICATION_VIEW == null ? AUTHENTICATION_VIEW = new AuthenticationView() : AUTHENTICATION_VIEW;
+        return  AUTHENTICATION_VIEW;
     }
 
     /**
@@ -32,7 +41,7 @@ public class AuthenticationView extends ScannerInstance {
      */
     public void displayMenu() {
         System.out.println("1.signUp\n2.signIn\n3.exit");
-        final int option = USER_VIEW.getUserChoice();
+        final int option = USER_VIEW.obtainUserChoice();
 
         switch (option) {
             case 1:
@@ -42,7 +51,6 @@ public class AuthenticationView extends ScannerInstance {
                 signIn();
                 break;
             case 3:
-                SCANNER.close();
                 System.exit(0);
                 break;
             default:
@@ -55,9 +63,10 @@ public class AuthenticationView extends ScannerInstance {
      * <P> Gets user type for sign in </P>
      */
     public void signIn() {
-        if (AUTHENTICATION_CONTROLLER.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
+        System.out.println("Enter the email and password");
+        if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
             System.out.println("Sign in successful");
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         } else {
             System.out.println("Sign in unsuccessful");
             signIn();
@@ -72,9 +81,9 @@ public class AuthenticationView extends ScannerInstance {
     public void signUp() {
         try {
             final String userEmail = USER_VIEW.getEmail();
-            final String phoneNumber = USER_VIEW.getPhoneNumber();
+            final String phoneNumber = USER_VIEW.obtainPhoneNumber();
 
-            if (AUTHENTICATION_CONTROLLER.isUserEmailExists(userEmail) || AUTHENTICATION_CONTROLLER.isNumberExists(phoneNumber)) {
+            if (authenticationController.isUserEmailExists(userEmail) || authenticationController.isNumberExists(phoneNumber)) {
                 System.out.println("The email or phone number is already exists");
                 signUp();
             }
@@ -84,12 +93,12 @@ public class AuthenticationView extends ScannerInstance {
             user.setEmail(userEmail);
             user.setPhoneNumber(phoneNumber);
             user.setPassword(USER_VIEW.getPassword());
-            user.setName(USER_VIEW.getName());
+            user.setName(USER_VIEW.obtainName());
             user.setAddress(USER_VIEW.getAddress());
 
-            if (AUTHENTICATION_CONTROLLER.signUp(user)) {
+            if (authenticationController.signUp(user)) {
                 System.out.println("Sing up successful");
-                USER_VIEW.getUserOptions();
+                USER_VIEW.obtainUserOptions();
             } else {
                 System.out.println("Sign up unsuccessful");
                 displayMenu();
@@ -98,5 +107,4 @@ public class AuthenticationView extends ScannerInstance {
             System.out.println(exception.getMessage());
         }
     }
-
 }
