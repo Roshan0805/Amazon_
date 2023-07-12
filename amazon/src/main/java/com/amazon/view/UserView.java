@@ -2,7 +2,7 @@ package com.amazon.view;
 
 import com.amazon.controller.UserController;
 import com.amazon.model.User;
-import com.amazon.view.validation.UserValidation;
+import com.amazon.view.validation.UserValidator;
 
 import java.util.Collection;
 
@@ -17,12 +17,16 @@ import java.util.Collection;
 public class UserView extends ScannerInstance {
 
     private static UserView USER_VIEW = null;
-    protected final UserValidation USER_VALIDATION = UserValidation.getInstance();
-    protected static final AuthenticationView AUTHENTICATION_VIEW = AuthenticationView.getInstance();
-    protected final UserController userController = UserController.getInstance();
-    private final ProductView productView = ProductView.getInstance();
+    protected final UserValidator USER_VALIDATION;
+    private final AuthenticationView authenticationView;
+    protected final UserController userController;
+    private final ProductView productView;
 
     protected UserView() {
+        authenticationView = AuthenticationView.getInstance();
+        userController = UserController.getInstance();
+        productView = ProductView.getInstance();
+        USER_VALIDATION = UserValidator.getInstance();
     }
 
     /**
@@ -46,7 +50,7 @@ public class UserView extends ScannerInstance {
      */
     public void accessUser(final Long userId) {
         System.out.println("Choose from the options\n1.get user\n2.update user\n3.delete user\n4.back to user menu");
-        final int userOption = getUserChoice();
+        final int userOption = obtainUserChoice();
 
         switch (userOption) {
             case 1:
@@ -57,10 +61,10 @@ public class UserView extends ScannerInstance {
                 break;
             case 3:
                 delete(userId);
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
                 break;
             case 4:
-                getUserOptions();
+                obtainUserOptions();
                 break;
             default:
                 System.out.println("Enter the correct option");
@@ -68,10 +72,10 @@ public class UserView extends ScannerInstance {
         }
         System.out.println("Do you want to continue press yes(y) or return back to menu press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (USER_VALIDATION.toContinueValidation(getString)) {
             accessUser(userId);
         } else {
-            getUserOptions();
+            obtainUserOptions();
         }
     }
 
@@ -107,7 +111,7 @@ public class UserView extends ScannerInstance {
 
         if (user == null) {
             System.out.println("User not found");
-            getUserOptions();
+            obtainUserOptions();
         }
         updateName(user);
         updateEmail(user);
@@ -115,7 +119,7 @@ public class UserView extends ScannerInstance {
         updateAddress(user);
         updatePhoneNo(user);
         userController.update(user, userId);
-        getUserOptions();
+        obtainUserOptions();
 
     }
 
@@ -129,8 +133,8 @@ public class UserView extends ScannerInstance {
     private void updateName(final User user) {
         System.out.println("Do you want to update user name press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
-            user.setName(getName());
+        if (USER_VALIDATION.toContinueValidation(getString)) {
+            user.setName(obtainName());
         }
     }
 
@@ -144,7 +148,7 @@ public class UserView extends ScannerInstance {
     private void updateEmail(final User user) {
         System.out.println("Do you want to update user email press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (USER_VALIDATION.toContinueValidation(getString)) {
             user.setEmail(getEmail());
         }
     }
@@ -159,7 +163,7 @@ public class UserView extends ScannerInstance {
     private void updatePassword(final User user) {
         System.out.println("Do you want to update user password press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (USER_VALIDATION.toContinueValidation(getString)) {
             user.setPassword(getPassword());
         }
     }
@@ -174,7 +178,7 @@ public class UserView extends ScannerInstance {
     private void updateAddress(final User user) {
         System.out.println("Do you want to update user address press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (USER_VALIDATION.toContinueValidation(getString)) {
             user.setAddress(getAddress());
         }
     }
@@ -189,8 +193,8 @@ public class UserView extends ScannerInstance {
     private void updatePhoneNo(final User user) {
         System.out.println("Do you want to update user phone number press yes(y) else press no(n)");
 
-        if (USER_VALIDATION.toContinueValidation(SCANNER.nextLine().trim())) {
-            user.setPhoneNumber(getPhoneNumber());
+        if (USER_VALIDATION.toContinueValidation(getString)) {
+            user.setPhoneNumber(obtainPhoneNumber());
         }
     }
 
@@ -219,10 +223,10 @@ public class UserView extends ScannerInstance {
     public String getEmail() {
         try {
             System.out.println("Enter the email id\t(press # for logout to menu)");
-            final String email = SCANNER.nextLine().trim();
+            final String email = getString;
 
             if (USER_VALIDATION.isReturnToMenu(email)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
 
             if (USER_VALIDATION.validateEmail(email)) {
@@ -247,10 +251,10 @@ public class UserView extends ScannerInstance {
     public Long getId() {
         try {
             System.out.println("Enter the user id\t(press # for logout to menu)");
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
             if (USER_VALIDATION.isReturnToMenu(userChoice)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
             final Long id = Long.parseLong(userChoice);
 
@@ -276,10 +280,10 @@ public class UserView extends ScannerInstance {
         try {
             System.out.println(String.join(" ", "Enter the password\t(password must contain",
                     "one capital letter small letter, number and a symbol)\t(press # for logout to menu)"));
-            final String password = SCANNER.nextLine().trim();
+            final String password = getString;
 
             if (USER_VALIDATION.isReturnToMenu(password)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
 
             if (USER_VALIDATION.validatePassword(password)) {
@@ -303,10 +307,10 @@ public class UserView extends ScannerInstance {
     public String getAddress() {
         try {
             System.out.println(("Enter the address with door no\t (press # for logout to menu)"));
-            final String address = SCANNER.nextLine().trim();
+            final String address = getString;
 
             if (USER_VALIDATION.isReturnToMenu(address)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
 
             if (USER_VALIDATION.validateAddress(address)) {
@@ -328,13 +332,13 @@ public class UserView extends ScannerInstance {
      *
      * @return Represents username the user entered
      */
-    public String getName() {
+    public String obtainName() {
         try {
             System.out.println("Enter the name\t(press # for logout to menu)");
-            final String userName = SCANNER.nextLine().trim();
+            final String userName = getString;
 
             if (USER_VALIDATION.isReturnToMenu(userName)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
 
             if (USER_VALIDATION.validateUserName(userName)) {
@@ -344,7 +348,7 @@ public class UserView extends ScannerInstance {
         } catch (final IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getName();
+        return obtainName();
     }
 
     /**
@@ -354,13 +358,13 @@ public class UserView extends ScannerInstance {
      *
      * @return Represents phone number the user entered
      */
-    public String getPhoneNumber() {
+    public String obtainPhoneNumber() {
         try {
             System.out.println("Enter the phone no\t(press # for logout)");
-            final String phoneNo = SCANNER.nextLine().trim();
+            final String phoneNo = getString;
 
             if (USER_VALIDATION.isReturnToMenu(phoneNo)) {
-                AUTHENTICATION_VIEW.displayMenu();
+                authenticationView.displayMenu();
             }
 
             if (USER_VALIDATION.validatePhone(phoneNo)) {
@@ -370,7 +374,7 @@ public class UserView extends ScannerInstance {
         } catch (final IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getPhoneNumber();
+        return obtainPhoneNumber();
     }
 
     /**
@@ -380,13 +384,13 @@ public class UserView extends ScannerInstance {
      *
      * @return Represents value that the user entered
      */
-    public int getUserChoice() {
+    public int obtainUserChoice() {
         System.out.println("Enter the choice\t(press # for return to menu)");
         try {
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
             if (USER_VALIDATION.isReturnToMenu(userChoice)) {
-                getUserOptions();
+                obtainUserOptions();
             }
 
             return Integer.parseInt(userChoice);
@@ -396,7 +400,7 @@ public class UserView extends ScannerInstance {
             System.out.println("Enter valid input");
         }
 
-        return getUserChoice();
+        return obtainUserChoice();
     }
 
     /**
@@ -404,13 +408,13 @@ public class UserView extends ScannerInstance {
      * Provides option for access user details and the products details and logout
      * </p>
      */
-    public void getUserOptions() {
+    public void obtainUserOptions() {
         System.out.println(String.join("", "Choose from the options\n1.admin details\n",
                 "2.sell product\n3.view products\n4.cart details\n5.order details\n6.get all user\n7.logout"));
-        final int userOption = getUserChoice();
+        final int userOption = obtainUserChoice();
 
         if (7 == userOption) {
-            AUTHENTICATION_VIEW.displayMenu();
+            authenticationView.displayMenu();
         }
         final Long userId = USER_VIEW.getId();
 
@@ -435,7 +439,7 @@ public class UserView extends ScannerInstance {
                 break;
             default:
                 System.out.println("Enter the correct option");
-                getUserOptions();
+                obtainUserOptions();
         }
     }
 
@@ -452,6 +456,6 @@ public class UserView extends ScannerInstance {
         } else {
             System.out.println(users);
         }
-        getUserOptions();
+        obtainUserOptions();
     }
 }

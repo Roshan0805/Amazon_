@@ -12,17 +12,18 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class ScannerInstance {
-    private static final Scanner SCANNER_REFERENCE = new Scanner(System.in);
-    protected final Scanner SCANNER = getScanner();
+    private static final ScannerInstance SCANNER_REFERENCE = new ScannerInstance();
+    private final Scanner SCANNER = new Scanner(System.in);
+    protected final String getString = SCANNER.nextLine().trim();
 
     /**
      * <p>
-     * References the scanner instance creation, it refer the single instance of scanner;
+     * References the single instance of scanner instance is created ;
      * </p>
      *
      * @return Represents the {@link Scanner}
      */
-    public static Scanner getScanner() {
+    public static ScannerInstance getInstance() {
         return SCANNER_REFERENCE;
     }
 }

@@ -9,7 +9,7 @@ import com.amazon.model.User;
 import com.amazon.view.builder.CartBuilder;
 import com.amazon.view.builder.OrderBuilder;
 import com.amazon.view.builder.ProductBuilder;
-import com.amazon.view.validation.ProductValidation;
+import com.amazon.view.validation.ProductValidator;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,15 +26,21 @@ import java.util.Map;
 public class ProductView extends ScannerInstance {
 
     private static ProductView productView = null;
-    private static final UserView USER_VIEW = UserView.getInstance();
-    public final ProductController productController = ProductController.getInstance();
-    private final ProductBuilder productBuilder = ProductBuilder.getInstance();
-    private final OrderBuilder orderBuilder = OrderBuilder.getInstance();
-    private final CartBuilder cartBuilder = CartBuilder.getInstance();
-    public final ProductValidation productValidation = ProductValidation.getInstance();
+    private final UserView USER_VIEW ;
+    public final ProductController productController ;
+    private final ProductBuilder productBuilder ;
+    private final OrderBuilder orderBuilder ;
+    private final CartBuilder cartBuilder ;
+    public final ProductValidator productValidator;
 
 
     protected ProductView() {
+        USER_VIEW = UserView.getInstance();
+        productController = ProductController.getInstance();
+        productBuilder = ProductBuilder.getInstance();
+        orderBuilder = OrderBuilder.getInstance();
+        cartBuilder = CartBuilder.getInstance();
+        productValidator = ProductValidator.getInstance();
     }
 
     /**
@@ -58,23 +64,23 @@ public class ProductView extends ScannerInstance {
     public void accessProduct(final Long userId) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t",
                 "2.add product", "\t3.update product\t4.delete product\t5.Back to admin option"));
-        final int userOption = USER_VIEW.getUserChoice();
+        final int userOption = USER_VIEW.obtainUserChoice();
 
         switch (userOption) {
             case 1:
                 viewUserProduct(userId);
                 break;
             case 2:
-                add(userId);
+                createProduct(userId);
                 break;
             case 3:
-                update(userId);
+                updateProduct(userId);
                 break;
             case 4:
                 delete(userId);
                 break;
             case 5:
-                USER_VIEW.getUserOptions();
+                USER_VIEW.obtainUserOptions();
                 break;
             default:
                 System.out.println("Enter the correct option");
@@ -84,10 +90,10 @@ public class ProductView extends ScannerInstance {
         System.out.println(String.join("", "Do you want to continue on product press yes(y) else ",
                 "press any letter key for back to admin options"));
 
-        if (productValidation.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (productValidator.toContinueValidation(getString)) {
             accessProduct(userId);
         } else {
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         }
     }
 
@@ -98,11 +104,11 @@ public class ProductView extends ScannerInstance {
      *
      * @param userId Represents the id of {@link User}
      */
-    private void update(final long userId) {
+    private void updateProduct(final long userId) {
         System.out.println("Enter the product id for update product information");
-        final long productId = USER_VIEW.getUserChoice();
+        final long productId = USER_VIEW.obtainUserChoice();
 
-        if (productValidation.validateProductIds(productId, userId)) {
+        if (productValidator.validateProductIds(productId, userId)) {
 
             final Product product = productController.get(productId);
 
@@ -121,7 +127,7 @@ public class ProductView extends ScannerInstance {
 
         } else {
             System.out.println("Enter a valid id for update");
-            update(userId);
+            updateProduct(userId);
         }
     }
 
@@ -134,11 +140,11 @@ public class ProductView extends ScannerInstance {
      */
     private void updateName(final Product product) {
         System.out.println("Do you want to update product name press yes(y) else press any letter key");
-        final String userChoice = SCANNER.nextLine().trim();
+        final String userChoice = getString;
 
-        if (productValidation.toContinueValidation(userChoice)) {
+        if (productValidator.toContinueValidation(userChoice)) {
             System.out.println("Enter the product name for update");
-            final String productName = SCANNER.nextLine().trim();
+            final String productName = getString;
 
             product.setName(productName);
         }
@@ -153,11 +159,11 @@ public class ProductView extends ScannerInstance {
      */
     private void updateDescription(final Product product) {
         System.out.println("Do you want to update product description press yes(y) else enter any other letter key");
-        final String userChoice = SCANNER.nextLine().trim();
+        final String userChoice = getString;
 
-        if (productValidation.toContinueValidation(userChoice)) {
+        if (productValidator.toContinueValidation(userChoice)) {
             System.out.println("Enter the product description for update");
-            final String description = SCANNER.nextLine().trim();
+            final String description = getString;
 
             product.setDescription(description);
         }
@@ -172,13 +178,13 @@ public class ProductView extends ScannerInstance {
      */
     private void updatePrice(final Product product) {
         System.out.println("Do you want to update product price press yes(y) else enter any other letter key");
-        final String userChoice = SCANNER.nextLine().trim();
+        final String userChoice = getString;
 
-        if (productValidation.toContinueValidation(userChoice)) {
+        if (productValidator.toContinueValidation(userChoice)) {
             System.out.println("Enter the product price for update");
 
             try {
-                final double productPrice = Double.parseDouble(SCANNER.nextLine().trim());
+                final double productPrice = Double.parseDouble(getString);
                 product.setPrice(productPrice);
             } catch (final NumberFormatException exception) {
                 System.out.println(exception.getMessage());
@@ -195,13 +201,13 @@ public class ProductView extends ScannerInstance {
      */
     private void updateAvailable(final Product product) {
         System.out.println("Do you want to update available product press yes(y) else enter any other letter key");
-        final String userChoice = SCANNER.nextLine().trim();
+        final String userChoice = getString;
 
-        if (productValidation.toContinueValidation(userChoice)) {
+        if (productValidator.toContinueValidation(userChoice)) {
             System.out.println("Enter the available product for update");
 
             try {
-                final Long availableProduct = Long.parseLong(SCANNER.nextLine().trim());
+                final Long availableProduct = Long.parseLong(getString);
                 product.setAvailable(availableProduct);
             } catch (final NumberFormatException exception) {
                 System.out.println(exception.getMessage());
@@ -219,7 +225,7 @@ public class ProductView extends ScannerInstance {
     private void delete(final Long userId) {
         viewUserProduct(userId);
         System.out.println("Enter the product id to delete the product details ");
-        final int productId = USER_VIEW.getUserChoice();
+        final int productId = USER_VIEW.obtainUserChoice();
 
         if (productController.delete(productId)) {
             System.out.println("Product deleted successfully");
@@ -237,20 +243,20 @@ public class ProductView extends ScannerInstance {
      *
      * @param userId Represents the id of {@link User}
      */
-    private void add(final Long userId) {
+    private void createProduct(final Long userId) {
         System.out.println("Do you want to add new product press yes(y) or add existing product press press (E)");
-        final String userChoice = SCANNER.nextLine().trim();
+        final String userChoice = getString;
 
         if ("e".equalsIgnoreCase(userChoice)) {
             System.out.println("Enter the product id then enter the number of product have to be added");
 
             try {
-                productController.updateQuantityInProduct(getQuantity(), USER_VIEW.getId());
+                productController.updateQuantityInProduct(bringQuantity(), USER_VIEW.getId());
             } catch (NumberFormatException exception) {
                 System.out.println("Enter the values in numbers");
             }
         } else if ("y".equalsIgnoreCase(userChoice)) {
-            final Product product = productBuilder.buildProduct(getCategory(userId), getName(userId), getDescription(userId), getQuantity(), getPrice(userId), userId);
+            final Product product = productBuilder.buildProduct(bringCategory(userId), bringName(userId), bringDescription(userId), bringQuantity(), obtainPrice(userId), userId);
 
             if (productController.add(product)) {
                 System.out.println("Product added successfully");
@@ -259,14 +265,14 @@ public class ProductView extends ScannerInstance {
             }
             System.out.println("Do you want to add more products yes(y) otherwise press n for back to menu");
 
-            if (productValidation.toContinueValidation(SCANNER.nextLine().trim())) {
-                add(userId);
+            if (productValidator.toContinueValidation(getString)) {
+                createProduct(userId);
             } else {
                 productView.accessProduct(userId);
             }
         } else {
             System.out.println("Enter a valid choice");
-            add(userId);
+            createProduct(userId);
         }
     }
 
@@ -275,26 +281,26 @@ public class ProductView extends ScannerInstance {
      *
      * @return The quantity of product
      */
-    private Long getQuantity() {
+    private Long bringQuantity() {
         System.out.println("Enter the quantity you want in number press # for back to product options");
 
         try {
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
-            if (productValidation.isReturnToMenu(userChoice)) {
-                USER_VIEW.getUserOptions();
+            if (productValidator.isReturnToMenu(userChoice)) {
+                USER_VIEW.obtainUserOptions();
             }
 
             try {
                 return Long.parseLong(userChoice);
             } catch (NumberFormatException exception) {
                 System.out.println("Enter the quantity in number");
-                getQuantity();
+                bringQuantity();
             }
         } catch (StringIndexOutOfBoundsException exception) {
             System.out.println("Enter valid id");
         }
-        return getQuantity();
+        return bringQuantity();
     }
 
     /**
@@ -305,15 +311,15 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents {@link User} id
      * @return Represent {@link Product.Category}
      */
-    public Product.Category getCategory(final Long userId) {
+    public Product.Category bringCategory(final Long userId) {
         System.out.println(String.join("", "Enter the product category\n1.mobile_phones\n",
                 "2.footwear\n3.electronics\n4.clothing\n5.kitchen_appliances\n6.sports\n7.books\n8.toys\t",
                 "(press # to return to product menu)"));
 
         try {
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
-            if (productValidation.isReturnToMenu(userChoice)) {
+            if (productValidator.isReturnToMenu(userChoice)) {
                 accessProduct(userId);
             }
 
@@ -331,7 +337,7 @@ public class ProductView extends ScannerInstance {
             System.out.println("Enter a valid category");
         }
 
-        return getCategory(userId);
+        return bringCategory(userId);
     }
 
     /**
@@ -342,12 +348,12 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents user userId
      * @return Represents {@link Product} name
      */
-    public String getName(final Long userId) {
+    public String bringName(final Long userId) {
         try {
             System.out.println("Enter the product name\t(press # for back to menu)");
-            final String productName = SCANNER.nextLine();
+            final String productName = getString;
 
-            if (productValidation.isReturnToMenu(productName)) {
+            if (productValidator.isReturnToMenu(productName)) {
                 accessProduct(userId);
             }
 
@@ -356,7 +362,7 @@ public class ProductView extends ScannerInstance {
             System.out.println(exception.getMessage());
         }
 
-        return getName(userId);
+        return bringName(userId);
     }
 
 
@@ -368,12 +374,12 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents user userId
      * @return Represents {@link Product} description
      */
-    public String getDescription(final Long userId) {
+    public String bringDescription(final Long userId) {
         try {
             System.out.println("Enter the product description\t(press # for back to menu)");
-            final String description = SCANNER.nextLine();
+            final String description = getString;
 
-            if (productValidation.isReturnToMenu(description)) {
+            if (productValidator.isReturnToMenu(description)) {
                 accessProduct(userId);
             }
 
@@ -382,7 +388,7 @@ public class ProductView extends ScannerInstance {
             System.out.println(exception.getMessage());
         }
 
-        return getDescription(userId);
+        return bringDescription(userId);
     }
 
     /**
@@ -393,13 +399,13 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents {@link User} id
      * @return Represents price value entered by user
      */
-    public double getPrice(final Long userId) {
+    public double obtainPrice(final Long userId) {
         System.out.println("Enter the Product price\t(press # for back to product menu)");
 
         try {
-            final double productPrice = Double.parseDouble(SCANNER.nextLine().trim());
+            final double productPrice = Double.parseDouble(getString);
 
-            if (productValidation.isReturnToMenu(String.valueOf(productPrice))) {
+            if (productValidator.isReturnToMenu(String.valueOf(productPrice))) {
                 accessProduct(userId);
             }
             return productPrice;
@@ -409,8 +415,8 @@ public class ProductView extends ScannerInstance {
         System.out.println("Do you want to enter price again press yes(y) else press any letter key");
 
         try {
-            if ("y".equalsIgnoreCase(SCANNER.nextLine().trim())) {
-                return getPrice(userId);
+            if ("y".equalsIgnoreCase(getString)) {
+                return obtainPrice(userId);
             }
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
@@ -427,20 +433,20 @@ public class ProductView extends ScannerInstance {
         final Collection<Product> products = productController.getAllProduct();
         if (products == null) {
             System.out.println("The product list is empty");
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         }
         System.out.println(products);
         System.out.println("Do you want to add product to cart press yes(y) else no(n)");
 
-        if (productValidation.toContinueValidation(SCANNER.nextLine().trim())) {
-            addToCart(userId);
+        if (productValidator.toContinueValidation(getString)) {
+            createCart(userId);
         }
         System.out.println("Do you want to order product press yes(y) else no(n)");
 
-        if (productValidation.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (productValidator.toContinueValidation(getString)) {
             orderProduct(userId);
         }
-        USER_VIEW.getUserOptions();
+        USER_VIEW.obtainUserOptions();
     }
 
     /**
@@ -468,7 +474,7 @@ public class ProductView extends ScannerInstance {
      */
     public void accessOrder(final Long userId) {
         System.out.println("Enter the Option\n1.get all orders \n2.remove order\n3.get order");
-        final int userChoice = USER_VIEW.getUserChoice();
+        final int userChoice = USER_VIEW.obtainUserChoice();
 
         switch (userChoice) {
             case 1:
@@ -478,7 +484,7 @@ public class ProductView extends ScannerInstance {
                 cancelOrder(userId);
                 break;
             case 3:
-                getOrder(userId);
+                obtainOrder(userId);
                 break;
             default:
                 System.out.println("Enter the correct option");
@@ -496,7 +502,7 @@ public class ProductView extends ScannerInstance {
     public void orderProduct(final Long userId) {
 
         try {
-            if (productController.order(orderBuilder.buildOrder(getId(), getQuantity(), getPaymentType(),
+            if (productController.order(orderBuilder.buildOrder(obtainId(), bringQuantity(), obtainPaymentType(),
                     userId))) {
                 System.out.println("Product ordered successfully");
             } else {
@@ -508,10 +514,10 @@ public class ProductView extends ScannerInstance {
 
         System.out.println("Do you want to order more product");
 
-        if (productValidation.toContinueValidation(SCANNER.nextLine().trim())) {
+        if (productValidator.toContinueValidation(getString)) {
             orderProduct(userId);
         } else {
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         }
     }
 
@@ -531,15 +537,15 @@ public class ProductView extends ScannerInstance {
      * Represents the payment type of user for order
      * </p>
      */
-    public Order.Payment getPaymentType() {
+    public Order.Payment obtainPaymentType() {
         System.out.println(String.join("", "Enter the payment method\n1.cash on delivery\n",
                 "2.credit or debit cart\n3.net banking\n4.other upi apps"));
 
         try {
-            final int paymentChoice = Integer.parseInt(SCANNER.nextLine().trim());
+            final int paymentChoice = Integer.parseInt(getString);
 
-            if (productValidation.isReturnToMenu(String.valueOf(paymentChoice))) {
-                USER_VIEW.getUserOptions();
+            if (productValidator.isReturnToMenu(String.valueOf(paymentChoice))) {
+                USER_VIEW.obtainUserOptions();
             }
             final Order.Payment paymentType = Order.Payment.getPayment(paymentChoice);
 
@@ -552,7 +558,7 @@ public class ProductView extends ScannerInstance {
         } catch (IllegalArgumentException exception) {
             System.out.println("Enter a valid category");
         }
-        return getPaymentType();
+        return obtainPaymentType();
     }
 
     /**
@@ -562,24 +568,24 @@ public class ProductView extends ScannerInstance {
      *
      * @param userId Represents the id of {@link User}
      */
-    public void getOrder(final Long userId) {
+    public void obtainOrder(final Long userId) {
         System.out.println("Enter the order id (press # to back to menu)");
         try {
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
-            if (productValidation.isReturnToMenu(userChoice)) {
+            if (productValidator.isReturnToMenu(userChoice)) {
                 accessOrder(userId);
             }
             final Order order = productController.getOrder(Long.valueOf(userChoice));
 
             if (null == order) {
                 System.out.println("Order is not found");
-                getOrder(userId);
+                obtainOrder(userId);
             }
             System.out.println(order);
         } catch (NumberFormatException exception) {
             System.out.println("Enter a valid order id");
-            getOrder(userId);
+            obtainOrder(userId);
         }
         accessOrder(userId);
     }
@@ -596,7 +602,7 @@ public class ProductView extends ScannerInstance {
         System.out.println("Enter the order id for remove from order");
 
         try {
-            final Long orderId = Long.parseLong(SCANNER.nextLine().trim());
+            final Long orderId = Long.parseLong(getString);
 
             if (productController.cancelOrder(orderId)) {
                 System.out.println("Order removed successfully");
@@ -620,7 +626,7 @@ public class ProductView extends ScannerInstance {
      */
     public void accessCart(final Long userId) {
         System.out.println("Enter the Option\n1.get cart\n2.remove product cart");
-        final int userChoice = USER_VIEW.getUserChoice();
+        final int userChoice = USER_VIEW.obtainUserChoice();
 
         switch (userChoice) {
             case 1:
@@ -642,16 +648,16 @@ public class ProductView extends ScannerInstance {
      *
      * @param userId Represents the id of {@link User}
      */
-    public void addToCart(final Long userId) {
+    public void createCart(final Long userId) {
         System.out.println("Enter the product id for add to cart(press # fro return to menu)");
 
         try {
-            final Long productId = getId();
+            final Long productId = obtainId();
 
-            if (productValidation.isReturnToMenu(String.valueOf(productId))) {
-                USER_VIEW.getUserOptions();
+            if (productValidator.isReturnToMenu(String.valueOf(productId))) {
+                USER_VIEW.obtainUserOptions();
             }
-            final Long quantity = getQuantity();
+            final Long quantity = bringQuantity();
 
             if (productController.getCartProductIds(userId).contains(productId)) {
                 productController.updateQuantityInCart(quantity, productId);
@@ -665,14 +671,14 @@ public class ProductView extends ScannerInstance {
             }
             System.out.println("Do you want to add more product in cart");
 
-            if (productValidation.toContinueValidation(SCANNER.nextLine())) {
-                addToCart(userId);
+            if (productValidator.toContinueValidation(getString)) {
+                createCart(userId);
             } else {
-                USER_VIEW.getUserOptions();
+                USER_VIEW.obtainUserOptions();
             }
         } catch (NumberFormatException exception) {
             System.out.println("Enter the correct product id");
-            addToCart(userId);
+            createCart(userId);
         }
     }
 
@@ -688,16 +694,16 @@ public class ProductView extends ScannerInstance {
 
         if (null == cartList) {
             System.out.println("Your cart is empty");
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         } else {
             System.out.println(cartList);
             System.out.println("do you want to order the products");
 
-            if (productValidation.toContinueValidation(SCANNER.nextLine())) {
+            if (productValidator.toContinueValidation(getString)) {
                 System.out.println("Enter the cart id");
 
                 try {
-                    final Cart cart = productController.getCart(Long.parseLong(SCANNER.nextLine()));
+                    final Cart cart = productController.getCart(Long.parseLong(getString));
                     if (null == cart) {
                         System.out.println("Enter the valid cart id ");
                         getCart(userId);
@@ -710,8 +716,8 @@ public class ProductView extends ScannerInstance {
             }
             System.out.println("Do you want to exit press yes(y) else no(n)");
 
-            if (productValidation.toContinueValidation(SCANNER.nextLine())) {
-                USER_VIEW.getUserOptions();
+            if (productValidator.toContinueValidation(getString)) {
+                USER_VIEW.obtainUserOptions();
             } else {
                 getCart(userId);
             }
@@ -726,7 +732,7 @@ public class ProductView extends ScannerInstance {
      * @param cart Represents the {@link Cart}
      */
     public void cartToOrder(final Cart cart) {
-        final Order order = new Order(cart, getPaymentType());
+        final Order order = new Order(cart, obtainPaymentType());
         productController.order(order);
     }
 
@@ -742,7 +748,7 @@ public class ProductView extends ScannerInstance {
         System.out.println("Enter the cart id for remove from cart");
 
         try {
-            final Long cartId = Long.parseLong(SCANNER.nextLine());
+            final Long cartId = Long.parseLong(getString);
 
             if (productController.removeCart(cartId)) {
                 System.out.println("product removed successfully");
@@ -764,20 +770,20 @@ public class ProductView extends ScannerInstance {
      *
      * @return Represents email id the user entered
      */
-    public Long getId() {
+    public Long obtainId() {
         try {
             System.out.println("Enter the product id\t(press # for logout to menu)");
-            final String userChoice = SCANNER.nextLine().trim();
+            final String userChoice = getString;
 
-            if (productValidation.isReturnToMenu(userChoice)) {
-                USER_VIEW.getUserOptions();
+            if (productValidator.isReturnToMenu(userChoice)) {
+                USER_VIEW.obtainUserOptions();
             }
 
             return Long.parseLong(userChoice);
         } catch (NumberFormatException | IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getId();
+        return obtainId();
     }
 }
 

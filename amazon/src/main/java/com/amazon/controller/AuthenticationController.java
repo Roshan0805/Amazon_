@@ -8,9 +8,12 @@ import com.amazon.service.impl.AuthenticationServiceImpl;
 public class AuthenticationController {
 
     private static final AuthenticationController AUTHENTICATION_CONTROLLER = new AuthenticationController();
-    private static final AuthenticationService AUTHENTICATION_SERVICE2 = AuthenticationServiceImpl2.getInstance();
-    private static final AuthenticationService AUTHENTICATION_SERVICE = AuthenticationServiceImpl.getInstance();
-    private AuthenticationController () {}
+    private final AuthenticationService AUTHENTICATION_SERVICE2 ;
+    private final AuthenticationService AUTHENTICATION_SERVICE ;
+    private AuthenticationController () {
+        AUTHENTICATION_SERVICE2 = AuthenticationServiceImpl2.getInstance();
+        AUTHENTICATION_SERVICE = AuthenticationServiceImpl.getInstance();
+    }
 
     public static AuthenticationController getInstance() {
         return AUTHENTICATION_CONTROLLER;
