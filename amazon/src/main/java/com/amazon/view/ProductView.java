@@ -1,6 +1,7 @@
 package com.amazon.view;
 
 import com.amazon.controller.ProductController;
+import com.amazon.exception.DBException;
 import com.amazon.exception.UnavailableQuantityException;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
@@ -27,10 +28,10 @@ public class ProductView extends ScannerInstance {
 
     private static ProductView productView = null;
     private static final UserView userView = UserView.getInstance();
-    public final ProductController productController = ProductController.getInstance() ;
+    public final ProductController productController = ProductController.getInstance();
     private final ProductBuilder productBuilder = ProductBuilder.getInstance();
-    private final OrderBuilder orderBuilder  = OrderBuilder.getInstance();
-    private final CartBuilder cartBuilder = CartBuilder.getInstance() ;
+    private final OrderBuilder orderBuilder = OrderBuilder.getInstance();
+    private final CartBuilder cartBuilder = CartBuilder.getInstance();
     public final ProductValidator productValidator = ProductValidator.getInstance();
 
     private ProductView() {
@@ -98,27 +99,32 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents the id of {@link User}
      */
     private void updateProduct(final long userId) {
-        System.out.println("Enter the product id for update product information");
-        final Long productId = userView.getId();
 
-        if (productValidator.validateProductIds(productId, userId)) {
-            final Product product = productController.get(productId);
+        try {
+            System.out.println("Enter the product id for update product information");
+            final Long productId = userView.getId();
 
-            System.out.println(product.getAvailable());
-            updateName(product);
-            updateDescription(product);
-            updatePrice(product);
-            updateAvailable(product);
+            if (productValidator.validateProductIds(productId, userId)) {
+                final Product product = productController.get(productId);
 
-            if (productController.update(productId, product)) {
-                System.out.println("Updated successfully");
-                accessProduct(userId);
+                System.out.println(product.getAvailable());
+                updateName(product);
+                updateDescription(product);
+                updatePrice(product);
+                updateAvailable(product);
+
+                if (productController.update(productId, product)) {
+                    System.out.println("Updated successfully");
+                    accessProduct(userId);
+                } else {
+                    System.out.println("Updated unsuccessful");
+                }
             } else {
-                System.out.println("Updated unsuccessful");
+                System.out.println("Enter a valid id for update");
+                updateProduct(userId);
             }
-        } else {
-            System.out.println("Enter a valid id for update");
-            updateProduct(userId);
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -215,15 +221,19 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents the id of {@link User}
      */
     private void delete(final Long userId) {
-        viewUserProduct(userId);
-        System.out.println("Enter the product id to delete the product details ");
-        final Long productId = userView.getId();
+        try {
+            viewUserProduct(userId);
+            System.out.println("Enter the product id to delete the product details ");
+            final Long productId = userView.getId();
 
-        if (productController.delete(productId)) {
-            System.out.println("Product deleted successfully");
-        } else {
-            System.out.println("Deleted unsuccessful enter a valid product id");
-            delete(userId);
+            if (productController.delete(productId)) {
+                System.out.println("Product deleted successfully");
+            } else {
+                System.out.println("Deleted unsuccessful enter a valid product id");
+                delete(userId);
+            }
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -427,23 +437,27 @@ public class ProductView extends ScannerInstance {
      * </p>
      */
     public void viewProduct(final Long userId) {
-        final Collection<Product> products = productController.getAllProduct();
-        if (products == null) {
-            System.out.println("The product list is empty");
+        try {
+            final Collection<Product> products = productController.getAllProduct();
+            if (products == null) {
+                System.out.println("The product list is empty");
+                userView.obtainUserOptions();
+            }
+            System.out.println(products);
+            System.out.println("Do you want to add product to cart press yes(y) else no(n)");
+
+            if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
+                createCart(userId);
+            }
+            System.out.println("Do you want to order product press yes(y) else no(n)");
+
+            if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
+                orderProduct(userId);
+            }
             userView.obtainUserOptions();
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
-        System.out.println(products);
-        System.out.println("Do you want to add product to cart press yes(y) else no(n)");
-
-        if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-            createCart(userId);
-        }
-        System.out.println("Do you want to order product press yes(y) else no(n)");
-
-        if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-            orderProduct(userId);
-        }
-        userView.obtainUserOptions();
     }
 
     /**
@@ -454,13 +468,17 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents the id of {@link User}
      */
     private void viewUserProduct(final Long userId) {
-        final Map<Long, Product> products = productController.getUserProduct(userId);
+        try {
+            final Map<Long, Product> products = productController.getUserProduct(userId);
 
-        if (products.isEmpty()) {
-            System.out.println("The product list is empty");
-            accessProduct(userId);
+            if (products.isEmpty()) {
+                System.out.println("The product list is empty");
+                accessProduct(userId);
+            }
+            System.out.println(products.values());
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
-        System.out.println(products.values());
     }
 
     /**
@@ -506,7 +524,7 @@ public class ProductView extends ScannerInstance {
             } else {
                 System.out.println("Product ordered unsuccessful");
             }
-        } catch (UnavailableQuantityException exception) {
+        } catch (UnavailableQuantityException | DBException exception) {
             System.out.println(exception.getMessage());
         }
 
@@ -527,7 +545,11 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents the id of {@link User}
      */
     public void getOrderList(final Long userId) {
-        System.out.println(productController.getOrderList(userId));
+        try {
+            System.out.println(productController.getOrderList(userId));
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -581,7 +603,7 @@ public class ProductView extends ScannerInstance {
                 obtainOrder(userId);
             }
             System.out.println(order);
-        } catch (NumberFormatException exception) {
+        } catch (NumberFormatException | DBException exception) {
             System.out.println("Enter a valid order id");
             obtainOrder(userId);
         }
@@ -609,7 +631,7 @@ public class ProductView extends ScannerInstance {
                 System.out.println("Order removed unsuccessful");
                 cancelOrder(userId);
             }
-        } catch (NumberFormatException exception) {
+        } catch (NumberFormatException | DBException exception) {
             System.out.println("Enter the valid order id");
             cancelOrder(userId);
         }
@@ -674,7 +696,7 @@ public class ProductView extends ScannerInstance {
             } else {
                 userView.obtainUserOptions();
             }
-        } catch (NumberFormatException exception) {
+        } catch (NumberFormatException | DBException exception) {
             System.out.println("Enter the correct product id");
             createCart(userId);
         }
@@ -688,37 +710,41 @@ public class ProductView extends ScannerInstance {
      * @param userId Represents the id of {@link User}
      */
     public void getCart(final Long userId) {
-        final List<Cart> cartList = productController.getCartList(userId);
+        try {
+            final List<Cart> cartList = productController.getCartList(userId);
 
-        if (null == cartList) {
-            System.out.println("Your cart is empty");
-            userView.obtainUserOptions();
-        } else {
-            System.out.println(cartList);
-            System.out.println("do you want to order the products");
+            if (null == cartList) {
+                System.out.println("Your cart is empty");
+                userView.obtainUserOptions();
+            } else {
+                System.out.println(cartList);
+                System.out.println("do you want to order the products");
 
-            if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-                System.out.println("Enter the cart id");
+                if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
+                    System.out.println("Enter the cart id");
 
-                try {
-                    final Cart cart = productController.getCart(Long.parseLong(SCANNER.nextLine().trim()));
-                    if (null == cart) {
-                        System.out.println("Enter the valid cart id ");
+                    try {
+                        final Cart cart = productController.getCart(Long.parseLong(SCANNER.nextLine().trim()));
+                        if (null == cart) {
+                            System.out.println("Enter the valid cart id ");
+                            getCart(userId);
+                        }
+                        cartToOrder(cart);
+                    } catch (NumberFormatException exception) {
+                        System.out.println(exception.getMessage());
                         getCart(userId);
                     }
-                    cartToOrder(cart);
-                } catch (NumberFormatException exception) {
-                    System.out.println(exception.getMessage());
+                }
+                System.out.println("Do you want to exit press yes(y) else no(n)");
+
+                if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
+                    userView.obtainUserOptions();
+                } else {
                     getCart(userId);
                 }
             }
-            System.out.println("Do you want to exit press yes(y) else no(n)");
-
-            if (productValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-                userView.obtainUserOptions();
-            } else {
-                getCart(userId);
-            }
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -730,8 +756,12 @@ public class ProductView extends ScannerInstance {
      * @param cart Represents the {@link Cart}
      */
     public void cartToOrder(final Cart cart) {
-        final Order order = new Order(cart, obtainPaymentType());
-        productController.order(order);
+        try {
+            final Order order = new Order(cart, obtainPaymentType());
+            productController.order(order);
+        }  catch (DBException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -755,7 +785,7 @@ public class ProductView extends ScannerInstance {
                 System.out.println("product remove unsuccessful Enter a valid product key");
                 removeCart(userId);
             }
-        } catch (NumberFormatException exception) {
+        } catch (NumberFormatException | DBException exception) {
             System.out.println("Enter the valid product key");
             removeCart(userId);
         }

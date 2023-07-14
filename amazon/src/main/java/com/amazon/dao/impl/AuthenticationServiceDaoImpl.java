@@ -1,6 +1,7 @@
 package com.amazon.dao.impl;
 
 import com.amazon.dao.AuthenticationServiceDao;
+import com.amazon.exception.DBException;
 import com.amazon.model.User;
 
 import java.sql.Connection;
@@ -55,7 +56,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -70,7 +71,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      */
     public boolean signIn(String email, String password) {
         try (final Connection connection = dbConnection.get()) {
-            final String query = "SELECT * FROM USERS WHERE EMAIL = ? AND PASSWORD = ? ";
+            final String query = "SELECT * FROM USERS WHERE EMAIL = ? AND PASSWORD =?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, email);
@@ -81,7 +82,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return resultSet.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -106,7 +107,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -130,7 +131,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 }

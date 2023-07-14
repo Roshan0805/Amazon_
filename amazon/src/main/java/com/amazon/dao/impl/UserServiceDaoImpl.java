@@ -1,6 +1,7 @@
 package com.amazon.dao.impl;
 
 import com.amazon.dao.UserServiceDao;
+import com.amazon.exception.DBException;
 import com.amazon.model.User;
 
 import java.sql.Connection;
@@ -68,7 +69,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
                 return user;
             }
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
         return null;
     }
@@ -92,7 +93,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -123,7 +124,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
 
             return userList;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -152,7 +153,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 }

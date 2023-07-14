@@ -1,6 +1,7 @@
 package com.amazon.dao.impl;
 
 import com.amazon.dao.ProductServiceDao;
+import com.amazon.exception.DBException;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
@@ -71,7 +72,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -107,7 +108,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             return productList;
 
         } catch (SQLException | InterruptedException exception) {;
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -142,7 +143,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             }
             dbConnection.release(connection);
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
 
         return productList;
@@ -181,7 +182,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             }
         } catch (SQLException | InterruptedException exception) {
             System.out.println(exception.getMessage());
-            return null;
+            throw new DBException(exception.getMessage());
         }
         return null;
     }
@@ -213,7 +214,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -236,7 +237,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -261,7 +262,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -296,7 +297,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return cartList;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -331,7 +332,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return null;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -353,7 +354,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -380,7 +381,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return productIds;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -405,7 +406,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -430,7 +431,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -465,7 +466,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -502,7 +503,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return orderList;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -532,7 +533,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return order;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -560,7 +561,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 }

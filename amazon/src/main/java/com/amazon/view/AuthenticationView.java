@@ -1,6 +1,7 @@
 package com.amazon.view;
 
 import com.amazon.controller.AuthenticationController;
+import com.amazon.exception.DBException;
 import com.amazon.model.User;
 
 /**
@@ -61,12 +62,16 @@ public class AuthenticationView extends ScannerInstance {
      * <P> Gets user type for sign in </P>
      */
     public void signIn() {
-        if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
-            System.out.println("Sign in successful");
-            USER_VIEW.obtainUserOptions();
-        } else {
-            System.out.println("Sign in unsuccessful");
-            signIn();
+        try {
+            if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
+                System.out.println("Sign in successful");
+                USER_VIEW.obtainUserOptions();
+            } else {
+                System.out.println("Sign in unsuccessful");
+                signIn();
+            }
+        } catch (DBException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -99,7 +104,7 @@ public class AuthenticationView extends ScannerInstance {
                 System.out.println("Sign up unsuccessful");
                 displayMenu();
             }
-        } catch (final StringIndexOutOfBoundsException exception) {
+        } catch (final StringIndexOutOfBoundsException | DBException exception) {
             System.out.println(exception.getMessage());
         }
     }

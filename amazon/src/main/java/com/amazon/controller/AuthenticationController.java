@@ -80,5 +80,4 @@ public class AuthenticationController {
     public boolean isNumberExists(String phoneNumber) {
         return AUTHENTICATION_SERVICE2.isNumberExists(phoneNumber);
     }
-
 }
