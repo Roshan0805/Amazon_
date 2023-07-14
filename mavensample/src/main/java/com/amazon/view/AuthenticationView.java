@@ -6,7 +6,7 @@ import com.amazon.model.User;
 public class AuthenticationView extends View {
 
     private static final AuthenticationView AUTHENTICATION = new AuthenticationView();
-    private static final AuthenticationController AUTHENTICATION_CONTROLLER = AuthenticationController.getInstance();
+    private final AuthenticationController authenticationController = AuthenticationController.getInstance();
     private final static UserView USER_VIEW = UserView.getInstance();
     protected static Long userId = 1L;
 
@@ -23,7 +23,7 @@ public class AuthenticationView extends View {
      */
     public void displayMenu() {
         System.out.println("1.signUp\n2.signIn\n3.exit");
-        final int option = USER_VIEW.getUserChoice();
+        final int option = USER_VIEW.obtainUserChoice();
 
         switch (option) {
             case 1:
@@ -33,7 +33,6 @@ public class AuthenticationView extends View {
                 signIn();
                 break;
             case 3:
-                SCANNER.close();
                 System.exit(0);
                 break;
             default:
@@ -46,9 +45,10 @@ public class AuthenticationView extends View {
      * <P> Gets user type for sign in </P>
      */
     public void signIn() {
-        if (AUTHENTICATION_CONTROLLER.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
+        System.out.println("Enter the email and password");
+        if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
             System.out.println("Sign in successful");
-            USER_VIEW.getUserOptions();
+            USER_VIEW.obtainUserOptions();
         } else {
             System.out.println("Sign in unsuccessful");
             signIn();
@@ -63,24 +63,23 @@ public class AuthenticationView extends View {
     public void signUp() {
         try {
             final String userEmail = USER_VIEW.getEmail();
-            final String phoneNumber = USER_VIEW.getPhoneNumber();
+            final String phoneNumber = USER_VIEW.obtainPhoneNumber();
 
-            if (AUTHENTICATION_CONTROLLER.isUserEmailExists(userEmail) || AUTHENTICATION_CONTROLLER.isNumberExists(phoneNumber)) {
+            if (authenticationController.isUserEmailExists(userEmail) || authenticationController.isNumberExists(phoneNumber)) {
                 System.out.println("The email or phone number is already exists");
                 signUp();
             }
             final User user = new User();
 
-            user.setId(userId++);
             user.setEmail(userEmail);
             user.setPhoneNumber(phoneNumber);
             user.setPassword(USER_VIEW.getPassword());
-            user.setName(USER_VIEW.getName());
+            user.setName(USER_VIEW.obtainName());
             user.setAddress(USER_VIEW.getAddress());
 
-            if (AUTHENTICATION_CONTROLLER.signUp(user)) {
+            if (authenticationController.signUp(user)) {
                 System.out.println("Sing up successful");
-                USER_VIEW.getUserOptions();
+                USER_VIEW.obtainUserOptions();
             } else {
                 System.out.println("Sign up unsuccessful");
                 displayMenu();
@@ -89,5 +88,4 @@ public class AuthenticationView extends View {
             System.out.println(exception.getMessage());
         }
     }
-
 }

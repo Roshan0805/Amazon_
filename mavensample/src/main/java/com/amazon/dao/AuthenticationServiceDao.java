@@ -4,7 +4,6 @@ import com.amazon.dao.impl.AuthenticationServiceDaoImpl;
 import com.amazon.model.User;
 
 public interface AuthenticationServiceDao {
-
     static AuthenticationServiceDao getInstance() {
         return AuthenticationServiceDaoImpl.getInstance();
     }

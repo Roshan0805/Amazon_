@@ -13,13 +13,11 @@ import com.amazon.model.User;
  */
 public class AuthenticationView extends ScannerInstance {
 
-    private static final AuthenticationView AUTHENTICATION_VIEW = new AuthenticationView();
-    private final static UserView USER_VIEW = UserView.getInstance();
-    private final AuthenticationController authenticationController ;
-    protected static Long userId = 1L;
+    private static AuthenticationView AUTHENTICATION_VIEW ;
+    private static final UserView USER_VIEW = UserView.getInstance();
+    private static final AuthenticationController authenticationController = AuthenticationController.getInstance() ;
 
-    private AuthenticationView() {
-        authenticationController = AuthenticationController.getInstance();
+    public AuthenticationView() {
     }
 
 
@@ -31,7 +29,7 @@ public class AuthenticationView extends ScannerInstance {
      * @return Represents {@link AuthenticationView}
      */
     public static AuthenticationView getInstance() {
-        return  AUTHENTICATION_VIEW;
+        return AUTHENTICATION_VIEW == null ? AUTHENTICATION_VIEW = new AuthenticationView() :AUTHENTICATION_VIEW ;
     }
 
     /**
@@ -63,7 +61,6 @@ public class AuthenticationView extends ScannerInstance {
      * <P> Gets user type for sign in </P>
      */
     public void signIn() {
-        System.out.println("Enter the email and password");
         if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
             System.out.println("Sign in successful");
             USER_VIEW.obtainUserOptions();
@@ -89,7 +86,6 @@ public class AuthenticationView extends ScannerInstance {
             }
             final User user = new User();
 
-            user.setId(userId++);
             user.setEmail(userEmail);
             user.setPhoneNumber(phoneNumber);
             user.setPassword(USER_VIEW.getPassword());

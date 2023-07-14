@@ -15,7 +15,7 @@ public class ProductValidator extends CommonValidator {
 
     private static final ProductValidator PRODUCT_VALIDATION = new ProductValidator();
 
-    private static final ProductController PRODUCT_CONTROLLER = ProductController.getInstance();
+    private final ProductController productController = ProductController.getInstance();
 
     private ProductValidator() {
     }
@@ -40,6 +40,6 @@ public class ProductValidator extends CommonValidator {
      * @return True if the user entered id matches the get products id
      */
     public boolean validateProductIds(final Long id, final Long userId) {
-        return PRODUCT_CONTROLLER.getUserProduct(userId).containsKey(id);
+        return productController.getUserProduct(userId).containsKey(id);
     }
 }

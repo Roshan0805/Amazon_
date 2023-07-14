@@ -8,13 +8,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * <p>
+ * Represents the authentication service for {@link User}
+ * </p>
+ *
+ * @author Roshan B
+ * @version 1.0
+ */
 public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
     private static final AuthenticationServiceDao AUTHENTICATION_SERVICE = new AuthenticationServiceDaoImpl();
     private final DBConnection dbConnection = DBConnection.getInstance();
 
-    private AuthenticationServiceDaoImpl() {}
+    private AuthenticationServiceDaoImpl() {
+    }
 
+    /**
+     * Represents the object of {@link AuthenticationServiceDaoImpl} can be created only once
+     *
+     * @return Represents {@link AuthenticationServiceDao}
+     */
     public static AuthenticationServiceDao getInstance() {
         return AUTHENTICATION_SERVICE;
     }

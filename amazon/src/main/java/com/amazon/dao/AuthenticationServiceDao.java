@@ -3,8 +3,22 @@ package com.amazon.dao;
 import com.amazon.dao.impl.AuthenticationServiceDaoImpl;
 import com.amazon.model.User;
 
+/**
+ * <p>
+ * Represents the {@link AuthenticationServiceDao} service
+ * </p>
+ *
+ * @author Roshan
+ * @version 1.0
+ */
 public interface AuthenticationServiceDao {
 
+    /**
+     * <p>
+     *     Represents the object for {@link AuthenticationServiceDao} can be created only once
+     * </p>
+     * @return Represents  {@link AuthenticationServiceDao}
+     */
     static AuthenticationServiceDao getInstance() {
         return AuthenticationServiceDaoImpl.getInstance();
     }

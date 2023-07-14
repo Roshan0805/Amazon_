@@ -7,11 +7,18 @@ import com.amazon.service.AuthenticationService;
 public class AuthenticationServiceImpl2 implements AuthenticationService {
 
     private static final AuthenticationService AUTHENTICATION_SERVICE = new AuthenticationServiceImpl2();
-    private static final AuthenticationServiceDao AUTHENTICATION_SERVICE_DAO = AuthenticationServiceDao.getInstance();
+    private final AuthenticationServiceDao authenticationServiceDao = AuthenticationServiceDao.getInstance();
 
 
     private AuthenticationServiceImpl2() {}
 
+    /**
+     * <p>
+     * Represents the object of {@link AuthenticationService} class can be created for only one time
+     * </p>
+     *
+     * @return Represents object of {@link AuthenticationService}
+     */
     public static AuthenticationService getInstance() {
         return AUTHENTICATION_SERVICE;
     }
@@ -26,7 +33,7 @@ public class AuthenticationServiceImpl2 implements AuthenticationService {
      * @return True if email and password match the user from the users list
      */
     public boolean signIn(String email, String password) {
-        return AUTHENTICATION_SERVICE_DAO.signIn(email, password);
+        return authenticationServiceDao.signIn(email, password);
     }
 
     /**
@@ -37,7 +44,7 @@ public class AuthenticationServiceImpl2 implements AuthenticationService {
      * @param user User object is passed as a parameter
      */
     public boolean signUp(User user) {
-        return AUTHENTICATION_SERVICE_DAO.signUp(user);
+        return authenticationServiceDao.signUp(user);
     }
 
     /**
@@ -49,7 +56,7 @@ public class AuthenticationServiceImpl2 implements AuthenticationService {
      * @return True if the email id is already present on the user list
      */
     public boolean isUserEmailExists(String email) {
-        return AUTHENTICATION_SERVICE_DAO.isUserEmailExists(email);
+        return authenticationServiceDao.isUserEmailExists(email);
     }
 
     /**
@@ -61,7 +68,7 @@ public class AuthenticationServiceImpl2 implements AuthenticationService {
      * @return True if the email id is already present on the user list
      */
     public boolean isNumberExists(String phoneNumber) {
-        return AUTHENTICATION_SERVICE_DAO.isNumberExists(phoneNumber);
+        return authenticationServiceDao.isNumberExists(phoneNumber);
     }
 
 }

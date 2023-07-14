@@ -68,7 +68,7 @@ public class UserServiceImpl2 implements UserService {
      * @param id   Represents the id of user
      * @return True if the user is updated successfully
      */
-    public boolean update(User user, Long id) {
+    public boolean update(final User user, final Long id) {
         return userServiceDao.update(user, id);
     }
 }

@@ -195,7 +195,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    public boolean update(final long id, final Product product) {
+    public boolean update(final Long id, final Product product) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, AVAILABLE = ?, PRICE = ?, CATEGORY = ?::PRODUCT_CATEGORY, UPDATED_TIME = ?, USER_ID = ? WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -225,7 +225,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
      */
-    public boolean delete(final long id) {
+    public boolean delete(final Long id) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM PRODUCT WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -261,7 +261,6 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            System.out.println(exception.getMessage());
             return false;
         }
     }
@@ -291,7 +290,6 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
                 cart.setQuantity(result.getLong("QUANTITY"));
                 cart.setPrice(result.getDouble("PRICE"));
                 cart.setUserId(result.getLong("USER_ID"));
-
                 cartList.add(cart);
             }
             dbConnection.release(connection);
@@ -420,7 +418,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the quantity updated successfully
      */
-    public boolean updateQuantityInProduct(Long quantity, Long productId) {
+    public boolean updateQuantityInProduct(final Long quantity, final Long productId) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "UPDATE PRODUCT SET AVAILABLE = AVAILABLE + ? WHERE PRODUCT_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -444,7 +442,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param order Represents {@link Order}
      * @return True if the order is added to the order list
      */
-    public boolean order(Order order) {
+    public boolean order(final Order order) {
         try (final Connection connection = dbConnection.get()) {
             final String orderQuery = "INSERT INTO ORDERS (PRODUCT_ID, QUANTITY, PRICE, PRODUCT_NAME, USER_ID, PAYMENT_TYPE) VALUES (?,?,?,?,?,?::payment_types)";
             final PreparedStatement statement = connection.prepareStatement(orderQuery);
@@ -479,7 +477,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param userId Represents id of {@link User}
      * @return Represents collection of {@link Order}
      */
-    public List<Order> getOrderList(Long userId) {
+    public List<Order> getOrderList(final Long userId) {
         try (final Connection connection = dbConnection.get()) {
             final List<Order> orderList = new ArrayList<>();
             final String query = "SELECT * FROM ORDERS WHERE USER_ID = ?";
@@ -513,7 +511,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
-    public Order getOrder(Long orderId) {
+    public Order getOrder(final Long orderId) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM ORDERS WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -543,10 +541,11 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
-    public boolean cancelOrder(Long orderId) {
+    public boolean cancelOrder(final Long orderId) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM ORDERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
+
             statement.setLong(1, orderId);
             statement.execute();
 

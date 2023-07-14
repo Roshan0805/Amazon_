@@ -11,24 +11,24 @@ import com.amazon.controller.ProductController;
  * @author Roshan
  * @version 1.0
  */
-public class ProductValidation extends Validation {
+public class ProductValidator extends CommonValidator {
 
-    private static final ProductValidation PRODUCT_VALIDATION = new ProductValidation();
+    private static final ProductValidator PRODUCT_VALIDATION = new ProductValidator();
 
     private static final ProductController PRODUCT_CONTROLLER =
             ProductController.getInstance();
 
-    private ProductValidation() {
+    private ProductValidator() {
     }
 
     /**
      * <p>
-     * Represents the object of {@link ProductValidation} class can be created for only one time
+     * Represents the object of {@link ProductValidator} class can be created for only one time
      * </p>
      *
-     * @return Represents {@link ProductValidation}
+     * @return Represents {@link ProductValidator}
      */
-    public static ProductValidation getInstance() {
+    public static ProductValidator getInstance() {
         return PRODUCT_VALIDATION;
     }
 

@@ -8,22 +8,22 @@ package com.amazon.view.validation;
  * @author Roshan
  * @version 1.0
  */
-public class Validation {
+public class CommonValidator {
 
-    private static final Validation Validation = new Validation();
+    private static final CommonValidator CommonValidator = new CommonValidator();
 
-    Validation() {
+    CommonValidator() {
     }
 
     /**
      * <p>
-     * Represents the object of {@link Validation} class can be created for only one time
+     * Represents the object of {@link CommonValidator} class can be created for only one time
      * </p>
      *
-     * @return Represents {@link Validation}
+     * @return Represents {@link CommonValidator}
      */
-    public static Validation getInstance() {
-        return Validation;
+    public static CommonValidator getInstance() {
+        return CommonValidator;
     }
 
     /**

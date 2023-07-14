@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * <p>
- * Provides Control between service and the view to provide {@link User} sign in, sign up, update and delete
+ * Provides Control between service and the view for {@link User} related details
  * </p>
  *
  * @author Roshan
@@ -18,20 +18,12 @@ import java.util.Collection;
  */
 public class UserController {
 
-    private static final UserService USER_SERVICE = UserServiceImpl.getInstance();
-    private static final UserService USER_SERVICE_2 = UserServiceImpl2.getInstance();
-    private static final UserController AMAZON_USER_CONTROLLER = new UserController();
-    private static final ProductService PRODUCT_SERVICE = ProductService.getInstance();
+    private static final UserController USER_CONTROLLER = new UserController();
+    private  final UserService USER_SERVICE = UserServiceImpl.getInstance();
+    private final UserService userService2 = UserServiceImpl2.getInstance();
+    private final ProductService productService = ProductService.getInstance();
 
     private UserController() {
-    }
-
-    /**
-     * Check whether the product list is empty or not
-     * @return True if the product list is
-     */
-    public boolean checkProductList() {
-        return !PRODUCT_SERVICE.getAllProducts().isEmpty();
     }
 
     /**
@@ -42,7 +34,7 @@ public class UserController {
      * @return Represents {@link UserController}
      */
     public static UserController getInstance() {
-        return AMAZON_USER_CONTROLLER;
+        return USER_CONTROLLER;
     }
 
     /**
@@ -54,7 +46,7 @@ public class UserController {
      * @return {@link User} from the amazon service
      */
     public User getDetail(final Long id) {
-        return USER_SERVICE_2.get(id);
+        return userService2.get(id);
     }
 
     /**
@@ -66,14 +58,14 @@ public class UserController {
      * @return True if the user is deleted successfully otherwise return false
      */
     public boolean delete(final Long user_id) {
-        return USER_SERVICE_2.delete(user_id);
+        return userService2.delete(user_id);
     }
 
     /**
      * Represents all the {@link User} details in the usersList
      * @return Represents collection of {@link User}
      */
-    public Collection<User> getAllUser() {return USER_SERVICE_2.getAllUser();}
+    public Collection<User> getAllUser() {return userService2.getAllUser();}
 
     /**
      * <p>
@@ -85,7 +77,7 @@ public class UserController {
      * @return true if updated successfully
      */
     public boolean update(final User user, final Long userId) {
-        return USER_SERVICE_2.update(user,userId);
+        return userService2.update(user,userId);
     }
 }
 

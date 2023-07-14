@@ -6,9 +6,17 @@ import com.amazon.service.AuthenticationService;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final AuthenticationServiceImpl AUTHENTICATION_SERVICE = new AuthenticationServiceImpl();
+    private static Long userId = 1L;
+
 
     private AuthenticationServiceImpl() {}
 
+    /**
+     * <p>
+     *     Represents the object of {@link AuthenticationServiceImpl} can be created only once
+     * </p>
+     * @return Represents {@link AuthenticationServiceImpl}
+     */
     public static AuthenticationService getInstance() {
         return AUTHENTICATION_SERVICE;
     }
@@ -22,7 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     public boolean signUp(User user) {
         try {
-            UserServiceImpl.USERS_LIST.put(user.getId(), user);
+            final Long id = generateId();
+            user.setId(id);
+            UserServiceImpl.USERS_LIST.put(id, user);
 
             return true;
         } catch (Exception exception) {
@@ -82,5 +92,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return false;
+    }
+
+    private Long generateId() {
+        return userId++;
     }
 }

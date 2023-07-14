@@ -1,5 +1,13 @@
 package com.amazon.view.validation;
 
+/**
+ * <p>
+ *     Represents the common validator it represents the common methods in user and product validator
+ * </p>
+ *
+ * @author Roshan B
+ * @version  1.0
+ */
 public class CommonValidator {
 
     private static final CommonValidator COMMON_VALIDATOR = new CommonValidator();

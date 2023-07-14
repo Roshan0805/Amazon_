@@ -17,11 +17,10 @@ public class UserValidator extends CommonValidator {
 
     /**
      * <p>
-     * Represents the builder class that build the product object
+     * Represents the {@link UserValidator} class object can be created for only once
      * </p>
      *
-     * @author Roshan
-     * @version 1.0
+     * @return {@link UserValidator}
      */
     public static UserValidator getInstance() {
         return UserValidator;
@@ -110,5 +109,4 @@ public class UserValidator extends CommonValidator {
 
         return phoneNumber.matches(phoneNumberRegex);
     }
-
 }

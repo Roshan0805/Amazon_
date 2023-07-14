@@ -6,6 +6,7 @@ import com.amazon.service.AuthenticationService;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final AuthenticationServiceImpl AUTHENTICATION_SERVICE = new AuthenticationServiceImpl();
+    private static Long userId = 1L;
 
     private AuthenticationServiceImpl() {}
 
@@ -22,7 +23,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     public boolean signUp(User user) {
         try {
-            UserServiceImpl.USERS_LIST.put(user.getId(), user);
+            final Long id = generateId();
+
+            user.setId(id);
+            UserServiceImpl.USERS_LIST.put(id, user);
 
             return true;
         } catch (Exception exception) {
@@ -82,5 +86,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return false;
+    }
+
+    /**
+     * Represent generating Id for {@link User}
+     * @return Represents userId
+     */
+    private Long generateId() {
+        return userId++;
     }
 }
