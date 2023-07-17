@@ -22,6 +22,7 @@ import java.util.Map;
  * @version 1.0
  */
 public interface ProductServiceDao {
+
     /**
      * <p>
      * Represents the {@link ProductService} interface implemented class object can be created for only one time
@@ -53,7 +54,9 @@ public interface ProductServiceDao {
     Collection<Product> getAllProducts();
 
     /**
-     * Represents the product details that the user create
+     * <p>
+     *     Represents the product details that the user create
+     * </p>
      *
      * @param userId Represents admin id
      * @return Represents {@link Product} list created by the user
@@ -79,7 +82,7 @@ public interface ProductServiceDao {
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    boolean update(final long id, final Product product);
+    boolean update(final Long id, final Product product);
 
     /**
      * <p>
@@ -89,7 +92,7 @@ public interface ProductServiceDao {
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
      */
-    boolean delete(final long id);
+    boolean delete(final Long id);
 
     /**
      * Represents adding the product to cart list
@@ -118,14 +121,14 @@ public interface ProductServiceDao {
      * @param cartId Represents the id of the cart
      * @return True if the Product is removed successfully
      */
-    boolean removeCart(Long cartId);
+    boolean removeCart(final Long cartId);
 
     /**
      * Represents the product id's of the user created product
      * @param userId Represents the id of the {@link User}
      * @return List of product id's
      */
-    List<Long> getCartProductIds(Long userId);
+    List<Long> getCartProductIds(final Long userId);
 
     /**
      * Represents updating the quantity of product in {@link Cart}

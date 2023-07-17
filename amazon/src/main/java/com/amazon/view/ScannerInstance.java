@@ -12,17 +12,5 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class ScannerInstance {
-    private static final Scanner SCANNER_REFERENCE = new Scanner(System.in);
-    protected final Scanner SCANNER = getScanner();
-
-    /**
-     * <p>
-     * References the scanner instance creation, it refer the single instance of scanner;
-     * </p>
-     *
-     * @return Represents the {@link Scanner}
-     */
-    public static Scanner getScanner() {
-        return SCANNER_REFERENCE;
-    }
+    protected static final Scanner SCANNER = new Scanner(System.in);
 }

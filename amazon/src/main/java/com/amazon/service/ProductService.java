@@ -66,7 +66,7 @@ public interface ProductService {
      * @param productId product id of the product object
      * @return Represent {@link Product} in product list
      */
-    Product get(final long productId);
+    Product get(final Long productId);
 
     /**
      * <p>
@@ -77,7 +77,7 @@ public interface ProductService {
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    boolean update(final long id, final Product product);
+    boolean update(final Long id, final Product product);
 
     /**
      * <p>
@@ -87,7 +87,7 @@ public interface ProductService {
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
      */
-    boolean delete(final long id);
+    boolean delete(final Long id);
 
     /**
      * Represents the order of {@link Product}
@@ -151,7 +151,7 @@ public interface ProductService {
      * @param cartId Represents the id of the cart
      * @return True if the Product is removed successfully
      */
-    boolean removeCart(Long cartId);
+    boolean removeCart(final Long cartId);
 
     /**
      * Represents updating the quantity of product in cart

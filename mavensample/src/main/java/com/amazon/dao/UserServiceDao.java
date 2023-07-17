@@ -13,8 +13,6 @@ import java.util.Collection;
  * @version 1.0
  */
 public interface UserServiceDao {
-
-
     /**
      * <p>
      * Gets the user details from the user list

@@ -18,9 +18,11 @@ import java.util.Collection;
 public class UserServiceImpl2 implements UserService {
 
     private static final UserService USER_SERVICE = new UserServiceImpl2();
-    private static final UserServiceDao USER_SERVICE_DAO = UserServiceDaoImpl.getInstance();
+    private final UserServiceDao userServiceDao ;
 
-    private UserServiceImpl2() {}
+    private UserServiceImpl2() {
+        userServiceDao = UserServiceDaoImpl.getInstance();
+    }
 
     public static UserService getInstance() {
         return USER_SERVICE;
@@ -35,7 +37,7 @@ public class UserServiceImpl2 implements UserService {
      * @return User object from the user list
      */
     public User get(Long id) {
-        return USER_SERVICE_DAO.getDetails(id);
+        return userServiceDao.getDetails(id);
     }
 
     /**
@@ -47,7 +49,7 @@ public class UserServiceImpl2 implements UserService {
      * @return Boolean true is the user is deleted successfully
      */
     public boolean delete(Long userId) {
-        return USER_SERVICE_DAO.deleteUser(userId);
+        return userServiceDao.deleteUser(userId);
     }
 
     /**
@@ -56,7 +58,7 @@ public class UserServiceImpl2 implements UserService {
      * @return Represents collection of {@link User}
      */
     public Collection<User> getAllUser() {
-        return USER_SERVICE_DAO.getAllUser();
+        return userServiceDao.getAllUser();
     }
 
     /**
@@ -66,7 +68,7 @@ public class UserServiceImpl2 implements UserService {
      * @param id   Represents the id of user
      * @return True if the user is updated successfully
      */
-    public boolean update(User user, Long id) {
-        return USER_SERVICE_DAO.update(user, id);
+    public boolean update(final User user, final Long id) {
+        return userServiceDao.update(user, id);
     }
 }

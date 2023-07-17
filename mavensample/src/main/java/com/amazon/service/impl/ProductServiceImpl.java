@@ -3,12 +3,13 @@ package com.amazon.service.impl;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
+import com.amazon.model.User;
 import com.amazon.service.ProductService;
 
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -26,14 +27,16 @@ import java.util.Map;
  */
 public class ProductServiceImpl implements ProductService {
 
+    private static final ProductServiceImpl PRODUCT_SERVICE = new ProductServiceImpl();
     private static final Map<Long, Product> PRODUCT_LIST = new LinkedHashMap<>();
     private static final Map<Long,Order> ORDER_LIST = new HashMap<>();
     private static final Map<Long,Cart> CART_LIST = new HashMap<>();
-    private static long productId = 1;
-    private static final ProductServiceImpl AMAZON_PRODUCT_SERVICE = new ProductServiceImpl();
+    private static Long productId = 1L;
+    private static Long orderId =1L;
+    private static Long cartId = 1L;
 
-    private ProductServiceImpl() {
-    }
+    private ProductServiceImpl() {}
+
 
     /**
      * <p>
@@ -43,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
      * @return Represents {@link ProductServiceImpl}
      */
     public static ProductService getInstance() {
-        return AMAZON_PRODUCT_SERVICE;
+        return PRODUCT_SERVICE;
     }
 
     /**
@@ -58,8 +61,9 @@ public class ProductServiceImpl implements ProductService {
         }
 
         try {
-            product.setId(productId);
-            PRODUCT_LIST.put(productId++, product);
+            final Long id = generateId("product");
+            product.setId(id);
+            PRODUCT_LIST.put(id, product);
 
             return true;
         } catch (ClassCastException exception) {
@@ -87,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (final Product product : PRODUCT_LIST.values()) {
 
-            if (product.getAdminId().equals(userId)) {
+            if (product.getUserId().equals(userId)) {
                 products.put(product.getId(), product);
             }
         }
@@ -114,12 +118,7 @@ public class ProductServiceImpl implements ProductService {
         if (null == product) {
             return false;
         }
-        final Date time = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss E dd MM yyyy zz");
-        String updatedTime = dateFormat.format(time);
-
-        product.setUpdatedTime(updatedTime);
-        product.setUpdatedTime(updatedTime);
+        product.setUpdatedTime(Timestamp.from(Instant.now()));
         PRODUCT_LIST.put(id, product);
 
         return true;
@@ -166,7 +165,13 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean order(final Order order) {
         try {
+            order.setId(generateId("order"));
             ORDER_LIST.put(order.getId(), order);
+            final Product product = get(order.getProductId());
+
+            product.setAvailable(product.getAvailable() - order.getQuantity());
+            PRODUCT_LIST.put(order.getProductId(), product);
+
             return true;
         } catch (ClassCastException exception) {
             return false;
@@ -181,17 +186,23 @@ public class ProductServiceImpl implements ProductService {
     public List<Order> getOrderList(final Long userId) {
         final List<Order> orderList = new ArrayList<>();
 
-        for(Order order: ORDER_LIST.values()) {
+        for (Order order : ORDER_LIST.values()) {
 
-            if(order.getUserId() == userId) {
+            if (order.getUserId() == userId) {
                 orderList.add(order);
             }
         }
         return orderList;
     }
 
-    public Order getOrder(Long id) {
-        return ORDER_LIST.get(id);
+    /**
+     * Represents the order details of the particular order id
+     *
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    public Order getOrder(Long orderId) {
+        return ORDER_LIST.get(orderId);
     }
 
     /**
@@ -199,18 +210,30 @@ public class ProductServiceImpl implements ProductService {
      *
      * @return True if removed successfully
      */
-    public boolean removeOrder(final Long orderId) {
+    public boolean cancelOrder(final Long orderId) {
         try {
             ORDER_LIST.remove(orderId);
+            final Order order = getOrder(orderId);
+            final Product product = get(order.getProductId());
+
+            product.setAvailable(product.getAvailable() + order.getQuantity());
+            PRODUCT_LIST.put(order.getProductId(), product);
+
             return true;
         } catch (Exception exception) {
             return false;
         }
     }
 
-
+    /**
+     * Represents adding the product to cart list
+     *
+     * @param cart Represents {@link Cart}
+     * @return True if the product is added to cart successfully
+     */
     public boolean addToCart(final Cart cart) {
         try {
+            cart.setId(generateId("cart"));
             CART_LIST.put(cart.getId(), cart);
             return true;
         } catch (Exception exception) {
@@ -218,54 +241,127 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Represents the Product details from the cart for a particular user
+     *
+     * @param userId Represents the id of {@link User}
+     * @return Collection of products from the cart
+     */
     public List<Cart> getCartList(final Long userId) {
         final List<Cart> cartList = new LinkedList<>();
 
-        for(Cart cart: CART_LIST.values()) {
+        for (Cart cart : CART_LIST.values()) {
 
-            if(cart.getUserId() == userId) {
+            if (cart.getUserId() == userId) {
                 cartList.add(cart);
             }
         }
         return cartList;
     }
 
+    /**
+     * Represents the particular id details of entered cart id
+     *
+     * @param id Represents the id of the cart
+     * @return Represents {@link Cart}
+     */
     public Cart getCart(Long id) {
-        for(Cart cart :CART_LIST.values()) {
+        for (Cart cart : CART_LIST.values()) {
 
-            if(cart.getId() == id) {
+            if (cart.getId() == id) {
                 return cart;
             }
         }
         return null;
     }
 
-    public List<Long> getProductIds(Long userId) {
+    /**
+     * Represents the product id's of the user created product
+     *
+     * @param userId Represents the id of the {@link User}
+     * @return List of product id's
+     */
+    public List<Long> getCartProductIds(Long userId) {
         final List<Long> cartIds = new ArrayList<>();
 
-        for(Cart cart : getCartList(userId)) {
+        for (Cart cart : getCartList(userId)) {
             cartIds.add(cart.getProductId());
         }
         return cartIds;
     }
 
+    /**
+     * Represents the removal of product for the particular cart id
+     *
+     * @param cartId Represents the id of the cart
+     * @return True if the Product is removed successfully
+     */
     public boolean removeCart(final Long cartId) {
         try {
             CART_LIST.remove(cartId);
             return true;
-        } catch(ClassCastException exception ) {
+        } catch (ClassCastException exception) {
             return false;
         }
     }
 
-    public boolean updateQuantity(Long quantity, Long productId) {
-        for(Cart cart : CART_LIST.values()) {
-            if(cart.getProductId() == productId) {
-                cart.setProductCount(cart.getProductCount() + quantity);
+    /**
+     * Represents updating the quantity of product in cart
+     *
+     * @param quantity  Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    public boolean updateQuantityInCart(Long quantity, Long productId) {
+        for (Cart cart : CART_LIST.values()) {
+            if (cart.getProductId() == productId) {
+                final Double price = cart.getPrice()/ CART_LIST.size();
+                System.out.println(price);
+                cart.setQuantity(cart.getQuantity() + quantity);
+                cart.setPrice(cart.getPrice() + (quantity * price));
 
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * Represents updating the quantity of product in {@link Product}
+     *
+     * @param quantity  Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    public boolean updateQuantityInProduct(Long quantity, Long productId) {
+        for (Product product : PRODUCT_LIST.values()) {
+            if (product.getId() == productId) {
+                product.setAvailable(product.getAvailable() + quantity);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * <p>
+     * Represent the id creation for product that is added to the product list
+     * </p>
+     *
+     * @return Represents the product id
+     */
+    public Long generateId(final String value) {
+        switch (value) {
+            case "product":
+                return productId++;
+            case "order":
+                return orderId++;
+            case "cart":
+                return cartId ++;
+            default:
+                return null;
+        }
+    }
+
 }

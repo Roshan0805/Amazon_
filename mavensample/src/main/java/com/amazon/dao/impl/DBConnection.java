@@ -1,8 +1,11 @@
 package com.amazon.dao.impl;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -18,14 +21,14 @@ import java.util.concurrent.BlockingQueue;
 public class DBConnection {
 
     private static DBConnection DB_CONNECTION;
-    private static final Integer MAX_SIZE = 15;
+    private final Integer maxSize = 15;
     private static BlockingQueue<Connection> pool;
 
 
     private DBConnection() {
-        pool = new ArrayBlockingQueue<>(MAX_SIZE);
+        pool = new ArrayBlockingQueue<>(maxSize);
 
-        initialize();
+        initializeObjects();
     }
 
     /**
@@ -42,9 +45,14 @@ public class DBConnection {
         return DB_CONNECTION;
     }
 
-    private void initialize() {
+    /**
+     * <p>
+     * Represent the object pool pattern's object initialization,
+     * </p>
+     */
+    private void initializeObjects() {
         try {
-            for (int i = 0; i < MAX_SIZE; i++) {
+            for (int i = 0; i < maxSize; i++) {
                 final Connection connection = getConnection();
 
                 if (null != connection) {
@@ -57,25 +65,47 @@ public class DBConnection {
     }
 
     /**
-     * Represents the database connection
+     * <p>
+     * Represents the database connection for the given database url, name and password
+     * </p>
      *
      * @return Connection object
      * @throws SQLException if any error occur in connection it throws a sql exception
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/Amazon", "postgres", "roshan");
+        final Properties properties = new Properties();
+        try (FileInputStream file = new FileInputStream("C:\\Users\\krith\\IdeaProjects\\amazon\\src\\main\\resources\\ApplicationProperties")) {
+            properties.load(file);
+            final String url = properties.getProperty("database_url");
+            final String user = properties.getProperty("user");
+            final String password = properties.getProperty("password");
+
+            return DriverManager.getConnection(url, user, password);
+        } catch (IOException exception) {
+            return null;
+        }
     }
+
+    /**
+     * <p>
+     * Represents getting the connection object
+     * </p>
+     *
+     * @return Connection object
+     * @throws InterruptedException if any error occur during getting connection it throws the InterruptedException
+     */
 
     public Connection get() throws InterruptedException {
         return pool.take();
     }
 
-    public void close() throws SQLException {
-        for (final Connection connection : pool) {
-            connection.close();
-        }
-    }
-
+    /**
+     * <p>
+     * Represents the connection object to release from the source
+     * </p>
+     *
+     * @param connection Represents the connection object
+     */
     public void release(final Connection connection) {
         if (null != connection) {
             pool.offer(connection);

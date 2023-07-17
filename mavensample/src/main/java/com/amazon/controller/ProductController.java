@@ -3,6 +3,7 @@ package com.amazon.controller;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
+import com.amazon.model.User;
 import com.amazon.service.Impl2.ProductServiceImpl2;
 import com.amazon.service.ProductService;
 
@@ -108,41 +109,114 @@ public class ProductController {
         return PRODUCT_SERVICE2.delete(id);
     }
 
+    /**
+     * Represents the order of {@link Product}
+     *
+     * @param order Represents {@link Order}
+     * @return True if the order is added to the order list
+     */
     public boolean order(final Order order) {
         return PRODUCT_SERVICE2.order(order);
     }
 
+    /**
+     * Retrieve the List of {@link Order}
+     *
+     * @return Represents collection of {@link Order}
+     */
     public List<Order> getOrderList(final Long userId) {
         return PRODUCT_SERVICE2.getOrderList(userId);
     }
 
-    public Order getOrder(final Long orderId) { return PRODUCT_SERVICE2.getOrder(orderId);}
-
-    public boolean removeOrder(final Long orderId) {
-        return PRODUCT_SERVICE2.removeOrder(orderId);
+    /**
+     * Represents the order details of the particular order id
+     *
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    public Order getOrder(final Long orderId) {
+        return PRODUCT_SERVICE2.getOrder(orderId);
     }
 
+    /**
+     * Represents the cancelling the order of the particular order id
+     *
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    public boolean cancelOrder(final Long orderId) {
+        return PRODUCT_SERVICE2.cancelOrder(orderId);
+    }
+
+    /**
+     * Represents adding a product to the cart
+     *
+     * @param cart Represents the {@link Cart}
+     * @return True if the Product is added successfully in cart
+     */
     public boolean addToCart(final Cart cart) {
         return PRODUCT_SERVICE2.addToCart(cart);
     }
 
-    public List<Cart> getCartList(final Long userId){
+    /**
+     * Represents the Product details from the cart for a particular user
+     *
+     * @param userId Represents the id of {@link User}
+     * @return Collection of products from the cart
+     */
+    public List<Cart> getCartList(final Long userId) {
         return PRODUCT_SERVICE2.getCartList(userId);
     }
 
-    public Cart getCart(final Long id){
+    /**
+     * Represents the particular id details of entered cart id
+     *
+     * @param id Represents the id of the cart
+     * @return Represents {@link Cart}
+     */
+    public Cart getCart(final Long id) {
         return PRODUCT_SERVICE2.getCart(id);
     }
 
+    /**
+     * Represents the removal of product for the particular cart id
+     *
+     * @param cartId Represents the id of the cart
+     * @return True if the Product is removed successfully
+     */
     public boolean removeCart(final Long cartId) {
         return PRODUCT_SERVICE2.removeCart(cartId);
     }
 
-    public List<Long> getProductIds(final Long userId) {
-        return PRODUCT_SERVICE2.getProductIds(userId);
+    /**
+     * Represents the product id's of the user created product
+     *
+     * @param userId Represents the id of the {@link User}
+     * @return List of product id's
+     */
+    public List<Long> getCartProductIds(final Long userId) {
+        return PRODUCT_SERVICE2.getCartProductIds(userId);
     }
 
-    public boolean updateQuantity(final Long quantity, final Long productId ){
-        return PRODUCT_SERVICE2.updateQuantity(quantity, productId);
+    /**
+     * Represents updating the quantity of product in cart
+     *
+     * @param quantity  Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    public boolean updateQuantityInCart(final Long quantity, final Long productId) {
+        return PRODUCT_SERVICE2.updateQuantityInCart(quantity, productId);
+    }
+
+    /**
+     * Represents updating the quantity of product in {@link Product}
+     *
+     * @param quantity  Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    public boolean updateQuantityInProduct(final Long quantity, final Long productId) {
+        return PRODUCT_SERVICE.updateQuantityInProduct(quantity, productId);
     }
 }

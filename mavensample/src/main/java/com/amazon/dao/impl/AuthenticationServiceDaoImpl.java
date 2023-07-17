@@ -38,7 +38,6 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
             statement.setString(5, user.getPhoneNumber());
             statement.execute();
             dbConnection.release(connection);
-            dbConnection.close();
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -65,10 +64,8 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
             final ResultSet resultSet = statement.executeQuery();
 
             dbConnection.release(connection);
-            dbConnection.close();
 
             return resultSet.next();
-
         } catch (SQLException | InterruptedException exception) {
             return false;
         }
@@ -92,7 +89,6 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
             final ResultSet result = statement.executeQuery();
 
             dbConnection.release(connection);
-            dbConnection.close();
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {
@@ -117,7 +113,6 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
             final ResultSet result = statement.executeQuery();
 
             dbConnection.release(connection);
-            dbConnection.close();
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {

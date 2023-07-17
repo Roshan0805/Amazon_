@@ -1,6 +1,7 @@
 package com.amazon.dao.impl;
 
 import com.amazon.dao.AuthenticationServiceDao;
+import com.amazon.exception.DBException;
 import com.amazon.model.User;
 
 import java.sql.Connection;
@@ -8,13 +9,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * <p>
+ * Represents the authentication service for {@link User}
+ * </p>
+ *
+ * @author Roshan B
+ * @version 1.0
+ */
 public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
     private static final AuthenticationServiceDao AUTHENTICATION_SERVICE = new AuthenticationServiceDaoImpl();
     private final DBConnection dbConnection = DBConnection.getInstance();
 
-    private AuthenticationServiceDaoImpl() {}
+    private AuthenticationServiceDaoImpl() {
+    }
 
+    /**
+     * Represents the object of {@link AuthenticationServiceDaoImpl} can be created only once
+     *
+     * @return Represents {@link AuthenticationServiceDao}
+     */
     public static AuthenticationServiceDao getInstance() {
         return AUTHENTICATION_SERVICE;
     }
@@ -41,7 +56,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -56,7 +71,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      */
     public boolean signIn(String email, String password) {
         try (final Connection connection = dbConnection.get()) {
-            final String query = "SELECT * FROM USERS WHERE EMAIL = ? AND PASSWORD = ? ";
+            final String query = "SELECT * FROM USERS WHERE EMAIL = ? AND PASSWORD =?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, email);
@@ -67,7 +82,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return resultSet.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -92,7 +107,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -116,7 +131,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
             return result.next();
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 }

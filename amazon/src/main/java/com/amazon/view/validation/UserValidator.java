@@ -8,22 +8,22 @@ package com.amazon.view.validation;
  * @author Roshan
  * @version 1.0
  */
-public class UserValidation extends Validation {
+public class UserValidator extends CommonValidator {
 
-    private static final UserValidation UserValidation = new UserValidation();
+    private static final UserValidator UserValidator = new UserValidator();
 
-    private UserValidation() {
+    private UserValidator() {
     }
 
     /**
      * <p>
-     * Represents the object of {@link UserValidation} class can be created for only one time
+     * Represents the {@link UserValidator} class object can be created for only once
      * </p>
      *
-     * @return Represents {@link UserValidation}
+     * @return {@link UserValidator}
      */
-    public static UserValidation getInstance() {
-        return UserValidation;
+    public static UserValidator getInstance() {
+        return UserValidator;
     }
 
     /**
@@ -35,7 +35,9 @@ public class UserValidation extends Validation {
      * @return True if the email is matches pattern otherwise return false
      */
     public boolean validateEmail(final String email) {
-        return email.matches("^[a-zA-z]+[a-zA-Z0-9_.\\S]+@[a-z]{3,}\\.[a-z\\S]{2,3}$");
+        final String emailRegex = "^[a-zA-z]+[a-zA-Z0-9_.\\S]+@[a-z]{3,}\\.[a-z\\S]{2,3}$";
+
+        return email.matches(emailRegex);
     }
 
     /**
@@ -47,7 +49,9 @@ public class UserValidation extends Validation {
      * @return True if the email is matches pattern otherwise return false
      */
     public boolean validateId(final String email) {
-        return email.matches("^[0-9]+$");
+        final String idRegex = "^[0-9]+$";
+
+        return email.matches(idRegex);
     }
 
     /**
@@ -59,7 +63,9 @@ public class UserValidation extends Validation {
      * @return True if the password matches the pattern otherwise return false
      */
     public boolean validatePassword(final String password) {
-        return password.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).\\S{7,20}$");
+        final String passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).\\S{7,20}$";
+
+        return password.matches(passwordRegex);
     }
 
     /**
@@ -71,7 +77,9 @@ public class UserValidation extends Validation {
      * @return True if the users name matches the pattern
      */
     public boolean validateUserName(final String userName) {
-        return userName.matches("^[a-zA-Z][a-zA-Z0-9]{3,16}");
+        final String nameRegex = "^[a-zA-Z][a-zA-Z0-9]{3,16}";
+
+        return userName.matches(nameRegex);
     }
 
     /**
@@ -83,7 +91,9 @@ public class UserValidation extends Validation {
      * @return True if the address is valid
      */
     public boolean validateAddress(final String address) {
-        return address.matches("^[0-9]+/[0-9]{1,3}[\\w*\\s*[0-9]*]{2,}");
+        final String addressRegex = "^[0-9]+/[0-9]{1,3}[\\w*\\s*[0-9]*]{2,}";
+
+        return address.matches(addressRegex);
     }
 
     /**
@@ -95,7 +105,8 @@ public class UserValidation extends Validation {
      * @return True if the Phone number matches the pattern otherwise returns false
      */
     public boolean validatePhone(final String phoneNumber) {
-        return phoneNumber.matches("^[6-9][0-9]{9}+$");
-    }
+        final String phoneNumberRegex = "^[6-9][0-9]{9}+$";
 
+        return phoneNumber.matches(phoneNumberRegex);
+    }
 }

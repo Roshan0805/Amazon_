@@ -10,27 +10,25 @@ public class Order {
 
     private Long id;
     private Long productId;
-    private Long cartId;
     private String productName;
-    private Long productCount;
-    private Double totalPrice;
+    private Long quantity;
+    private Double price;
     private Long userId;
     private Payment paymentType;
 
     public Order() {}
 
     public Order(final Cart cart, final Payment paymentType) {
-        this.cartId = cart.getId();
         this.productId = cart.getProductId();
         this.productName = cart.getProductName();
-        this.productCount = cart.getProductCount();
-        this.totalPrice = cart.getTotalPrice();
+        this.quantity = cart.getQuantity();
+        this.price = cart.getPrice();
         this.userId = cart.getUserId();
         this.paymentType = paymentType;
     }
 
     public enum Payment {
-        PAY_ON_DELIVERY(1), CREDIT_OR_DEBIT_CART(2), NET_BANKING(3), OTHER_UPI_PAYMENTS(4);
+        CASH_ON_DELIVERY(1), CREDIT_OR_DEBIT_CART(2), NET_BANKING(3), OTHER_UPI_PAYMENTS(4);
 
         private final int index;
 
@@ -42,7 +40,7 @@ public class Order {
 
             switch (index) {
                 case 1:
-                    return PAY_ON_DELIVERY;
+                    return CASH_ON_DELIVERY;
                 case 2:
                     return CREDIT_OR_DEBIT_CART;
                 case 3:
@@ -67,12 +65,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getProductCount() {
-        return productCount;
+    public Long getQuantity() {
+        return quantity;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public Double getPrice() {
+        return price;
     }
 
     public String getProductName() {
@@ -103,24 +101,17 @@ public class Order {
         return productId;
     }
 
-    public void setProductCount(final Long count) {
-        this.productCount = count;
+    public void setQuantity(final Long count) {
+        this.quantity = count;
     }
 
-    public Long getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
-    }
-
-    public void setTotalPrice(final Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setPrice(final Double price) {
+        this.price = price;
     }
 
     public String toString() {
         return String.format("Order id :%d\nproduct name : %s\nproduct quantity : %d\ntotal amount : %f",
-               id,productName, productCount, totalPrice);
+                id, productName, quantity, price * quantity);
     }
 }
+

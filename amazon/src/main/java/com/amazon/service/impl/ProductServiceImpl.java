@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         try {
-            final Long id = getId("product");
+            final Long id = generateId("product");
             product.setId(id);
             PRODUCT_LIST.put(id, product);
 
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
      *
      * @return {@link Product} from the product list
      */
-    public Product get(final long productId) {
+    public Product get(final Long productId) {
         return PRODUCT_LIST.get(productId);
     }
 
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
      * @param product Represents {@link Product}
      * @return True if the product name is updated successfully
      */
-    public boolean update(long id, Product product) {
+    public boolean update(Long id, Product product) {
         if (null == product) {
             return false;
         }
@@ -130,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
      * @param id Represents id for deleting product
      * @return True if the product is deleted successfully
      */
-    public boolean delete(final long id) {
+    public boolean delete(final Long id) {
         if (getIds().contains(id)) {
             PRODUCT_LIST.remove(id);
 
@@ -165,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean order(final Order order) {
         try {
-            order.setId(getId("order"));
+            order.setId(generateId("order"));
             ORDER_LIST.put(order.getId(), order);
             final Product product = get(order.getProductId());
 
@@ -233,7 +233,7 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean addToCart(final Cart cart) {
         try {
-            cart.setId(getId("cart"));
+            cart.setId(generateId("cart"));
             CART_LIST.put(cart.getId(), cart);
             return true;
         } catch (Exception exception) {
@@ -351,7 +351,7 @@ public class ProductServiceImpl implements ProductService {
      *
      * @return Represents the product id
      */
-    public Long getId(final String value) {
+    public Long generateId(final String value) {
         switch (value) {
             case "product":
                 return productId++;

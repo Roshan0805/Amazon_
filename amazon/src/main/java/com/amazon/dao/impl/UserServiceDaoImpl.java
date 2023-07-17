@@ -1,6 +1,7 @@
 package com.amazon.dao.impl;
 
 import com.amazon.dao.UserServiceDao;
+import com.amazon.exception.DBException;
 import com.amazon.model.User;
 
 import java.sql.Connection;
@@ -46,10 +47,11 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @param id User email
      * @return User object from the user list
      */
-    public User getDetails(Long id) {
+    public User getDetails(final Long id) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM USERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
+
             statement.setLong(1, id);
             final ResultSet result = statement.executeQuery();
 
@@ -67,7 +69,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
                 return user;
             }
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
         return null;
     }
@@ -80,7 +82,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @param user_id Represents the id of {@link User}
      * @return Boolean true is the user is deleted successfully
      */
-    public boolean deleteUser(Long user_id) {
+    public boolean deleteUser(final Long user_id) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM USERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -91,7 +93,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
 
             return true;
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -122,7 +124,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
 
             return userList;
         } catch (SQLException | InterruptedException exception) {
-            return null;
+            throw new DBException(exception.getMessage());
         }
     }
 
@@ -135,7 +137,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @param userId Represents the user's id
      * @return true if updated successfully
      */
-    public boolean update(User user, Long userId) {
+    public boolean update(final User user, final Long userId) {
         try (final Connection connection = dbConnection.get()) {
             final String query = "UPDATE USERS SET NAME = ?, EMAIL = ?, PASSWORD = ?, ADDRESS = ?, PHONE_NUMBER = ?,  where ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -150,9 +152,8 @@ public class UserServiceDaoImpl implements UserServiceDao {
             dbConnection.release(connection);
 
             return true;
-
         } catch (SQLException | InterruptedException exception) {
-            return false;
+            throw new DBException(exception.getMessage());
         }
     }
 }

@@ -21,7 +21,7 @@ import java.util.LinkedList;
 public class UserServiceDaoImpl implements UserServiceDao {
 
     private static final UserServiceDao USER_SERVICE_DAO = new UserServiceDaoImpl();
-    private static final DBConnection DB_CONNECTION = DBConnection.getInstance();
+    private final DBConnection dbConnection = DBConnection.getInstance();
 
     private UserServiceDaoImpl() {
     }
@@ -47,7 +47,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @return User object from the user list
      */
     public User getDetails(Long id) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM USERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, id);
@@ -62,8 +62,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
                 user.setPassword(result.getString(4));
                 user.setAddress(result.getString(5));
                 user.setPhoneNumber(result.getString(6));
-                DB_CONNECTION.release(connection);
-                DB_CONNECTION.close();
+                dbConnection.release(connection);
 
                 return user;
             }
@@ -82,14 +81,13 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @return Boolean true is the user is deleted successfully
      */
     public boolean deleteUser(Long user_id) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM USERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, user_id);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -103,11 +101,11 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @return Represents collection of {@link User}
      */
     public Collection<User> getAllUser() {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM USERS";
             final PreparedStatement statement = connection.prepareStatement(query);
             final ResultSet result = statement.executeQuery();
-            final Collection<User> adminList = new LinkedList<>();
+            final Collection<User> userList = new LinkedList<>();
 
             if (result.next()) {
                 final User user = new User();
@@ -118,12 +116,11 @@ public class UserServiceDaoImpl implements UserServiceDao {
                 user.setPassword(result.getString(4));
                 user.setAddress(result.getString(5));
                 user.setPhoneNumber(result.getString(6));
-                adminList.add(user);
+                userList.add(user);
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
-            return adminList;
+            return userList;
         } catch (SQLException | InterruptedException exception) {
             return null;
         }
@@ -139,7 +136,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @return true if updated successfully
      */
     public boolean update(User user, Long userId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "UPDATE USERS SET NAME = ?, EMAIL = ?, PASSWORD = ?, ADDRESS = ?, PHONE_NUMBER = ?,  where ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
@@ -150,8 +147,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
             statement.setString(5, user.getPhoneNumber());
             statement.setLong(6, userId);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
 

@@ -8,22 +8,22 @@ package com.amazon.view.validation;
  * @author Roshan
  * @version 1.0
  */
-public class Validation {
+public class CommonValidator {
 
-    private static final Validation Validation = new Validation();
+    private static final CommonValidator CommonValidator = new CommonValidator();
 
-    Validation() {
+    CommonValidator() {
     }
 
     /**
      * <p>
-     * Represents the object of {@link Validation} class can be created for only one time
+     * Represents the object of {@link CommonValidator} class can be created for only one time
      * </p>
      *
-     * @return Represents {@link Validation}
+     * @return Represents {@link CommonValidator}
      */
-    public static Validation getInstance() {
-        return Validation;
+    public static CommonValidator getInstance() {
+        return CommonValidator;
     }
 
     /**
@@ -36,6 +36,18 @@ public class Validation {
      */
     public boolean isReturnToMenu(final String value) {
         return '#' == value.charAt(0);
+    }
+
+    /**
+     * <p>
+     * Check's whether the user value to determine the user wants to update or not
+     * </p>
+     *
+     * @param value Represents the value for validate
+     * @return True if the value is matches the pattern otherwise return false
+     */
+    public boolean updateChoiceValidation(final String value) {
+        return (value.equalsIgnoreCase("y") || value.equalsIgnoreCase("yes"));
     }
 
     /**
