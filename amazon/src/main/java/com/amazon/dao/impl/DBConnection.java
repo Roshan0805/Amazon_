@@ -1,7 +1,6 @@
 package com.amazon.dao.impl;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,11 +21,12 @@ import java.util.concurrent.BlockingQueue;
 public class DBConnection {
 
     private static DBConnection DB_CONNECTION;
-    private final Integer maxSize = 15;
+    private final Integer maxSize ;
     private static BlockingQueue<Connection> pool;
 
 
     private DBConnection() {
+        maxSize = 15;
         pool = new ArrayBlockingQueue<>(maxSize);
 
         initializeObjects();

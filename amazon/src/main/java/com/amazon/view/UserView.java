@@ -14,15 +14,19 @@ import java.util.Collection;
  * @author Roshan
  * @version 1.0
  */
-public class UserView extends ScannerInstance {
+public class UserView extends View {
 
     private static UserView USER_VIEW = null;
-    protected final UserValidator userValidator = UserValidator.getInstance();
-    private final AuthenticationView authenticationView = AuthenticationView.getInstance();
-    protected final UserController userController = UserController.getInstance();
-    private final ProductView productView = ProductView.getInstance();
+    protected final UserValidator userValidator;
+    private final AuthenticationView authenticationView;
+    protected final UserController userController;
+    private final ProductView productView ;
 
     private UserView() {
+        userValidator = UserValidator.getInstance();
+        authenticationView = AuthenticationView.getInstance();
+        userController = UserController.getInstance();
+        productView = ProductView.getInstance();
     }
 
     /**
@@ -45,20 +49,20 @@ public class UserView extends ScannerInstance {
      */
     public void accessUser(final Long userId) {
         System.out.println("Choose from the options\n1.get user\n2.update user\n3.delete user\n4.back to user menu");
-        final int userOption = obtainUserChoice();
+        final UserChoice userOption = obtainUserChoice();
 
         switch (userOption) {
-            case 1:
+            case ONE:
                 System.out.println(get(userId));
                 break;
-            case 2:
+            case TWO:
                 update(userId);
                 break;
-            case 3:
+            case THREE:
                 delete(userId);
                 authenticationView.displayMenu();
                 break;
-            case 4:
+            case FOUR:
                 obtainUserOptions();
                 break;
             default:
@@ -379,7 +383,7 @@ public class UserView extends ScannerInstance {
      *
      * @return Represents value that the user entered
      */
-    public int obtainUserChoice() {
+    public UserChoice obtainUserChoice() {
         System.out.println("Enter the choice\t(press # for return to menu)");
         try {
             final String userChoice = SCANNER.nextLine().trim();
@@ -388,7 +392,7 @@ public class UserView extends ScannerInstance {
                 obtainUserOptions();
             }
 
-            return Integer.parseInt(userChoice);
+            return UserChoice.getValue(Integer.parseInt(userChoice));
         } catch (NumberFormatException exception) {
             System.out.println("Invalid input enter the number input");
         } catch (StringIndexOutOfBoundsException exception) {
@@ -406,30 +410,30 @@ public class UserView extends ScannerInstance {
     public void obtainUserOptions() {
         System.out.println(String.join("", "Choose from the options\n1.admin details\n",
                 "2.sell product\n3.view products\n4.cart details\n5.order details\n6.get all user\n7.logout"));
-        final int userOption = obtainUserChoice();
+        final UserChoice userOption = obtainUserChoice();
 
-        if (7 == userOption) {
+        if (userOption.equals(UserChoice.SEVEN)) {
             authenticationView.displayMenu();
         }
         final Long userId = USER_VIEW.getId();
 
         switch (userOption) {
-            case 1:
+            case ONE:
                 accessUser(userId);
                 break;
-            case 2:
+            case TWO:
                 productView.accessProduct(userId);
                 break;
-            case 3:
+            case THREE:
                 productView.viewProduct(userId);
                 break;
-            case 4:
+            case FOUR:
                 productView.accessCart(userId);
                 break;
-            case 5:
+            case FIVE:
                 productView.accessOrder(userId);
                 break;
-            case 6:
+            case SIX:
                 getAllUsers();
                 break;
             default:

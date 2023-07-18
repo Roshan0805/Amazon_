@@ -15,9 +15,10 @@ public class ProductValidator extends CommonValidator {
 
     private static final ProductValidator PRODUCT_VALIDATION = new ProductValidator();
 
-    private final ProductController productController = ProductController.getInstance();
+    private final ProductController productController;
 
     private ProductValidator() {
+        productController = ProductController.getInstance();
     }
 
     /**

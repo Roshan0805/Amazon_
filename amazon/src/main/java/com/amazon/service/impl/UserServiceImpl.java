@@ -19,10 +19,9 @@ public class UserServiceImpl implements UserService {
 
     private static final UserServiceImpl USER_SERVICE = new UserServiceImpl();
 
-    public static final Map<Long, User> USERS_LIST  = new HashMap<>();
+    public static final Map<Long, User> usersList = new HashMap<>();
 
     private UserServiceImpl() {
-        ;
     }
 
     /**
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
      * @return Represents {@link User}
      */
     public User get(final Long id) {
-        return USERS_LIST.get(id);
+        return usersList.get(id);
     }
 
     /**
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
         if (0 == user_id) {
             return false;
         }
-        USERS_LIST.remove(user_id);
+        usersList.remove(user_id);
 
         return true;
     }
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
      * @return Represents Collection of {@link User} in the usersList
      */
     public Collection<User> getAllUser() {
-        return USERS_LIST.values();
+        return usersList.values();
     }
 
     /**
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserService {
      */
     public boolean update(User user, Long id) {
         try {
-            USERS_LIST.put(id, user);
+            usersList.put(id, user);
 
             return true;
         } catch (Exception exception) {

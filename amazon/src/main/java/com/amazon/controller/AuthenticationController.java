@@ -15,11 +15,11 @@ import com.amazon.service.impl.AuthenticationServiceImpl;
 public class AuthenticationController {
 
     private static final AuthenticationController AUTHENTICATION_CONTROLLER = new AuthenticationController();
-    private final AuthenticationService AUTHENTICATION_SERVICE2 ;
-    private final AuthenticationService AUTHENTICATION_SERVICE ;
+    private final AuthenticationService authenticationService2;
+    private final AuthenticationService authenticationService;
     private AuthenticationController () {
-        AUTHENTICATION_SERVICE2 = AuthenticationServiceImpl2.getInstance();
-        AUTHENTICATION_SERVICE = AuthenticationServiceImpl.getInstance();
+        authenticationService2 = AuthenticationServiceImpl2.getInstance();
+        authenticationService = AuthenticationServiceImpl.getInstance();
     }
 
     /**
@@ -40,7 +40,7 @@ public class AuthenticationController {
      * @param user User object is passed as a parameter
      */
     public boolean signUp(User user) {
-        return AUTHENTICATION_SERVICE2.signUp(user);
+        return authenticationService2.signUp(user);
     }
 
     /**
@@ -53,7 +53,7 @@ public class AuthenticationController {
      * @return Boolean value from the validateUser method on service
      */
     public boolean signIn(final String email, final String password) {
-        return AUTHENTICATION_SERVICE2.signIn(email, password);
+        return authenticationService2.signIn(email, password);
     }
 
 
@@ -66,7 +66,7 @@ public class AuthenticationController {
      * @return True if the email id is already present on the user list
      */
     public boolean isUserEmailExists(String userEmail) {
-        return AUTHENTICATION_SERVICE2.isUserEmailExists(userEmail);
+        return authenticationService2.isUserEmailExists(userEmail);
     }
 
     /**
@@ -78,6 +78,6 @@ public class AuthenticationController {
      * @return True if the email id is already present on the user list
      */
     public boolean isNumberExists(String phoneNumber) {
-        return AUTHENTICATION_SERVICE2.isNumberExists(phoneNumber);
+        return authenticationService2.isNumberExists(phoneNumber);
     }
 }

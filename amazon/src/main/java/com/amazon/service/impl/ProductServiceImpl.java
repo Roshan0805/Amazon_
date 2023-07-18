@@ -27,15 +27,21 @@ import java.util.Map;
  */
 public class ProductServiceImpl implements ProductService {
 
-    private final Map<Long, Product> PRODUCT_LIST = new LinkedHashMap<>();
-    private final Map<Long, Order> ORDER_LIST = new HashMap<>();
-    private final Map<Long, Cart> CART_LIST = new HashMap<>();
-    private Long productId = 1L;
-    private Long cartId = 1L;
-    private Long orderId = 1L;
+    private final Map<Long, Product> productList;
+    private final Map<Long, Order> orderList;
+    private final Map<Long, Cart> cartList;
+    private Long productId;
+    private Long cartId;
+    private Long orderId;
     private static final ProductServiceImpl AMAZON_PRODUCT_SERVICE = new ProductServiceImpl();
 
     private ProductServiceImpl() {
+        productList = new LinkedHashMap<>();
+        orderList = new HashMap<>();
+        cartList = new HashMap<>();
+        productId = 1L;
+        cartId = 1L;
+        orderId = 1L;
     }
 
     /**
@@ -63,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             final Long id = generateId("product");
             product.setId(id);
-            PRODUCT_LIST.put(id, product);
+            productList.put(id, product);
 
             return true;
         } catch (ClassCastException exception) {
@@ -77,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
      * @return Collection view of product's
      */
     public Collection<Product> getAllProducts() {
-        return PRODUCT_LIST.values();
+        return productList.values();
     }
 
     /**
@@ -89,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     public Map<Long, Product> getUserProduct(final Long userId) {
         final Map<Long, Product> products = new HashMap<>();
 
-        for (final Product product : PRODUCT_LIST.values()) {
+        for (final Product product : productList.values()) {
 
             if (product.getUserId().equals(userId)) {
                 products.put(product.getId(), product);
@@ -104,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
      * @return {@link Product} from the product list
      */
     public Product get(final Long productId) {
-        return PRODUCT_LIST.get(productId);
+        return productList.get(productId);
     }
 
     /**
@@ -119,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
         product.setUpdatedTime(Timestamp.from(Instant.now()));
-        PRODUCT_LIST.put(id, product);
+        productList.put(id, product);
 
         return true;
     }
@@ -132,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean delete(final Long id) {
         if (getIds().contains(id)) {
-            PRODUCT_LIST.remove(id);
+            productList.remove(id);
 
             return true;
         }
@@ -148,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
     public Collection<Long> getIds() {
         final Collection<Long> productsId = new HashSet<>();
 
-        for (final Product product : PRODUCT_LIST.values()) {
+        for (final Product product : productList.values()) {
             final long productId = product.getId();
 
             productsId.add(productId);
@@ -166,11 +172,11 @@ public class ProductServiceImpl implements ProductService {
     public boolean order(final Order order) {
         try {
             order.setId(generateId("order"));
-            ORDER_LIST.put(order.getId(), order);
+            orderList.put(order.getId(), order);
             final Product product = get(order.getProductId());
 
             product.setAvailable(product.getAvailable() - order.getQuantity());
-            PRODUCT_LIST.put(order.getProductId(), product);
+            productList.put(order.getProductId(), product);
 
             return true;
         } catch (ClassCastException exception) {
@@ -186,7 +192,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Order> getOrderList(final Long userId) {
         final List<Order> orderList = new ArrayList<>();
 
-        for (Order order : ORDER_LIST.values()) {
+        for (Order order : this.orderList.values()) {
 
             if (order.getUserId() == userId) {
                 orderList.add(order);
@@ -202,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
      * @return Represents {@link Order}
      */
     public Order getOrder(Long orderId) {
-        return ORDER_LIST.get(orderId);
+        return orderList.get(orderId);
     }
 
     /**
@@ -212,12 +218,12 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean cancelOrder(final Long orderId) {
         try {
-            ORDER_LIST.remove(orderId);
+            orderList.remove(orderId);
             final Order order = getOrder(orderId);
             final Product product = get(order.getProductId());
 
             product.setAvailable(product.getAvailable() + order.getQuantity());
-            PRODUCT_LIST.put(order.getProductId(), product);
+            productList.put(order.getProductId(), product);
 
             return true;
         } catch (Exception exception) {
@@ -234,7 +240,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean addToCart(final Cart cart) {
         try {
             cart.setId(generateId("cart"));
-            CART_LIST.put(cart.getId(), cart);
+            cartList.put(cart.getId(), cart);
             return true;
         } catch (Exception exception) {
             return false;
@@ -250,7 +256,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Cart> getCartList(final Long userId) {
         final List<Cart> cartList = new LinkedList<>();
 
-        for (Cart cart : CART_LIST.values()) {
+        for (Cart cart : this.cartList.values()) {
 
             if (cart.getUserId() == userId) {
                 cartList.add(cart);
@@ -266,7 +272,7 @@ public class ProductServiceImpl implements ProductService {
      * @return Represents {@link Cart}
      */
     public Cart getCart(Long id) {
-        for (Cart cart : CART_LIST.values()) {
+        for (Cart cart : cartList.values()) {
 
             if (cart.getId() == id) {
                 return cart;
@@ -298,7 +304,7 @@ public class ProductServiceImpl implements ProductService {
      */
     public boolean removeCart(final Long cartId) {
         try {
-            CART_LIST.remove(cartId);
+            cartList.remove(cartId);
             return true;
         } catch (ClassCastException exception) {
             return false;
@@ -313,9 +319,9 @@ public class ProductServiceImpl implements ProductService {
      * @return True if the product quantity updated successfully
      */
     public boolean updateQuantityInCart(Long quantity, Long productId) {
-        for (Cart cart : CART_LIST.values()) {
+        for (Cart cart : cartList.values()) {
             if (cart.getProductId() == productId) {
-                final Double price = cart.getPrice()/ CART_LIST.size();
+                final Double price = cart.getPrice()/ cartList.size();
                 System.out.println(price);
                 cart.setQuantity(cart.getQuantity() + quantity);
                 cart.setPrice(cart.getPrice() + (quantity * price));
@@ -334,7 +340,7 @@ public class ProductServiceImpl implements ProductService {
      * @return True if the product quantity updated successfully
      */
     public boolean updateQuantityInProduct(Long quantity, Long productId) {
-        for (Product product : PRODUCT_LIST.values()) {
+        for (Product product : productList.values()) {
             if (product.getId() == productId) {
                 product.setAvailable(product.getAvailable() + quantity);
 

@@ -12,15 +12,15 @@ import com.amazon.model.User;
  * @author Roshan
  * @version 1.0
  */
-public class AuthenticationView extends ScannerInstance {
+public class AuthenticationView extends View {
 
-    private static AuthenticationView AUTHENTICATION_VIEW ;
     private static final UserView USER_VIEW = UserView.getInstance();
-    private static final AuthenticationController authenticationController = AuthenticationController.getInstance() ;
+    private static AuthenticationView AUTHENTICATION_VIEW ;
+    private final AuthenticationController authenticationController;
 
     public AuthenticationView() {
+        authenticationController = AuthenticationController.getInstance();
     }
-
 
     /**
      * <p>
@@ -40,16 +40,16 @@ public class AuthenticationView extends ScannerInstance {
      */
     public void displayMenu() {
         System.out.println("1.signUp\n2.signIn\n3.exit");
-        final int option = USER_VIEW.obtainUserChoice();
+        final UserChoice option = USER_VIEW.obtainUserChoice();
 
         switch (option) {
-            case 1:
+            case ONE:
                 signUp();
                 break;
-            case 2:
+            case TWO:
                 signIn();
                 break;
-            case 3:
+            case THREE:
                 System.exit(0);
                 break;
             default:

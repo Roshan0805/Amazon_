@@ -22,9 +22,10 @@ import java.util.LinkedList;
 public class UserServiceDaoImpl implements UserServiceDao {
 
     private static final UserServiceDao USER_SERVICE_DAO = new UserServiceDaoImpl();
-    private final DBConnection dbConnection = DBConnection.getInstance();
+    private final DBConnection dbConnection ;
 
     private UserServiceDaoImpl() {
+       dbConnection = DBConnection.getInstance();
     }
 
     /**
@@ -46,6 +47,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      *
      * @param id User email
      * @return User object from the user list
+     * @throws DBException Represents any error occur while executing a query
      */
     public User getDetails(final Long id) {
         try (final Connection connection = dbConnection.get()) {
@@ -81,6 +83,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      *
      * @param user_id Represents the id of {@link User}
      * @return Boolean true is the user is deleted successfully
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean deleteUser(final Long user_id) {
         try (final Connection connection = dbConnection.get()) {
@@ -101,6 +104,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * Represents all the {@link User} details in the usersList
      *
      * @return Represents collection of {@link User}
+     * @throws DBException Represents any error occur while executing a query
      */
     public Collection<User> getAllUser() {
         try (final Connection connection = dbConnection.get()) {
@@ -136,6 +140,7 @@ public class UserServiceDaoImpl implements UserServiceDao {
      * @param user   Represents the updated {@link User}
      * @param userId Represents the user's id
      * @return true if updated successfully
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean update(final User user, final Long userId) {
         try (final Connection connection = dbConnection.get()) {

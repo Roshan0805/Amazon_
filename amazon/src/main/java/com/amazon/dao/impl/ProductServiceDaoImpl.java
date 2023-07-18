@@ -31,9 +31,10 @@ import java.util.Map;
 public class ProductServiceDaoImpl implements ProductServiceDao {
 
     private static final ProductServiceDao PRODUCT_SERVICE_DAO = new ProductServiceDaoImpl();
-    private final DBConnection dbConnection = DBConnection.getInstance();
+    private final DBConnection dbConnection;
 
     private ProductServiceDaoImpl() {
+        dbConnection = DBConnection.getInstance();
     }
 
     /**
@@ -54,6 +55,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param product Product object
      * @return Boolean true is the {@link Product} added successfully in the product list otherwise return false
+     *@throws DBException Represents any error occur while executing a query
      */
     public boolean add(final Product product) {
         try (final Connection connection = dbConnection.get()) {
@@ -82,6 +84,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * </p>
      *
      * @return Collection view of {@link Product}
+     * @throws DBException Represents any error occur while executing a query
      */
     public Collection<Product> getAllProducts() {
         try (final Connection connection = dbConnection.get()) {
@@ -117,6 +120,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param userId Represents admin id
      * @return Represents {@link Product} list created by the user
+     * @throws DBException Represents any error occur while executing a query
      */
     public Map<Long, Product> getUserProduct(final Long userId) {
         final Map<Long, Product> productList = new HashMap<>();
@@ -156,6 +160,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param productId product id of the product object
      * @return Represent {@link Product} in product list
+     * @throws DBException Represents any error occur while executing a query
      */
     public Product get(final Long productId) {
         try (final Connection connection = dbConnection.get()) {
@@ -195,6 +200,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param id      Product id of the product
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean update(final Long id, final Product product) {
         try (final Connection connection = dbConnection.get()) {
@@ -225,6 +231,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean delete(final Long id) {
         try (final Connection connection = dbConnection.get()) {
@@ -247,6 +254,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *</p>
      * @param cart Represents {@link Cart}
      * @return True if product added to cart successfully
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean addToCart(final Cart cart) {
         try (final Connection connection = dbConnection.get()) {
@@ -272,6 +280,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * </p>
      * @param id Represents the id of {@link User}
      * @return Represents the list of products from the cart
+     * @throws DBException Represents any error occur while executing a query
      */
     public List<Cart> getCartList(final Long id) {
         try (final Connection connection = dbConnection.get()) {
@@ -307,6 +316,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * </p>
      * @param id Represents the id of {@link User}
      * @return Represents the list of products from the cart
+     * @throws DBException Represents any error occur while executing a query
      */
     public Cart getCart(final Long id) {
         try (final Connection connection = dbConnection.get()) {
@@ -342,6 +352,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * </p>
      * @param cartId Represents the cart id for remove
      * @return true if the product is removed successfully from the cart
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean removeCart(final Long cartId) {
         try (final Connection connection = dbConnection.get()) {
@@ -364,6 +375,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * </p>
      * @param userId Represents the id of the {@link User}
      * @return List of product id from the cart
+     * @throws DBException Represents any error occur while executing a query
      */
     public List<Long> getCartProductIds(final Long userId) {
         try (final Connection connection = dbConnection.get()) {
@@ -393,6 +405,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param quantity Quantity need to add with available products
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the quantity updated successfully
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean updateQuantityInCart(final Long quantity, final Long productId) {
         try (final Connection connection = dbConnection.get()) {
@@ -418,6 +431,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param quantity Quantity need to add with available products
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the quantity updated successfully
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean updateQuantityInProduct(final Long quantity, final Long productId) {
         try (final Connection connection = dbConnection.get()) {
@@ -442,6 +456,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param order Represents {@link Order}
      * @return True if the order is added to the order list
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean order(final Order order) {
         try (final Connection connection = dbConnection.get()) {
@@ -477,6 +492,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      *
      * @param userId Represents id of {@link User}
      * @return Represents collection of {@link Order}
+     * @throws DBException Represents any error occur while executing a query
      */
     public List<Order> getOrderList(final Long userId) {
         try (final Connection connection = dbConnection.get()) {
@@ -511,6 +527,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * Represents the order details of the particular order id
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
+     * @throws DBException Represents any error occur while executing a query
      */
     public Order getOrder(final Long orderId) {
         try (final Connection connection = dbConnection.get()) {
@@ -541,6 +558,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * Represents the cancelling the order of the particular order id
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean cancelOrder(final Long orderId) {
         try (final Connection connection = dbConnection.get()) {

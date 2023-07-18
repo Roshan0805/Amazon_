@@ -6,6 +6,8 @@ import com.amazon.view.AuthenticationView;
  * <p>
  *     Represents the activation of an application
  * </p>
+ * @auther Roshan B
+ * @version 1.0
  */
 public class Activator {
 

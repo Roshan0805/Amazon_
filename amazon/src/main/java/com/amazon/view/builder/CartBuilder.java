@@ -3,14 +3,16 @@ package com.amazon.view.builder;
 import com.amazon.model.Cart;
 import com.amazon.model.Product;
 import com.amazon.view.ProductView;
-import com.amazon.view.ScannerInstance;
+import com.amazon.view.View;
 
-public class CartBuilder extends ScannerInstance {
+public class CartBuilder extends View {
 
     private static final CartBuilder CART_BUILDER = new CartBuilder();
-    private final ProductView productView = ProductView.getInstance();
+    private final ProductView productView;
 
-    private CartBuilder () {}
+    private CartBuilder () {
+        productView = ProductView.getInstance();
+    }
 
     public static CartBuilder getInstance() {
         return CART_BUILDER;

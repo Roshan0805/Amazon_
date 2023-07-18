@@ -19,11 +19,12 @@ import java.util.Collection;
 public class UserController {
 
     private static final UserController USER_CONTROLLER = new UserController();
-    private  final UserService USER_SERVICE = UserServiceImpl.getInstance();
-    private final UserService userService2 = UserServiceImpl2.getInstance();
-    private final ProductService productService = ProductService.getInstance();
+    private  final UserService userService;
+    private final UserService userService2;
 
     private UserController() {
+        userService = UserServiceImpl.getInstance();
+        userService2 = UserServiceImpl2.getInstance();
     }
 
     /**

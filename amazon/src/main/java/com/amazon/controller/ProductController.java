@@ -21,11 +21,13 @@ import java.util.Map;
  */
 public class ProductController {
 
-    private final ProductService PRODUCT_SERVICE = ProductService.getInstance();
     private static final ProductController PRODUCT_CONTROLLER = new ProductController();
-    private final ProductService PRODUCT_SERVICE2 = ProductServiceImpl2.getInstance();
+    private final ProductService productService;
+    private final ProductService productService2;
 
     private ProductController() {
+        productService = ProductService.getInstance();
+        productService2 = ProductServiceImpl2.getInstance();
     }
 
     /**
@@ -48,7 +50,7 @@ public class ProductController {
      * @return True if the {@link Product} is added successfully in the product list otherwise return false
      */
     public boolean add(final Product product) {
-        return PRODUCT_SERVICE2.add(product);
+        return productService2.add(product);
     }
 
     /**
@@ -59,7 +61,7 @@ public class ProductController {
      * @return Collection view of products from the viewProduct method
      */
     public Collection<Product> getAllProduct() {
-        return PRODUCT_SERVICE2.getAllProducts();
+        return productService2.getAllProducts();
     }
 
     /**
@@ -71,7 +73,7 @@ public class ProductController {
      * @return Represents {@link Product} list created by the user
      */
     public Map<Long, Product> getUserProduct(final Long userId) {
-        return PRODUCT_SERVICE2.getUserProduct(userId);
+        return productService2.getUserProduct(userId);
     }
 
     /**
@@ -83,7 +85,7 @@ public class ProductController {
      * @return Represents {@link Product}
      */
     public Product get(final Long productId) {
-        return PRODUCT_SERVICE2.get(productId);
+        return productService2.get(productId);
     }
 
     /**
@@ -96,7 +98,7 @@ public class ProductController {
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
     public boolean update(final Long id, final Product product) {
-        return PRODUCT_SERVICE2.update(id, product);
+        return productService2.update(id, product);
     }
 
     /**
@@ -108,7 +110,7 @@ public class ProductController {
      * @return True if the {@link Product} is deleted successfully in the product list otherwise return false
      */
     public boolean delete(final Long id) {
-        return PRODUCT_SERVICE2.delete(id);
+        return productService2.delete(id);
     }
 
     /**
@@ -120,7 +122,7 @@ public class ProductController {
      * @return True if the order is added to the order list
      */
     public boolean order(final Order order) {
-        return PRODUCT_SERVICE2.order(order);
+        return productService2.order(order);
     }
 
     /**
@@ -131,7 +133,7 @@ public class ProductController {
      * @return Represents collection of {@link Order}
      */
     public List<Order> getOrderList(final Long userId) {
-        return PRODUCT_SERVICE2.getOrderList(userId);
+        return productService2.getOrderList(userId);
     }
 
     /**
@@ -143,7 +145,7 @@ public class ProductController {
      * @return Represents {@link Order}
      */
     public Order getOrder(final Long orderId) {
-        return PRODUCT_SERVICE2.getOrder(orderId);
+        return productService2.getOrder(orderId);
     }
 
     /**
@@ -155,7 +157,7 @@ public class ProductController {
      * @return Represents {@link Order}
      */
     public boolean cancelOrder(final Long orderId) {
-        return PRODUCT_SERVICE2.cancelOrder(orderId);
+        return productService2.cancelOrder(orderId);
     }
 
     /**
@@ -167,7 +169,7 @@ public class ProductController {
      * @return True if the Product is added successfully in cart
      */
     public boolean addToCart(final Cart cart) {
-        return PRODUCT_SERVICE2.addToCart(cart);
+        return productService2.addToCart(cart);
     }
 
     /**
@@ -179,7 +181,7 @@ public class ProductController {
      * @return Collection of products from the cart
      */
     public List<Cart> getCartList(final Long userId) {
-        return PRODUCT_SERVICE2.getCartList(userId);
+        return productService2.getCartList(userId);
     }
 
     /**
@@ -191,7 +193,7 @@ public class ProductController {
      * @return Represents {@link Cart}
      */
     public Cart getCart(final Long id) {
-        return PRODUCT_SERVICE2.getCart(id);
+        return productService2.getCart(id);
     }
 
     /**
@@ -203,7 +205,7 @@ public class ProductController {
      * @return True if the Product is removed successfully
      */
     public boolean removeCart(final Long cartId) {
-        return PRODUCT_SERVICE2.removeCart(cartId);
+        return productService2.removeCart(cartId);
     }
 
     /**
@@ -215,7 +217,7 @@ public class ProductController {
      * @return List of product id's
      */
     public List<Long> getCartProductIds(final Long userId) {
-        return PRODUCT_SERVICE2.getCartProductIds(userId);
+        return productService2.getCartProductIds(userId);
     }
 
     /**
@@ -228,7 +230,7 @@ public class ProductController {
      * @return True if the product quantity updated successfully
      */
     public boolean updateQuantityInCart(final Long quantity, final Long productId) {
-        return PRODUCT_SERVICE2.updateQuantityInCart(quantity, productId);
+        return productService2.updateQuantityInCart(quantity, productId);
     }
 
     /**
@@ -241,6 +243,6 @@ public class ProductController {
      * @return True if the product quantity updated successfully
      */
     public boolean updateQuantityInProduct(final Long quantity, final Long productId) {
-        return PRODUCT_SERVICE.updateQuantityInProduct(quantity, productId);
+        return productService2.updateQuantityInProduct(quantity, productId);
     }
 }

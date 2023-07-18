@@ -6,9 +6,11 @@ import com.amazon.service.AuthenticationService;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final AuthenticationServiceImpl AUTHENTICATION_SERVICE = new AuthenticationServiceImpl();
-    private static Long userId = 1L;
+    private static Long userId;
 
-    private AuthenticationServiceImpl() {}
+    private AuthenticationServiceImpl() {
+        userId = 1L;
+    }
 
     public static AuthenticationService getInstance() {
         return AUTHENTICATION_SERVICE;
@@ -26,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             final Long id = generateId();
 
             user.setId(id);
-            UserServiceImpl.USERS_LIST.put(id, user);
+            UserServiceImpl.usersList.put(id, user);
 
             return true;
         } catch (Exception exception) {
@@ -44,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return True if email and password match the user from the users list
      */
     public boolean signIn(final String email, final String password) {
-        for (final User existingUser : UserServiceImpl.USERS_LIST.values()) {
+        for (final User existingUser : UserServiceImpl.usersList.values()) {
 
             if ((existingUser.getEmail().equals(email)) && (existingUser.getPassword().equals(password))) {
                 return true;
@@ -61,7 +63,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return True If the email is already exists
      */
     public boolean isUserEmailExists(String email) {
-        for (final User user : UserServiceImpl.USERS_LIST.values()) {
+        for (final User user : UserServiceImpl.usersList.values()) {
 
             if (user.getEmail().equals(email)) {
                 return true;
@@ -78,7 +80,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return True If the email is already exists
      */
     public boolean isNumberExists(String phoneNumber) {
-        for (final User user : UserServiceImpl.USERS_LIST.values()) {
+        for (final User user : UserServiceImpl.usersList.values()) {
 
             if (user.getPhoneNumber().equals(phoneNumber)) {
                 return true;

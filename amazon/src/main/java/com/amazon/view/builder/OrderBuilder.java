@@ -5,7 +5,7 @@ import com.amazon.model.Order;
 import com.amazon.model.User;
 import com.amazon.model.Product;
 import com.amazon.view.ProductView;
-import com.amazon.view.ScannerInstance;
+import com.amazon.view.View;
 
 /**
  * <p>
@@ -15,13 +15,13 @@ import com.amazon.view.ScannerInstance;
  * @author Roshan
  * @version 1.0
  */
-public class OrderBuilder extends ScannerInstance {
+public class OrderBuilder extends View {
 
     private static final OrderBuilder ORDER_BUILDER = new OrderBuilder();
-    private final ProductView productView = ProductView.getInstance();
-    private static Long orderId = 1L;
+    private final ProductView productView;
 
     private OrderBuilder() {
+        productView = ProductView.getInstance();
     }
 
     /**

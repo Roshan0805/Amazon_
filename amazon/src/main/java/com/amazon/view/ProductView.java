@@ -6,6 +6,7 @@ import com.amazon.exception.UnavailableQuantityException;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
+import com.amazon.model.Product.Category;
 import com.amazon.model.User;
 import com.amazon.view.builder.CartBuilder;
 import com.amazon.view.builder.OrderBuilder;
@@ -24,17 +25,22 @@ import java.util.Map;
  * @author Roshan
  * @version 1.0
  */
-public class ProductView extends ScannerInstance {
+public class ProductView extends View {
 
     private static ProductView productView = null;
     private static final UserView userView = UserView.getInstance();
-    public final ProductController productController = ProductController.getInstance();
-    private final ProductBuilder productBuilder = ProductBuilder.getInstance();
-    private final OrderBuilder orderBuilder = OrderBuilder.getInstance();
-    private final CartBuilder cartBuilder = CartBuilder.getInstance();
-    public final ProductValidator productValidator = ProductValidator.getInstance();
+    public final ProductController productController;
+    private final ProductBuilder productBuilder;
+    private final OrderBuilder orderBuilder;
+    private final CartBuilder cartBuilder;
+    public final ProductValidator productValidator;
 
     private ProductView() {
+        productController = ProductController.getInstance();
+        productBuilder = ProductBuilder.getInstance();
+        orderBuilder = OrderBuilder.getInstance();
+        cartBuilder = CartBuilder.getInstance();
+        productValidator = ProductValidator.getInstance();
     }
 
     /**
@@ -58,22 +64,22 @@ public class ProductView extends ScannerInstance {
     public void accessProduct(final Long userId) {
         System.out.println(String.join("", "Choose from the options\n1.get all product\t",
                 "2.add product", "\t3.update product\t4.delete product\t5.Back to admin option"));
-        final int userOption = userView.obtainUserChoice();
+        final UserChoice userOption = userView.obtainUserChoice();
 
         switch (userOption) {
-            case 1:
+            case ONE:
                 viewUserProduct(userId);
                 break;
-            case 2:
+            case TWO:
                 createProduct(userId);
                 break;
-            case 3:
+            case THREE:
                 updateProduct(userId);
                 break;
-            case 4:
+            case FOUR:
                 delete(userId);
                 break;
-            case 5:
+            case FIVE:
                 userView.obtainUserOptions();
                 break;
             default:
@@ -330,7 +336,7 @@ public class ProductView extends ScannerInstance {
 
             final int productChoice = Integer.parseInt(userChoice);
 
-            final Product.Category category = Product.Category.getCategory(productChoice);
+            final Category category = Category.getCategory(productChoice);
 
             if (null == category) {
                 System.out.println("Enter a valid category");
@@ -490,16 +496,16 @@ public class ProductView extends ScannerInstance {
      */
     public void accessOrder(final Long userId) {
         System.out.println("Enter the Option\n1.get all orders \n2.remove order\n3.get order");
-        final int userChoice = userView.obtainUserChoice();
+        final UserChoice userChoice = userView.obtainUserChoice();
 
         switch (userChoice) {
-            case 1:
+            case ONE:
                 getOrderList(userId);
                 break;
-            case 2:
+            case TWO:
                 cancelOrder(userId);
                 break;
-            case 3:
+            case THREE:
                 obtainOrder(userId);
                 break;
             default:
@@ -646,13 +652,13 @@ public class ProductView extends ScannerInstance {
      */
     public void accessCart(final Long userId) {
         System.out.println("Enter the Option\n1.get cart\n2.remove product cart");
-        final int userChoice = userView.obtainUserChoice();
+        final UserChoice userChoice = userView.obtainUserChoice();
 
         switch (userChoice) {
-            case 1:
+            case ONE:
                 getCart(userId);
                 break;
-            case 2:
+            case TWO:
                 removeCart(userId);
                 break;
             default:

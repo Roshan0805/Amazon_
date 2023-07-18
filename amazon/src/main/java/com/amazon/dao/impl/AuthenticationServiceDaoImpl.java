@@ -20,9 +20,10 @@ import java.sql.SQLException;
 public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
 
     private static final AuthenticationServiceDao AUTHENTICATION_SERVICE = new AuthenticationServiceDaoImpl();
-    private final DBConnection dbConnection = DBConnection.getInstance();
+    private final DBConnection dbConnection ;
 
     private AuthenticationServiceDaoImpl() {
+        dbConnection = DBConnection.getInstance();
     }
 
     /**
@@ -40,6 +41,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      * </p>
      *
      * @param user User object is passed as a parameter
+     *             @throws DBException Represents any error occur while executing a query
      */
     public boolean signUp(final User user) {
         try (final Connection connection = dbConnection.get()) {
@@ -68,6 +70,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      * @param email    User's email id
      * @param password User's password
      * @return True if email and password match the user from the users list
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean signIn(String email, String password) {
         try (final Connection connection = dbConnection.get()) {
@@ -93,6 +96,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      *
      * @param email User's email
      * @return True if the email id is already present on the user list
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean isUserEmailExists(String email) {
         try (final Connection connection = dbConnection.get()) {
@@ -118,6 +122,7 @@ public class AuthenticationServiceDaoImpl implements AuthenticationServiceDao {
      *
      * @param phoneNumber User's email
      * @return True if the email id is already present on the user list
+     * @throws DBException Represents any error occur while executing a query
      */
     public boolean isNumberExists(String phoneNumber) {
         try (final Connection connection = dbConnection.get()) {
