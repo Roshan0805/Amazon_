@@ -63,7 +63,7 @@ public class AuthenticationView extends View {
      */
     public void signIn() {
         try {
-            if (authenticationController.signIn(USER_VIEW.getEmail(), USER_VIEW.getPassword())) {
+            if (authenticationController.signIn(USER_VIEW.obtainEmail(), USER_VIEW.obtainPassword())) {
                 System.out.println("Sign in successful");
                 USER_VIEW.obtainUserOptions();
             } else {
@@ -82,7 +82,7 @@ public class AuthenticationView extends View {
      */
     public void signUp() {
         try {
-            final String userEmail = USER_VIEW.getEmail();
+            final String userEmail = USER_VIEW.obtainEmail();
             final String phoneNumber = USER_VIEW.obtainPhoneNumber();
 
             if (authenticationController.isUserEmailExists(userEmail) || authenticationController.isNumberExists(phoneNumber)) {
@@ -93,9 +93,9 @@ public class AuthenticationView extends View {
 
             user.setEmail(userEmail);
             user.setPhoneNumber(phoneNumber);
-            user.setPassword(USER_VIEW.getPassword());
+            user.setPassword(USER_VIEW.obtainPassword());
             user.setName(USER_VIEW.obtainName());
-            user.setAddress(USER_VIEW.getAddress());
+            user.setAddress(USER_VIEW.obtainAddress());
 
             if (authenticationController.signUp(user)) {
                 System.out.println("Sing up successful");

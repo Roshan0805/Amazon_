@@ -17,9 +17,9 @@ import java.util.Collection;
 public class UserView extends View {
 
     private static UserView USER_VIEW = null;
-    protected final UserValidator userValidator;
+    private final UserValidator userValidator;
     private final AuthenticationView authenticationView;
-    protected final UserController userController;
+    private final UserController userController;
     private final ProductView productView ;
 
     private UserView() {
@@ -42,7 +42,7 @@ public class UserView extends View {
 
     /**
      * <p>
-     * Product user option for user to get, update and delete details
+     * Provide user option for user to get, update and delete details
      * </p>
      *
      * @param userId Represents id of {@link User}
@@ -148,7 +148,7 @@ public class UserView extends View {
         System.out.println("Do you want to update user email press yes(y) else press no(n)");
 
         if (userValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-            user.setEmail(getEmail());
+            user.setEmail(obtainEmail());
         }
     }
 
@@ -163,7 +163,7 @@ public class UserView extends View {
         System.out.println("Do you want to update user password press yes(y) else press no(n)");
 
         if (userValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-            user.setPassword(getPassword());
+            user.setPassword(obtainPassword());
         }
     }
 
@@ -178,7 +178,7 @@ public class UserView extends View {
         System.out.println("Do you want to update user address press yes(y) else press no(n)");
 
         if (userValidator.toContinueValidation(SCANNER.nextLine().trim())) {
-            user.setAddress(getAddress());
+            user.setAddress(obtainAddress());
         }
     }
 
@@ -219,7 +219,7 @@ public class UserView extends View {
      *
      * @return Represents email the user entered
      */
-    public String getEmail() {
+    public String obtainEmail() {
         try {
             System.out.println("Enter the email id\t(press # for logout to menu)");
             final String email = SCANNER.nextLine().trim();
@@ -237,7 +237,7 @@ public class UserView extends View {
             System.out.println(exception.getMessage());
         }
 
-        return getEmail();
+        return obtainEmail();
     }
 
     /**
@@ -247,7 +247,7 @@ public class UserView extends View {
      *
      * @return Represents email id the user entered
      */
-    public Long getId() {
+    public Long obtainId() {
         try {
             System.out.println("Enter the user id\t(press # for logout to menu)");
             final String userChoice = SCANNER.nextLine().trim();
@@ -265,7 +265,7 @@ public class UserView extends View {
         } catch (NumberFormatException | IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
-        return getId();
+        return obtainId();
     }
 
     /**
@@ -275,7 +275,7 @@ public class UserView extends View {
      *
      * @return Represents password that the user entered
      */
-    public String getPassword() {
+    public String obtainPassword() {
         try {
             System.out.println(String.join(" ", "Enter the password\t(password must contain",
                     "one capital letter small letter, number and a symbol)\t(press # for logout to menu)"));
@@ -293,7 +293,7 @@ public class UserView extends View {
             System.out.println(exception.getMessage());
         }
 
-        return getPassword();
+        return obtainPassword();
     }
 
     /**
@@ -303,7 +303,7 @@ public class UserView extends View {
      *
      * @return Represents address user entered
      */
-    public String getAddress() {
+    public String obtainAddress() {
         try {
             System.out.println(("Enter the address with door no\t (press # for logout to menu)"));
             final String address = SCANNER.nextLine().trim();
@@ -321,7 +321,7 @@ public class UserView extends View {
             System.out.println(exception.getMessage());
         }
 
-        return getAddress();
+        return obtainAddress();
     }
 
     /**
@@ -344,7 +344,7 @@ public class UserView extends View {
                 return userName;
             }
             System.out.println("Invalid username");
-        } catch (final IndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
         return obtainName();
@@ -370,7 +370,7 @@ public class UserView extends View {
                 return phoneNo;
             }
             System.out.println("Invalid phone number");
-        } catch (final IndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             System.out.println(exception.getMessage());
         }
         return obtainPhoneNumber();
@@ -378,13 +378,14 @@ public class UserView extends View {
 
     /**
      * <p>
-     * Gets and validates the user's choice
+     * obtain user's choice
      * </p>
      *
      * @return Represents value that the user entered
      */
     public UserChoice obtainUserChoice() {
         System.out.println("Enter the choice\t(press # for return to menu)");
+
         try {
             final String userChoice = SCANNER.nextLine().trim();
 
@@ -415,7 +416,7 @@ public class UserView extends View {
         if (userOption.equals(UserChoice.SEVEN)) {
             authenticationView.displayMenu();
         }
-        final Long userId = USER_VIEW.getId();
+        final Long userId = USER_VIEW.obtainId();
 
         switch (userOption) {
             case ONE:
@@ -448,7 +449,7 @@ public class UserView extends View {
      * </p>
      */
     public void getAllUsers() {
-        Collection<User> users = userController.getAllUser();
+        final Collection<User> users = userController.getAllUser();
 
         if (users.isEmpty()) {
             System.out.println("The user list is empty");

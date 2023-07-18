@@ -26,7 +26,7 @@ public class AuthenticationController {
      * <p>
      *     Represents the instance of {@link AuthenticationController} created only ones
      * </p>
-     * @return
+     * @return Represents {@link AuthenticationController}
      */
     public static AuthenticationController getInstance() {
         return AUTHENTICATION_CONTROLLER;
@@ -37,7 +37,7 @@ public class AuthenticationController {
      * Provides {@link User} sign up
      * </p>
      *
-     * @param user User object is passed as a parameter
+     * @param user Represents {@link User}
      */
     public boolean signUp(User user) {
         return authenticationService2.signUp(user);

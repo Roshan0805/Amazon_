@@ -27,13 +27,13 @@ import java.util.Map;
  */
 public class ProductView extends View {
 
+    private final ProductController productController;
     private static ProductView productView = null;
     private static final UserView userView = UserView.getInstance();
-    public final ProductController productController;
     private final ProductBuilder productBuilder;
     private final OrderBuilder orderBuilder;
     private final CartBuilder cartBuilder;
-    public final ProductValidator productValidator;
+    protected final ProductValidator productValidator;
 
     private ProductView() {
         productController = ProductController.getInstance();
@@ -108,7 +108,7 @@ public class ProductView extends View {
 
         try {
             System.out.println("Enter the product id for update product information");
-            final Long productId = userView.getId();
+            final Long productId = userView.obtainId();
 
             if (productValidator.validateProductIds(productId, userId)) {
                 final Product product = productController.get(productId);
@@ -230,7 +230,7 @@ public class ProductView extends View {
         try {
             viewUserProduct(userId);
             System.out.println("Enter the product id to delete the product details ");
-            final Long productId = userView.getId();
+            final Long productId = userView.obtainId();
 
             if (productController.delete(productId)) {
                 System.out.println("Product deleted successfully");
@@ -258,7 +258,7 @@ public class ProductView extends View {
             System.out.println("Enter the product id then enter the number of product have to be added");
 
             try {
-                if (productController.updateQuantityInProduct(obtainQuantity(), userView.getId())) {
+                if (productController.updateQuantityInProduct(obtainQuantity(), userView.obtainId())) {
                     System.out.println("Product updated successfully");
                 } else {
                     System.out.println("Product updated unsuccessful");
@@ -818,6 +818,16 @@ public class ProductView extends View {
             System.out.println(exception.getMessage());
         }
         return obtainId();
+    }
+
+    /**
+     * <p>
+     *     Represents getting a product controller
+     * </p>
+     * @return {@link ProductController}
+     */
+    public ProductController getProductController() {
+        return productController;
     }
 }
 

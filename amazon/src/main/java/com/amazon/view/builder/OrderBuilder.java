@@ -1,5 +1,6 @@
 package com.amazon.view.builder;
 
+import com.amazon.controller.ProductController;
 import com.amazon.exception.UnavailableQuantityException;
 import com.amazon.model.Order;
 import com.amazon.model.User;
@@ -18,6 +19,7 @@ import com.amazon.view.View;
 public class OrderBuilder extends View {
 
     private static final OrderBuilder ORDER_BUILDER = new OrderBuilder();
+
     private final ProductView productView;
 
     private OrderBuilder() {
@@ -46,7 +48,7 @@ public class OrderBuilder extends View {
      */
     public Order buildOrder(final Long productId, final Long quantity, final Order.Payment paymentType, final Long userId) throws UnavailableQuantityException {
 
-        final Product product = productView.productController.get(productId);
+        final Product product = productView.getProductController().get(productId);
         System.out.println(product);
         if (product.getAvailable() < quantity) {
             throw new UnavailableQuantityException("Un available quantity");

@@ -20,7 +20,7 @@ public class CartBuilder extends View {
 
     public Cart getCart(final Long productId, final Long quantity) {
         final Cart cart = new Cart();
-        final Product product = productView.productController.get(productId);
+        final Product product = productView.getProductController().get(productId);
 
         cart.setProductId(productId);
         cart.setProductName(product.getName());
