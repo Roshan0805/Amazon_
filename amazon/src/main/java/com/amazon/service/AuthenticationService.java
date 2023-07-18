@@ -2,8 +2,15 @@ package com.amazon.service;
 
 import com.amazon.model.User;
 
+/**
+ * <p>
+ *     Provide Service for Authentication
+ * </p>
+ *
+ * @author Roshan B
+ * @version 1.0
+ */
 public interface AuthenticationService {
-
 
     /**
      * <p>

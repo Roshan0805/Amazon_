@@ -1,49 +1,59 @@
 package com.amazon.view.builder;
 
+import com.amazon.controller.ProductController;
+import com.amazon.exception.UnavailableQuantityException;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
+import com.amazon.model.User;
 import com.amazon.view.ProductView;
 
-public class OrderBuilder extends ProductView {
+public class OrderBuilder {
 
     private static final OrderBuilder ORDER_BUILDER = new OrderBuilder();
+    private final ProductView productView = ProductView.getInstance();
+    private final ProductController productController = ProductController.getInstance();
     private static Long orderId = 1L;
 
     private OrderBuilder() {
     }
 
+    /**
+     * <p>
+     * Represents the {@link OrderBuilder} class object can be created for only one time
+     * </p>
+     *
+     * @return Represents the object of {@link OrderBuilder}
+     */
     public static OrderBuilder getInstance() {
         return ORDER_BUILDER;
     }
 
-    public Order buildOrder(final Long userId) {
+    /**
+     * Represent the creation of order made by the builder method
+     *
+     * @param productId   Represents the id of {@link Product } to be added to the cart
+     * @param quantity    Represents the quantity of the product
+     * @param paymentType Represents the payment type of the order
+     * @param userId      Represents the id og the {@link User}
+     * @return Represents {@link Order}
+     */
+    public Order buildOrder(final Long productId, final Long quantity, final Order.Payment paymentType, final Long userId) {
 
-        System.out.println("Enter the product id for order");
-
-        try {
-            final Long productId = Long.parseLong(SCANNER.nextLine());
-
-            if (PRODUCT_VALIDATION.isReturnToMenu(String.valueOf(productId))) {
-                USER_VIEW.getUserOptions();
-            }
-            System.out.println("Enter the quantity you want in number");
-            final Long quantity = Long.parseLong(SCANNER.nextLine().trim());
-            final Order order = new Order();
-            final Product product = PRODUCT_CONTROLLER.get(productId);
-
-            order.setId(orderId++);
-            order.setProductId(productId);
-            order.setProductName(product.getName());
-            order.setProductCount(quantity);
-            order.setUserId(userId);
-            order.setTotalPrice(product.getPrice() * quantity);
-            order.setPaymentType(getPaymentType());
-
-            return order;
-        } catch (NumberFormatException exception) {
-            System.out.println("Enter the correct product id");
-            buildOrder(userId);
+        final Product product = productController.get(productId);
+        System.out.println(product);
+        if (product.getAvailable() < quantity) {
+            throw new UnavailableQuantityException("Unavailable quantity");
         }
-        return null;
+        final Order order = new Order();
+
+        order.setProductId(productId);
+        order.setProductName(product.getName());
+        order.setQuantity(quantity);
+        order.setUserId(userId);
+        order.setPrice(product.getPrice());
+        System.out.println(product.getPrice());
+        order.setPaymentType(paymentType);
+
+        return order;
     }
 }

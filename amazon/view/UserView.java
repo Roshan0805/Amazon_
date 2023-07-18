@@ -48,7 +48,7 @@ public class UserView {
      */
     public void accessUser(final User user) {
         System.out.println("Choose from the options\n1.get user\n2.update user\n3.delete user\n4.back to user menu");
-        final int userOption = getUserChoice();
+        final int userOption = obtainUserChoice();
 
         switch (userOption) {
             case 1:
@@ -421,6 +421,6 @@ public class UserView {
             System.out.println("Invalid input enter the number input");
         }
 
-        return getUserChoice();
+        return obtainUserChoice();
     }
 }

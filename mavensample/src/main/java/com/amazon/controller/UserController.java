@@ -19,9 +19,9 @@ import java.util.Collection;
 public class UserController {
 
     private static final UserService USER_SERVICE = UserServiceImpl.getInstance();
-    private static final UserService USER_SERVICE_2 = UserServiceImpl2.getInstance();
-    private static final UserController AMAZON_USER_CONTROLLER = new UserController();
-    private static final ProductService PRODUCT_SERVICE = ProductService.getInstance();
+    private final UserService USER_SERVICE_2 = UserServiceImpl2.getInstance();
+    private static final UserController USER_CONTROLLER = new UserController();
+    private final ProductService PRODUCT_SERVICE = ProductService.getInstance();
 
     private UserController() {
     }
@@ -42,10 +42,8 @@ public class UserController {
      * @return Represents {@link UserController}
      */
     public static UserController getInstance() {
-        return AMAZON_USER_CONTROLLER;
+        return USER_CONTROLLER;
     }
-
-
 
     /**
      * <p>
@@ -77,8 +75,16 @@ public class UserController {
      */
     public Collection<User> getAllUser() {return USER_SERVICE_2.getAllUser();}
 
+    /**
+     * <p>
+     * Represents the user update
+     * </p>
+     *
+     * @param user   Represents the updated {@link User}
+     * @param userId Represents the user's id
+     * @return true if updated successfully
+     */
     public boolean update(final User user, final Long userId) {
         return USER_SERVICE_2.update(user,userId);
     }
 }
-

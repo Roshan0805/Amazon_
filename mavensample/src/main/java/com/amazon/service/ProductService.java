@@ -3,6 +3,7 @@ package com.amazon.service;
 import com.amazon.model.Cart;
 import com.amazon.model.Order;
 import com.amazon.model.Product;
+import com.amazon.model.User;
 import com.amazon.service.impl.ProductServiceImpl;
 
 import java.util.Collection;
@@ -18,7 +19,6 @@ import java.util.Map;
  * @version 1.0
  */
 public interface ProductService {
-
     /**
      * <p>
      * Represents the {@link ProductService} interface implemented class object can be created for only one time
@@ -103,20 +103,68 @@ public interface ProductService {
      */
     List<Order> getOrderList(final Long userId);
 
-    Order getOrder(final Long id);
+    /**
+     * Represents the order details of the particular order id
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    Order getOrder(final Long orderId);
 
-    boolean removeOrder(final Long orderId);
+    /**
+     * Represents the cancelling the order of the particular order id
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    boolean cancelOrder(final Long orderId);
 
-
+    /**
+     * Represents adding the product to cart list
+     * @param cart Represents {@link Cart}
+     * @return True if the product is added to cart successfully
+     */
     boolean addToCart(final Cart cart) ;
 
+    /**
+     * Represents the Product details from the cart for a particular user
+     * @param userId Represents the id of {@link User}
+     * @return Collection of products from the cart
+     */
     List<Cart> getCartList(final Long userId);
 
+    /**
+     * Represents the particular id details of entered cart id
+     * @param id Represents the id of the cart
+     * @return Represents {@link Cart}
+     */
     Cart getCart(final Long id);
 
-    List<Long> getProductIds(final Long userId);
+    /**
+     * Represents the product id's of the user created product
+     * @param userId Represents the id of the {@link User}
+     * @return List of product id's
+     */
+    List<Long> getCartProductIds(final Long userId);
 
+    /**
+     * Represents the removal of product for the particular cart id
+     * @param cartId Represents the id of the cart
+     * @return True if the Product is removed successfully
+     */
     boolean removeCart(Long cartId);
 
-    boolean updateQuantity(final Long quantity, final Long productId);
+    /**
+     * Represents updating the quantity of product in cart
+     * @param quantity Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    boolean updateQuantityInCart(final Long quantity, final Long productId);
+
+    /**
+     * Represents updating the quantity of product in {@link Product}
+     * @param quantity Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the product quantity updated successfully
+     */
+    boolean updateQuantityInProduct(final Long quantity, final Long productId);
 }

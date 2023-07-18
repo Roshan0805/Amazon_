@@ -33,7 +33,7 @@ public interface UserService {
      * </p>
      *
      * @param id User email
-     * @return User object from the user list
+     * @return {@link User} object from the user list
      */
     User get(final Long id);
 

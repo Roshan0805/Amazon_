@@ -1,5 +1,7 @@
 package com.amazon.model;
 
+import java.sql.Timestamp;
+
 /**
  * <p> Represents the Product </p>
  *
@@ -11,10 +13,11 @@ public class Product {
     private Long id;
     private String name;
     private String description;
+    private Long available;
     private Double price;
     private Category category;
-    private String updatedTime;
-    private Long adminId;
+    private Timestamp updatedTime;
+    private Long userId;
 
     public enum Category {
 
@@ -79,12 +82,20 @@ public class Product {
         return this.id;
     }
 
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
+    public Long getAvailable() {
+        return available;
     }
 
-    public Long getAdminId() {
-        return this.adminId;
+    public void setAvailable(Long available) {
+        this.available = available;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getUserId() {
+        return this.userId;
     }
 
     public String getDescription() {
@@ -95,16 +106,16 @@ public class Product {
         return category;
     }
 
-    public String getUpdatedTime() {
+    public Timestamp getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(final String updatedTime) {
+    public void setUpdatedTime(final Timestamp updatedTime) {
         this.updatedTime = updatedTime;
     }
 
     public String toString() {
-        return String.format("product id : %d\nproduct category:%s\nproduct name : %s\ndescription : %s\nprice : %f\nupdated time :%s\n",
-                id, category, name, description, price, updatedTime);
+        return String.format("product id : %d\nproduct category:%s\nproduct name : %s\ndescription : %s\navailable : %d\nprice : %f\nupdated time :%s\n",
+                id, category, name, description, available, price, updatedTime);
     }
 }

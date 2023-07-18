@@ -22,9 +22,11 @@ import java.util.Map;
 public class ProductServiceImpl2 implements ProductService {
 
     private static final ProductService PRODUCT_SERVICE = new ProductServiceImpl2();
-    private static final ProductServiceDao PRODUCT_SERVICE_DAO = ProductServiceDao.getInstance();
+    private final ProductServiceDao productServiceDao;
 
-    private ProductServiceImpl2() {}
+    private ProductServiceImpl2() {
+        productServiceDao = ProductServiceDao.getInstance();
+    }
 
     /**
      * <p>
@@ -46,7 +48,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return Boolean true is the {@link Product} added successfully in the product list otherwise return false
      */
     public boolean add(Product product) {
-        return PRODUCT_SERVICE_DAO.add(product);
+        return productServiceDao.add(product);
     }
 
     /**
@@ -57,7 +59,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return Collection view of {@link Product}
      */
     public Collection<Product> getAllProducts() {
-        return PRODUCT_SERVICE_DAO.getAllProducts();
+        return productServiceDao.getAllProducts();
     }
 
     /**
@@ -66,8 +68,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param userId Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    public Map<Long, Product> getUserProduct(Long userId) {
-        return PRODUCT_SERVICE_DAO.getUserProduct(userId);
+    public Map<Long, Product> getUserProduct(final Long userId) {
+        return productServiceDao.getUserProduct(userId);
     }
 
     /**
@@ -78,8 +80,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param productId product id of the product object
      * @return Represent {@link Product} in product list
      */
-    public Product get(long productId) {
-        return PRODUCT_SERVICE_DAO.get(productId);
+    public Product get(final Long productId) {
+        return productServiceDao.get(productId);
     }
 
     /**
@@ -91,8 +93,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    public boolean update(long id, Product product) {
-        return PRODUCT_SERVICE_DAO.update(id, product);
+    public boolean update(final Long id, final Product product) {
+        return productServiceDao.update(id, product);
     }
 
     /**
@@ -103,8 +105,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
      */
-    public boolean delete(long id) {
-        return PRODUCT_SERVICE_DAO.delete(id);
+    public boolean delete(final Long id) {
+        return productServiceDao.delete(id);
     }
 
     /**
@@ -113,8 +115,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param order Represents {@link Order}
      * @return True if the order is added to the order list
      */
-    public boolean order(Order order) {
-        return PRODUCT_SERVICE_DAO.order(order);
+    public boolean order(final Order order) {
+        return productServiceDao.order(order);
     }
 
     /**
@@ -123,8 +125,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param userId Represent the id of user
      * @return Represents collection of {@link Order}
      */
-    public List<Order> getOrderList(Long userId) {
-        return PRODUCT_SERVICE_DAO.getOrderList(userId);
+    public List<Order> getOrderList(final Long userId) {
+        return productServiceDao.getOrderList(userId);
     }
 
     /**
@@ -132,8 +134,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
-    public Order getOrder(Long orderId) {
-        return PRODUCT_SERVICE_DAO.getOrder(orderId);
+    public Order getOrder(final Long orderId) {
+        return productServiceDao.getOrder(orderId);
     }
 
     /**
@@ -141,8 +143,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
-    public boolean cancelOrder(Long orderId) {
-        return PRODUCT_SERVICE_DAO.cancelOrder(orderId);
+    public boolean cancelOrder(final Long orderId) {
+        return productServiceDao.cancelOrder(orderId);
     }
 
     /**
@@ -151,7 +153,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return True if the product is added to cart successfully
      */
     public boolean addToCart(final Cart cart) {
-        return PRODUCT_SERVICE_DAO.addToCart(cart);
+        return productServiceDao.addToCart(cart);
     }
 
     /**
@@ -160,7 +162,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return Collection of products from the cart
      */
     public List<Cart> getCartList(final Long userId) {
-        return PRODUCT_SERVICE_DAO.getCartList(userId);
+        return productServiceDao.getCartList(userId);
     }
 
     /**
@@ -169,7 +171,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return Represents {@link Cart}
      */
     public Cart getCart(final Long id) {
-        return PRODUCT_SERVICE_DAO.getCart(id);
+        return productServiceDao.getCart(id);
     }
 
     /**
@@ -178,7 +180,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return List of product id's
      */
     public List<Long> getCartProductIds(final Long userId) {
-        return PRODUCT_SERVICE_DAO.getCartProductIds(userId);
+        return productServiceDao.getCartProductIds(userId);
     }
 
     /**
@@ -187,7 +189,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @return True if the Product is removed successfully
      */
     public boolean removeCart(final Long cartId) {
-        return PRODUCT_SERVICE_DAO.removeCart(cartId);
+        return productServiceDao.removeCart(cartId);
     }
 
     /**
@@ -196,8 +198,8 @@ public class ProductServiceImpl2 implements ProductService {
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the product quantity updated successfully
      */
-    public boolean updateQuantityInCart(Long quantity, Long productId) {
-        return PRODUCT_SERVICE_DAO.updateQuantityInCart(quantity, productId);
+    public boolean updateQuantityInCart(final Long quantity, final Long productId) {
+        return productServiceDao.updateQuantityInCart(quantity, productId);
     }
 
     /**
@@ -207,7 +209,7 @@ public class ProductServiceImpl2 implements ProductService {
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the product quantity updated successfully
      */
-    public boolean updateQuantityInProduct(Long quantity, Long productId) {
-        return PRODUCT_SERVICE_DAO.updateQuantityInProduct(quantity, productId);
+    public boolean updateQuantityInProduct(final Long quantity, final Long productId) {
+        return productServiceDao.updateQuantityInProduct(quantity, productId);
     }
 }

@@ -11,8 +11,8 @@ public class Cart {
     private Long id;
     private Long productId;
     private String productName;
-    private Long productCount;
-    private Double totalPrice;
+    private Long quantity;
+    private Double price;
     private Long userId;
 
     public void setProductId(final Long productId) {
@@ -23,12 +23,12 @@ public class Cart {
         this.userId = userId;
     }
 
-    public Long getProductCount() {
-        return productCount;
+    public Long getQuantity() {
+        return quantity;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public Double getPrice() {
+        return price;
     }
 
     public Long getUserId() {
@@ -55,16 +55,16 @@ public class Cart {
         this.id = id;
     }
 
-    public void setProductCount(final Long count) {
-        this.productCount = count;
+    public void setQuantity(final Long count) {
+        this.quantity = count;
     }
 
-    public void setTotalPrice(final Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setPrice(final Double price) {
+        this.price = price;
     }
 
     public String toString() {
-        return String.format("Cart id : %d\nproduct name : %s product quantity : %d\ntotal amount : %f",
-                id, productName, productCount, totalPrice);
+        return String.format("Cart id : %d\nproduct name : %s product quantity : %d\ntotal amount : %f\n",
+                id, productName, quantity, price * quantity);
     }
 }

@@ -11,7 +11,12 @@ public class AuthenticationController {
     private static final AuthenticationService AUTHENTICATION_SERVICE2 = AuthenticationServiceImpl2.getInstance();
     private static final AuthenticationService AUTHENTICATION_SERVICE = AuthenticationServiceImpl.getInstance();
     private AuthenticationController () {}
-
+    /**
+     * <p>
+     *     Represents the instance of {@link AuthenticationController} created only ones
+     * </p>
+     * @return
+     */
     public static AuthenticationController getInstance() {
         return AUTHENTICATION_CONTROLLER;
     }

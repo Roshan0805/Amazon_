@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Acts as a Control between service and the view to provide product view, delete and update
+ * Acts as a Control between service and the view to {@link Product}
  * </p>
  *
  * @author Roshan
@@ -21,9 +21,9 @@ import java.util.Map;
  */
 public class ProductController {
 
-    private static final ProductService PRODUCT_SERVICE = ProductService.getInstance();
-    private static final ProductController AMAZON_PRODUCT_CONTROLLER = new ProductController();
-    private static final ProductService PRODUCT_SERVICE2 = ProductServiceImpl2.getInstance();
+    private final ProductService PRODUCT_SERVICE = ProductService.getInstance();
+    private static final ProductController PRODUCT_CONTROLLER = new ProductController();
+    private final ProductService PRODUCT_SERVICE2 = ProductServiceImpl2.getInstance();
 
     private ProductController() {
     }
@@ -36,7 +36,7 @@ public class ProductController {
      * @return Represents {@link ProductController}
      */
     public static ProductController getInstance() {
-        return AMAZON_PRODUCT_CONTROLLER;
+        return PRODUCT_CONTROLLER;
     }
 
     /**
@@ -63,7 +63,9 @@ public class ProductController {
     }
 
     /**
+     * <p>
      * Represents the product details that the user create
+     * </p>
      *
      * @param userId Represents admin id
      * @return Represents {@link Product} list created by the user
@@ -80,7 +82,7 @@ public class ProductController {
      * @param productId id of the product
      * @return Represents {@link Product}
      */
-    public Product get(final long productId) {
+    public Product get(final Long productId) {
         return PRODUCT_SERVICE2.get(productId);
     }
 
@@ -93,7 +95,7 @@ public class ProductController {
      * @param product Represents {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    public boolean update(final long id, final Product product) {
+    public boolean update(final Long id, final Product product) {
         return PRODUCT_SERVICE2.update(id, product);
     }
 
@@ -105,12 +107,14 @@ public class ProductController {
      * @param id id of the product
      * @return True if the {@link Product} is deleted successfully in the product list otherwise return false
      */
-    public boolean delete(final int id) {
+    public boolean delete(final Long id) {
         return PRODUCT_SERVICE2.delete(id);
     }
 
     /**
-     * Represents the order of {@link Product}
+     * <p>
+     *     Represents the order of {@link Product}
+     * </p>
      *
      * @param order Represents {@link Order}
      * @return True if the order is added to the order list
@@ -120,7 +124,9 @@ public class ProductController {
     }
 
     /**
-     * Retrieve the List of {@link Order}
+     * <p>
+     *     Retrieve the List of {@link Order}
+     * </p>
      *
      * @return Represents collection of {@link Order}
      */
@@ -129,14 +135,22 @@ public class ProductController {
     }
 
     /**
-     * Represents the order details of the particular order id
+     * <p>
+     *     Represents the order details of the particular order id
+     * </p>
+     *
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
-    public Order getOrder(final Long orderId) { return PRODUCT_SERVICE2.getOrder(orderId);}
+    public Order getOrder(final Long orderId) {
+        return PRODUCT_SERVICE2.getOrder(orderId);
+    }
 
     /**
-     * Represents the cancelling the order of the particular order id
+     * <p>
+     *     Represents the cancelling the order of the particular order id
+     * </p>
+     *
      * @param orderId Represents the id of the {@link Product}
      * @return Represents {@link Order}
      */
@@ -145,7 +159,10 @@ public class ProductController {
     }
 
     /**
-     * Represents adding a product to the cart
+     * <p>
+     *     Represents adding a product to the cart
+     * </p>
+     *
      * @param cart Represents the {@link Cart}
      * @return True if the Product is added successfully in cart
      */
@@ -154,25 +171,34 @@ public class ProductController {
     }
 
     /**
-     * Represents the Product details from the cart for a particular user
+     * <p>
+     *     Represents the Product details from the cart for a particular user
+     * </p>
+     *
      * @param userId Represents the id of {@link User}
      * @return Collection of products from the cart
      */
-    public List<Cart> getCartList(final Long userId){
+    public List<Cart> getCartList(final Long userId) {
         return PRODUCT_SERVICE2.getCartList(userId);
     }
 
     /**
-     * Represents the particular id details of entered cart id
+     * <p>
+     *     Represents the particular id details of entered cart id
+     * </p>
+     *
      * @param id Represents the id of the cart
      * @return Represents {@link Cart}
      */
-    public Cart getCart(final Long id){
+    public Cart getCart(final Long id) {
         return PRODUCT_SERVICE2.getCart(id);
     }
 
     /**
-     * Represents the removal of product for the particular cart id
+     * <p>
+     *     Represents the removal of product for the particular cart id
+     * </p>
+     *
      * @param cartId Represents the id of the cart
      * @return True if the Product is removed successfully
      */
@@ -181,7 +207,10 @@ public class ProductController {
     }
 
     /**
-     * Represents the product id's of the user created product
+     * <p>
+     *     Represents the product id's of the user created product
+     * </p>
+     *
      * @param userId Represents the id of the {@link User}
      * @return List of product id's
      */
@@ -190,18 +219,24 @@ public class ProductController {
     }
 
     /**
-     * Represents updating the quantity of product in cart
-     * @param quantity Quantity need to add with available products
+     * <p>
+     *     Represents updating the quantity of product in cart
+     * </p>
+     *
+     * @param quantity  Quantity need to add with available products
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the product quantity updated successfully
      */
-    public boolean updateQuantityInCart(final Long quantity, final Long productId ){
+    public boolean updateQuantityInCart(final Long quantity, final Long productId) {
         return PRODUCT_SERVICE2.updateQuantityInCart(quantity, productId);
     }
 
     /**
-     * Represents updating the quantity of product in {@link Product}
-     * @param quantity Quantity need to add with available products
+     * <p>
+     *     Represents updating the quantity of product in {@link Product}
+     * </p>
+     *
+     * @param quantity  Quantity need to add with available products
      * @param productId Represents the id of the product need to update the quantity
      * @return True if the product quantity updated successfully
      */

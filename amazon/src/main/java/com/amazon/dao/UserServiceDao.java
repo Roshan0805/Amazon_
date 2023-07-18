@@ -41,5 +41,13 @@ public interface UserServiceDao {
      */
     Collection<User> getAllUser();
 
+    /**
+     * <p>
+     *     Represents the {@link User}update
+     * </p>
+     * @param user Represents {@link User}
+     * @param userId Represents the id of user
+     * @return True if the user object is updated successfully
+     */
     boolean update(final User user, final Long userId);
 }

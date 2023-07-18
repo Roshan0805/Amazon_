@@ -26,7 +26,7 @@ import java.util.*;
 public class ProductServiceDaoImpl implements ProductServiceDao {
 
     private static final ProductServiceDao PRODUCT_SERVICE_DAO = new ProductServiceDaoImpl();
-    private static final DBConnection DB_CONNECTION = DBConnection.getInstance();
+    private final DBConnection dbConnection = DBConnection.getInstance();
 
     private ProductServiceDaoImpl() {
     }
@@ -50,20 +50,20 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param product Product object
      * @return Boolean true is the {@link Product} added successfully in the product list otherwise return false
      */
-    public boolean add(Product product) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CATEGORY, UPDATED_TIME, ADMIN_ID) values (?,?,?,?,?,?)";
+    public boolean add(final Product product) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "INSERT INTO PRODUCT (NAME, DESCRIPTION, AVAILABLE, PRICE, CATEGORY, UPDATED_TIME, USER_ID) values (?,?,?,?,?::product_category,?,?)";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
-            statement.setDouble(3, product.getPrice());
-            statement.setString(4, product.getCategory().toString());
-            statement.setString(5, product.getUpdatedTime());
-            statement.setLong(6, getAdminId(product.getAdminId()));
+            statement.setLong(3,product.getAvailable());
+            statement.setDouble(4, product.getPrice());
+            statement.setString(5, product.getCategory().toString());
+            statement.setTimestamp(6, product.getUpdatedTime());
+            statement.setLong(7, product.getUserId());
             statement.executeUpdate();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -79,7 +79,7 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @return Collection view of {@link Product}
      */
     public Collection<Product> getAllProducts() {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final Collection<Product> productList = new ArrayList<>();
             final String query = "SELECT * FROM PRODUCT";
             final PreparedStatement statement = connection.prepareStatement(query);
@@ -88,20 +88,21 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             while (result.next()) {
                 final Product product = new Product();
 
-                product.setId(result.getLong("id"));
-                product.setName(result.getString("name"));
-                product.setDescription(result.getString("description"));
-                product.setPrice(result.getDouble("price"));
-                product.setCategory(Product.Category.valueOf(result.getString("category")));
-                product.setUpdatedTime(result.getString("updated_time"));
-                product.setAdminId(result.getLong("admin_id"));
+                product.setId(result.getLong("ID"));
+                product.setName(result.getString("NAME"));
+                product.setDescription(result.getString("DESCRIPTION"));
+                product.setAvailable(result.getLong("AVAILABLE"));
+                product.setPrice(result.getDouble("PRICE"));
+                product.setCategory(Product.Category.valueOf(result.getString("CATEGORY")));
+                product.setUpdatedTime(result.getTimestamp("UPDATED_TIME"));
+                product.setUserId(result.getLong("USER_ID"));
                 productList.add(product);
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
+
             return productList;
 
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException | InterruptedException exception) {;
             return null;
         }
     }
@@ -112,34 +113,33 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param userId Represents admin id
      * @return Represents {@link Product} list created by the user
      */
-    public Map<Long, Product> getUserProduct(Long userId) {
+    public Map<Long, Product> getUserProduct(final Long userId) {
         final Map<Long, Product> productList = new HashMap<>();
 
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "SELECT * FROM PRODUCT WHERE ADMIN_ID = ?";
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "SELECT * FROM PRODUCT WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setLong(1, getAdminId(userId));
+            statement.setLong(1, userId);
             final ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 final Product product = new Product();
 
-                product.setId(result.getLong("id"));
-                product.setName(result.getString("name"));
-                product.setDescription(result.getString("description"));
-                product.setPrice(result.getDouble("price"));
-                product.setCategory(Product.Category.valueOf(result.getString("category")));
-                product.setUpdatedTime(result.getString("updated_time"));
-                product.setAdminId(result.getLong("admin_id"));
+                product.setId(result.getLong("ID"));
+                product.setName(result.getString("NAME"));
+                product.setDescription(result.getString("DESCRIPTION"));
+                product.setAvailable(result.getLong("AVAILABLE"));
+                product.setPrice(result.getDouble("PRICE"));
+                product.setCategory(Product.Category.valueOf(result.getString("CATEGORY")));
+                product.setUpdatedTime(result.getTimestamp("UPDATED_TIME"));
+                product.setUserId(result.getLong("USER_ID"));
                 productList.put(product.getId(), product);
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
         } catch (SQLException | InterruptedException exception) {
-            System.out.println(exception.getMessage());
+            return null;
         }
-
 
         return productList;
     }
@@ -152,8 +152,8 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param productId product id of the product object
      * @return Represent {@link Product} in product list
      */
-    public Product get(Long productId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    public Product get(final Long productId) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM PRODUCT WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
@@ -163,16 +163,16 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             if (result.next()) {
                 final Product product = new Product();
 
-                product.setId(result.getLong("id"));
-                product.setName(result.getString("name"));
-                product.setDescription(result.getString("description"));
-                product.setPrice(result.getDouble("price"));
-                product.setCategory(Product.Category.valueOf(result.getString("category")));
-                product.setUpdatedTime(result.getString("updated_time"));
-                product.setAdminId(result.getLong("admin_id"));
+                product.setId(result.getLong("ID"));
+                product.setName(result.getString("NAME"));
+                product.setDescription(result.getString("DESCRIPTION"));
+                product.setAvailable(result.getLong("AVAILABLE"));
+                product.setPrice(result.getDouble("PRICE"));
+                product.setCategory(Product.Category.valueOf(result.getString("CATEGORY")));
+                product.setUpdatedTime(result.getTimestamp("UPDATED_TIME"));
+                product.setUserId(result.getLong("USER_ID"));
+                dbConnection.release(connection);
 
-                DB_CONNECTION.release(connection);
-                DB_CONNECTION.close();
                 return product;
             }
         } catch (SQLException | InterruptedException exception) {
@@ -191,21 +191,21 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param product Represent {@link Product}
      * @return True if the {@link Product} is updated successfully in the product list otherwise return false
      */
-    public boolean update(long id, Product product) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, PRICE = ?, CATEGORY = ?, UPDATED_TIME = ?, ADMIN_ID = ? WHERE ID = ?";
+    public boolean update(final long id, final Product product) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, AVAILABLE = ?, PRICE = ?, CATEGORY = ?::PRODUCT_CATEGORY, UPDATED_TIME = ?, USER_ID = ? WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
-            statement.setDouble(3, product.getPrice());
-            statement.setString(4, product.getCategory().name());
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-            statement.setLong(6, product.getAdminId());
-            statement.setLong(7, id);
+            statement.setLong(3, product.getAvailable());
+            statement.setDouble(4, product.getPrice());
+            statement.setString(5, product.getCategory().name());
+            statement.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setLong(7, product.getUserId());
+            statement.setLong(8, id);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -221,104 +221,76 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
      * @param id id of the product object
      * @return True if the {@link Product} deleted successfully in the product list otherwise return false
      */
-    public boolean delete(long id) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    public boolean delete(final long id) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM PRODUCT WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, id);
-            statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            statement.executeUpdate();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
+            return false;
+        }
+    }
+
+    /**
+     *<p>
+     *     Represents the adding a product to the cart
+     *</p>
+     * @param cart Represents {@link Cart}
+     * @return True if product added to cart successfully
+     */
+    public boolean addToCart(final Cart cart) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "INSERT INTO CART (PRODUCT_ID, QUANTITY, PRICE, USER_ID, NAME) VALUES (?,?,?,?,?)";
+            final PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1, cart.getProductId());
+            statement.setLong(2, cart.getQuantity());
+            statement.setDouble(3, cart.getPrice());
+            statement.setLong(4, cart.getUserId());
+            statement.setString(5, cart.getProductName());
+            statement.execute();
+            dbConnection.release(connection);
+
+            return true;
+        } catch (SQLException | InterruptedException exception) {
+            System.out.println(exception.getMessage());
             return false;
         }
     }
 
     /**
      * <p>
-     * Retrieves the admin id of the user
+     *     Represents the product details from the cart for a particular user
      * </p>
-     *
-     * @param userId Represents the id of user
-     * @return Admin id of the user
+     * @param id Represents the id of {@link User}
+     * @return Represents the list of products from the cart
      */
-    public Long getAdminId(Long userId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String adminIdQuery = "SELECT ID FROM ADMIN WHERE USER_ID = ?";
-            final PreparedStatement adminIdStatement = connection.prepareStatement(adminIdQuery);
-
-            adminIdStatement.setLong(1, userId);
-            final ResultSet result = adminIdStatement.executeQuery();
-
-            if (result.next()) {
-                DB_CONNECTION.release(connection);
-                DB_CONNECTION.close();
-
-                return result.getLong(1);
-            }
-
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
-        } catch (SQLException | InterruptedException exception) {
-            return null;
-        }
-        return null;
-    }
-
-
-    /**
-     * @param cart
-     * @return
-     */
-    public boolean addToCart(Cart cart) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "INSERT INTO CART (PRODUCT_ID, QUANTITY, TOTAL_PRICE, USER_ID, PRODUCT_NAME) VALUES (?,?,?,?,?)";
-            final PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1, cart.getProductId());
-            statement.setLong(2, cart.getProductCount());
-            statement.setDouble(3, cart.getTotalPrice());
-            statement.setLong(4, cart.getUserId());
-            statement.setString(5, cart.getProductName());
-            final int noOfRowsInserted = statement.executeUpdate();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
-
-            return true;
-        } catch (SQLException | InterruptedException exception) {
-            return false;
-        }
-    }
-
-    /**
-     * @param userId
-     * @return
-     */
-    public List<Cart> getCartList(Long userId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    public List<Cart> getCartList(final Long id) {
+        try (final Connection connection = dbConnection.get()) {
             final List<Cart> cartList = new LinkedList<>();
             final String query = "SELECT * FROM CART WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setLong(1, userId);
+            statement.setLong(1, id);
             final ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 final Cart cart = new Cart();
 
-                cart.setId(result.getLong("id"));
-                cart.setProductId(result.getLong("product_id"));
-                cart.setProductName(result.getString("product_name"));
-                cart.setProductCount(result.getLong("quantity"));
-                cart.setTotalPrice(result.getDouble("total_price"));
-                cart.setUserId(result.getLong("user_id"));
-                DB_CONNECTION.release(connection);
-                DB_CONNECTION.close();
+                cart.setId(result.getLong("ID"));
+                cart.setProductId(result.getLong("PRODUCT_ID"));
+                cart.setProductName(result.getString("NAME"));
+                cart.setQuantity(result.getLong("QUANTITY"));
+                cart.setPrice(result.getDouble("PRICE"));
+                cart.setUserId(result.getLong("USER_ID"));
 
                 cartList.add(cart);
             }
+            dbConnection.release(connection);
 
             return cartList;
         } catch (SQLException | InterruptedException exception) {
@@ -327,11 +299,14 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
     }
 
     /**
-     * @param id
-     * @return
+     * <p>
+     *     Represents the product details from the cart for a particular user
+     * </p>
+     * @param id Represents the id of {@link User}
+     * @return Represents the list of products from the cart
      */
-    public Cart getCart(Long id) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    public Cart getCart(final Long id) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "SELECT * FROM CART WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
@@ -341,14 +316,13 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             if (result.next()) {
                 final Cart cart = new Cart();
 
-                cart.setId(result.getLong("id"));
-                cart.setProductId(result.getLong("product_id"));
-                cart.setProductName(result.getString("product_name"));
-                cart.setProductCount(result.getLong("quantity"));
-                cart.setTotalPrice(result.getDouble("total_price"));
-                cart.setUserId(result.getLong("user_id"));
-                DB_CONNECTION.release(connection);
-                DB_CONNECTION.close();
+                cart.setId(result.getLong("ID"));
+                cart.setProductId(result.getLong("PRODUCT_ID"));
+                cart.setProductName(result.getString("PRODUCT_NAME"));
+                cart.setQuantity(result.getLong("QUANTITY"));
+                cart.setPrice(result.getDouble("TOTAL_PRICE"));
+                cart.setUserId(result.getLong("USER_ID"));
+                dbConnection.release(connection);
 
                 return cart;
             }
@@ -360,18 +334,20 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
     }
 
     /**
-     * @param cartId
-     * @return
+     * <p>
+     *     Represents removing a product from the cart
+     * </p>
+     * @param cartId Represents the cart id for remove
+     * @return true if the product is removed successfully from the cart
      */
-    public boolean removeCart(Long cartId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    public boolean removeCart(final Long cartId) {
+        try (final Connection connection = dbConnection.get()) {
             final String query = "DELETE FROM CART WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, cartId);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -379,20 +355,26 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
         }
     }
 
-    public List<Long> getProductIds(Long userId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+    /**
+     * <p>
+     *     Represents getting all the product id from the cart list
+     * </p>
+     * @param userId Represents the id of the {@link User}
+     * @return List of product id from the cart
+     */
+    public List<Long> getCartProductIds(final Long userId) {
+        try (final Connection connection = dbConnection.get()) {
             final List<Long> productIds = new LinkedList<>();
             final String query = "SELECT PRODUCT_ID FROM CART WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1, userId);
 
+            statement.setLong(1, userId);
             final ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                productIds.add(result.getLong("product_id"));
+                productIds.add(result.getLong("PRODUCT_ID"));
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return productIds;
         } catch (SQLException | InterruptedException exception) {
@@ -400,16 +382,24 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
         }
     }
 
-    public boolean updateQuantity(Long quantity, Long productId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "UPDATE CART SET QUANTITY = QUANTITY + ? WHERE PRODUCT_ID = ?";
+    /**
+     * <p>
+     *     Represents updating the quantity of product in {@link Cart}
+     * </p>
+     *
+     * @param quantity Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the quantity updated successfully
+     */
+    public boolean updateQuantityInCart(final Long quantity, final Long productId) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "UPDATE CART SET QUANTITY = QUANTITY + ? , PRICE = PRICE + WHERE PRODUCT_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, quantity);
             statement.setLong(2, productId);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -418,24 +408,58 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
     }
 
     /**
-     * Represents the order of {@link Product}
+     * <p>
+     *     Represents updating the quantity of product in {@link Product}
+     * </p>
+     *
+     * @param quantity Quantity need to add with available products
+     * @param productId Represents the id of the product need to update the quantity
+     * @return True if the quantity updated successfully
+     */
+    public boolean updateQuantityInProduct(Long quantity, Long productId) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "UPDATE PRODUCT SET AVAILABLE = AVAILABLE + ? WHERE PRODUCT_ID = ?";
+            final PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setLong(1, quantity);
+            statement.setLong(2, productId);
+            statement.execute();
+            dbConnection.release(connection);
+
+            return true;
+        } catch (SQLException | InterruptedException exception) {
+            return false;
+        }
+    }
+
+    /**
+     * <p>
+     *     Represents the order of {@link Product}
+     * </p>
      *
      * @param order Represents {@link Order}
      * @return True if the order is added to the order list
      */
     public boolean order(Order order) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "INSERT INTO ORDER (PRODUCT_ID, PRODUCT_COUNT, TOTAL_PRICE, CART_ID, USER_ID, PAYMENT_TYPE) VALUES (?,?,?,?,?,?)";
-            final PreparedStatement statement = connection.prepareStatement(query);
+        try (final Connection connection = dbConnection.get()) {
+            final String orderQuery = "INSERT INTO ORDERS (PRODUCT_ID, QUANTITY, PRICE, PRODUCT_NAME, USER_ID, PAYMENT_TYPE) VALUES (?,?,?,?,?,?::payment_types)";
+            final PreparedStatement statement = connection.prepareStatement(orderQuery);
+
             statement.setLong(1, order.getProductId());
-            statement.setLong(2, order.getProductCount());
-            statement.setDouble(3, order.getTotalPrice());
-            statement.setLong(4, order.getCartId());
+            statement.setLong(2, order.getQuantity());
+            statement.setDouble(3, order.getPrice());
+            statement.setString(4, order.getProductName());
             statement.setLong(5, order.getUserId());
             statement.setString(6, String.valueOf(order.getPaymentType()));
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+
+            final String productQuery = "UPDATE PRODUCT SET AVAILABLE = AVAILABLE - ? WHERE ID = ? ";
+            final PreparedStatement statement1 = connection.prepareStatement(productQuery);
+
+            statement1.setLong(1, order.getQuantity());
+            statement1.setLong(2, order.getProductId());
+            statement1.execute();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
@@ -443,17 +467,18 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
         }
     }
 
-
     /**
-     * Retrieve the List of {@link User} order
+     * <p>
+     *      Retrieve the List of {@link User} order
+     * </p>
      *
      * @param userId Represents id of {@link User}
      * @return Represents collection of {@link Order}
      */
     public List<Order> getOrderList(Long userId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
+        try (final Connection connection = dbConnection.get()) {
             final List<Order> orderList = new ArrayList<>();
-            final String query = "SELECT * FROM ORDER WHERE USER_ID = ?";
+            final String query = "SELECT * FROM ORDERS WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, userId);
@@ -462,17 +487,16 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             while (result.next()) {
                 final Order order = new Order();
 
-                order.setId(result.getLong("id"));
-                order.setProductId(result.getLong("product_id"));
-                order.setCartId(result.getLong("cart_id"));
-                order.setProductCount(result.getLong("product_count"));
-                order.setTotalPrice(result.getDouble("total_price"));
-                order.setUserId(result.getLong("user_id"));
-                order.setPaymentType(Order.Payment.valueOf(result.getString("payment_type")));
+                order.setId(result.getLong("ID"));
+                order.setProductId(result.getLong("PRODUCT_ID"));
+                order.setQuantity(result.getLong("QUANTITY"));
+                order.setProductName(result.getString("PRODUCT_NAME"));
+                order.setPrice(result.getDouble("PRICE"));
+                order.setUserId(result.getLong("USER_ID"));
+                order.setPaymentType(Order.Payment.valueOf(result.getString("PAYMENT_TYPE")));
                 orderList.add(order);
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return orderList;
         } catch (SQLException | InterruptedException exception) {
@@ -480,9 +504,14 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
         }
     }
 
+    /**
+     * Represents the order details of the particular order id
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
     public Order getOrder(Long orderId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "SELECT * FROM ORDER WHERE USER_ID = ?";
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "SELECT * FROM ORDERS WHERE USER_ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setLong(1, orderId);
@@ -492,14 +521,12 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
             if (result.next()) {
                 order.setId(result.getLong("ID"));
                 order.setProductId(result.getLong("PRODUCT_ID"));
-                order.setCartId(result.getLong("CART_ID"));
-                order.setProductCount(result.getLong("PRODUCT_COUNT"));
-                order.setTotalPrice(result.getDouble("TOTAL_PRICE"));
-                order.setUserId(result.getLong(""));
-                order.setPaymentType(Order.Payment.valueOf(result.getString("payment_type")));
+                order.setQuantity(result.getLong("PRODUCT_COUNT"));
+                order.setPrice(result.getDouble("PRICE"));
+                order.setUserId(result.getLong("USER_ID"));
+                order.setPaymentType(Order.Payment.valueOf(result.getString("PAYMENT_TYPE")));
             }
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+            dbConnection.release(connection);
 
             return order;
         } catch (SQLException | InterruptedException exception) {
@@ -507,14 +534,26 @@ public class ProductServiceDaoImpl implements ProductServiceDao {
         }
     }
 
-    public boolean removeOrder(Long orderId) {
-        try (final Connection connection = DB_CONNECTION.get()) {
-            final String query = "DELETE FROM ORDER WHERE ID = ?";
+    /**
+     * Represents the cancelling the order of the particular order id
+     * @param orderId Represents the id of the {@link Product}
+     * @return Represents {@link Order}
+     */
+    public boolean cancelOrder(Long orderId) {
+        try (final Connection connection = dbConnection.get()) {
+            final String query = "DELETE FROM ORDERS WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, orderId);
             statement.execute();
-            DB_CONNECTION.release(connection);
-            DB_CONNECTION.close();
+
+            final Order order = getOrder(orderId);
+            final String productQuery = "UPDATE PRODUCT SET AVAILABLE = AVAILABLE + ? WHERE ID = ? ";
+            final PreparedStatement statement1 = connection.prepareStatement(productQuery);
+
+            statement1.setLong(1, order.getQuantity());
+            statement1.setLong(2, order.getProductId());
+            statement1.execute();
+            dbConnection.release(connection);
 
             return true;
         } catch (SQLException | InterruptedException exception) {
